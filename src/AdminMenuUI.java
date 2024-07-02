@@ -105,6 +105,20 @@ public class AdminMenuUI extends JFrame {
 		usernameLabel.setBounds(10, 97, 126, 44);
 		addPanel.add(usernameLabel);
 		
+		JPanel removePanel = new JPanel();
+		removePanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		removePanel.setBackground(SystemColor.inactiveCaptionBorder);
+		removePanel.setBounds(425, 11, 394, 349);
+		studentManagementPanel.add(removePanel);
+		removePanel.setLayout(null);
+		
+		JComboBox studentNamesComboBox = new JComboBox();
+		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		studentNamesComboBox.setBounds(216, 127, 168, 24);
+		removePanel.add(studentNamesComboBox);
+		updateComboBox(studentNamesComboBox);
+		
+		
 		JButton addConfirmButton = new JButton("Confirm");
 		addConfirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,6 +136,7 @@ public class AdminMenuUI extends JFrame {
 				}
 				else {
 					addNewUser(usrName, usrPass, "Student");
+					updateComboBox(studentNamesComboBox);
 					infoBox("New student \"" + usrName + "\" added!", "Successful!");
 				}
 				
@@ -139,12 +154,7 @@ public class AdminMenuUI extends JFrame {
 		addStudentTitle.setBounds(10, 23, 374, 53);
 		addPanel.add(addStudentTitle);
 		
-		JPanel removePanel = new JPanel();
-		removePanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		removePanel.setBackground(SystemColor.inactiveCaptionBorder);
-		removePanel.setBounds(425, 11, 394, 349);
-		studentManagementPanel.add(removePanel);
-		removePanel.setLayout(null);
+		
 		
 		JLabel removeStudentTitle = new JLabel("= Remove Student =");
 		removeStudentTitle.setBounds(10, 23, 374, 48);
@@ -153,11 +163,6 @@ public class AdminMenuUI extends JFrame {
 		removeStudentTitle.setFont(new Font("Tahoma", Font.BOLD, 19));
 		removePanel.add(removeStudentTitle);
 		
-		JComboBox studentNamesComboBox = new JComboBox();
-		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		studentNamesComboBox.setBounds(216, 127, 168, 24);
-		removePanel.add(studentNamesComboBox);
-		updateComboBox(studentNamesComboBox);
 		
 		
 		JLabel lblNewLabel = new JLabel("Select Student Name :");
@@ -169,6 +174,18 @@ public class AdminMenuUI extends JFrame {
 		removeConfirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Student remove button clicked:
+				
+				if(studentNamesComboBox.getSelectedIndex() < 0) {
+					errorBox("Nothing selected!", "Error!");
+				}
+				else {
+					String usrName = studentNamesComboBox.getSelectedItem().toString();
+					
+					deleteUserFromFile(usrName);
+
+					infoBox("Deleted from file!", "Successful!");
+					updateComboBox(studentNamesComboBox);
+				}
 			}
 		});
 		removeConfirmButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -187,9 +204,10 @@ public class AdminMenuUI extends JFrame {
 		
 	}
 	
+	
 	private void updateComboBox(JComboBox studentNamesComboBox) {
 		HashMap<String, User> userMap = readUserFile();
-		studentNamesComboBox.removeAll();
+		studentNamesComboBox.removeAllItems();
 		for(String usrName : userMap.keySet()) {
 			studentNamesComboBox.addItem(usrName);
 		}
@@ -202,7 +220,6 @@ public class AdminMenuUI extends JFrame {
 			try {
 				userFile.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -212,9 +229,59 @@ public class AdminMenuUI extends JFrame {
 			writer.write(userLine);
 			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	protected void deleteUserFromFile(String usrName) {
+		File oldFile = new File("src/users.txt"); 
+		File newFile = new File("src/usersTEMP.txt");
+		try {
+			newFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(!oldFile.exists()) {
+			try {
+				oldFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			Scanner oldFileScan = new Scanner(oldFile);
+			while(oldFileScan.hasNextLine()) {
+				String[] userStuff = oldFileScan.nextLine().split(",");
+				
+				//if line is the line we want to remove, skip it.
+				if(userStuff[0].equals(usrName)) {
+					
+				}
+				//Write others onto new file
+				else {
+					try {
+						String userLine = userStuff[0] + "," + userStuff[1] + "," + userStuff[2] + "\n";
+						FileWriter newWriter = new FileWriter("src/usersTEMP.txt", true);
+						newWriter.write(userLine);
+						newWriter.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			oldFileScan.close();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//Delete old file
+		oldFile.delete();
+		
+		//rename temp file
+		newFile.renameTo(oldFile);
+		
 	}
 	
 	protected HashMap<String, User> readUserFile(){
@@ -224,7 +291,6 @@ public class AdminMenuUI extends JFrame {
 			try {
 				userFile.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -246,7 +312,6 @@ public class AdminMenuUI extends JFrame {
 			}
 			fileScan.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

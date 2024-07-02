@@ -1,2 +1,3 @@
 Ayberk,123,Student
-Ayberk ögr,123123,Teacher
+Selim,test,Student
+Osman,Hell@,Student
