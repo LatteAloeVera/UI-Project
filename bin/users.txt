@@ -1,0 +1,2 @@
+Ayberk,123,Student
+Ayberk ögr,123123,Teacher
