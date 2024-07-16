@@ -1,4 +1,6 @@
-Ayberk2,12345,Teacher
+Osman,12345,Teacher
 Hasan,321,Student
 Selim,1234,Student
 Ayşe,1432,Student
+Selen,uwu,Student
+Ayberk,123,Teacher
