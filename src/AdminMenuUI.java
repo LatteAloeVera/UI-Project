@@ -36,6 +36,9 @@ public class AdminMenuUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private JTextField lessonNameTextField;
+	private JTextField lessonCreditsTextField;
+	private JTextField lessonCodeTextField;
 	/**
 	 * Launch the application.
 	 */
@@ -194,8 +197,105 @@ public class AdminMenuUI extends JFrame {
 		removePanel.add(removeConfirmButton);
 		
 		JPanel lessonManagementPanel = new JPanel();
-		lessonManagementPanel.setBackground(Color.RED);
+		lessonManagementPanel.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Add / Remove Lessons", null, lessonManagementPanel, null);
+		lessonManagementPanel.setLayout(null);
+		
+		JPanel addPanel_1 = new JPanel();
+		addPanel_1.setLayout(null);
+		addPanel_1.setForeground(SystemColor.inactiveCaptionBorder);
+		addPanel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		addPanel_1.setBackground(SystemColor.inactiveCaptionBorder);
+		addPanel_1.setBounds(10, 11, 394, 349);
+		lessonManagementPanel.add(addPanel_1);
+		
+		lessonNameTextField = new JTextField();
+		lessonNameTextField.setColumns(10);
+		lessonNameTextField.setBounds(164, 109, 206, 27);
+		addPanel_1.add(lessonNameTextField);
+		
+		JLabel lessonTeacherLabel = new JLabel("Lesson Teacher :");
+		lessonTeacherLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lessonTeacherLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lessonTeacherLabel.setBounds(20, 135, 134, 44);
+		addPanel_1.add(lessonTeacherLabel);
+		
+		JLabel lessonLabel_1 = new JLabel("Lesson Name :");
+		lessonLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lessonLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lessonLabel_1.setBounds(20, 97, 134, 44);
+		addPanel_1.add(lessonLabel_1);
+		
+		JButton addConfirmButton_Lessons = new JButton("Confirm");
+		addConfirmButton_Lessons.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		addConfirmButton_Lessons.setBackground(UIManager.getColor("Button.light"));
+		addConfirmButton_Lessons.setBounds(119, 294, 147, 44);
+		addPanel_1.add(addConfirmButton_Lessons);
+		
+		JLabel lblAddLessons = new JLabel("= Add A New Lesson =");
+		lblAddLessons.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddLessons.setForeground(new Color(100, 149, 237));
+		lblAddLessons.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblAddLessons.setBounds(10, 23, 374, 53);
+		addPanel_1.add(lblAddLessons);
+		
+		lessonCreditsTextField = new JTextField();
+		lessonCreditsTextField.setColumns(10);
+		lessonCreditsTextField.setBounds(164, 182, 206, 27);
+		addPanel_1.add(lessonCreditsTextField);
+		
+		JComboBox lessonTeachersComboBox = new JComboBox();
+		lessonTeachersComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lessonTeachersComboBox.setBounds(164, 147, 206, 24);
+		addPanel_1.add(lessonTeachersComboBox);
+		
+		JLabel lessonCreditLabel = new JLabel("Lesson Credit :");
+		lessonCreditLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lessonCreditLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lessonCreditLabel.setBounds(20, 170, 134, 44);
+		addPanel_1.add(lessonCreditLabel);
+		
+		JLabel lessonCodeLabel = new JLabel("Lesson Code :");
+		lessonCodeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lessonCodeLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lessonCodeLabel.setBounds(20, 210, 134, 44);
+		addPanel_1.add(lessonCodeLabel);
+		
+		lessonCodeTextField = new JTextField();
+		lessonCodeTextField.setColumns(10);
+		lessonCodeTextField.setBounds(164, 220, 206, 27);
+		addPanel_1.add(lessonCodeTextField);
+		
+		JPanel removePanel_1 = new JPanel();
+		removePanel_1.setLayout(null);
+		removePanel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		removePanel_1.setBackground(SystemColor.inactiveCaptionBorder);
+		removePanel_1.setBounds(425, 11, 394, 349);
+		lessonManagementPanel.add(removePanel_1);
+		
+		JComboBox lessonNamesComboBox = new JComboBox();
+		lessonNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lessonNamesComboBox.setBounds(203, 124, 168, 24);
+		removePanel_1.add(lessonNamesComboBox);
+		
+		JLabel lblRemoveLesson = new JLabel("= Remove Lesson =");
+		lblRemoveLesson.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRemoveLesson.setForeground(new Color(100, 149, 237));
+		lblRemoveLesson.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblRemoveLesson.setBounds(10, 23, 374, 48);
+		removePanel_1.add(lblRemoveLesson);
+		
+		JLabel lblLessonRemove = new JLabel("Select Lesson Name :");
+		lblLessonRemove.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblLessonRemove.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblLessonRemove.setBounds(0, 105, 196, 58);
+		removePanel_1.add(lblLessonRemove);
+		
+		JButton removeConfirmButton_Lessons = new JButton("Confirm");
+		removeConfirmButton_Lessons.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		removeConfirmButton_Lessons.setBackground(UIManager.getColor("Button.light"));
+		removeConfirmButton_Lessons.setBounds(129, 215, 147, 44);
+		removePanel_1.add(removeConfirmButton_Lessons);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_2, null);
@@ -209,7 +309,9 @@ public class AdminMenuUI extends JFrame {
 		HashMap<String, User> userMap = readUserFile();
 		studentNamesComboBox.removeAllItems();
 		for(String usrName : userMap.keySet()) {
-			studentNamesComboBox.addItem(usrName);
+			if(userMap.get(usrName).getTag().equals("Student")) {
+				studentNamesComboBox.addItem(usrName);
+			}
 		}
 	}
 
@@ -327,6 +429,4 @@ public class AdminMenuUI extends JFrame {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
     }
-	
-	
 }

@@ -1,3 +1,4 @@
-Ayberk,123,Student
-Selim,test,Student
-Osman,Hell@,Student
+Ayberk2,12345,Teacher
+Hasan,321,Student
+Selim,1234,Student
+Ayşe,1432,Student
