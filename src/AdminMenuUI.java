@@ -119,7 +119,7 @@ public class AdminMenuUI extends JFrame {
 		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		studentNamesComboBox.setBounds(216, 127, 168, 24);
 		removePanel.add(studentNamesComboBox);
-		updateComboBox(studentNamesComboBox);
+		updateStudentComboBox(studentNamesComboBox);
 		
 		
 		JButton addConfirmButton = new JButton("Confirm");
@@ -138,8 +138,8 @@ public class AdminMenuUI extends JFrame {
 					errorBox("There is an another user named \"" + usrName + "\" , Please enter an another username!" ,"Empty Area Remaining!");
 				}
 				else {
-					addNewUser(usrName, usrPass, "Student");
-					updateComboBox(studentNamesComboBox);
+					addNewUserToFile(usrName, usrPass, "Student");
+					updateStudentComboBox(studentNamesComboBox);
 					infoBox("New student \"" + usrName + "\" added!", "Successful!");
 				}
 				
@@ -187,7 +187,7 @@ public class AdminMenuUI extends JFrame {
 					deleteUserFromFile(usrName);
 
 					infoBox("Deleted from file!", "Successful!");
-					updateComboBox(studentNamesComboBox);
+					updateStudentComboBox(studentNamesComboBox);
 				}
 			}
 		});
@@ -226,11 +226,7 @@ public class AdminMenuUI extends JFrame {
 		lessonLabel_1.setBounds(20, 97, 134, 44);
 		addPanel_1.add(lessonLabel_1);
 		
-		JButton addConfirmButton_Lessons = new JButton("Confirm");
-		addConfirmButton_Lessons.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		addConfirmButton_Lessons.setBackground(UIManager.getColor("Button.light"));
-		addConfirmButton_Lessons.setBounds(119, 294, 147, 44);
-		addPanel_1.add(addConfirmButton_Lessons);
+		
 		
 		JLabel lblAddLessons = new JLabel("= Add A New Lesson =");
 		lblAddLessons.setHorizontalAlignment(SwingConstants.CENTER);
@@ -248,6 +244,7 @@ public class AdminMenuUI extends JFrame {
 		lessonTeachersComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lessonTeachersComboBox.setBounds(164, 147, 206, 24);
 		addPanel_1.add(lessonTeachersComboBox);
+		updateTeacherComboBox(lessonTeachersComboBox);
 		
 		JLabel lessonCreditLabel = new JLabel("Lesson Credit :");
 		lessonCreditLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -277,6 +274,7 @@ public class AdminMenuUI extends JFrame {
 		lessonNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lessonNamesComboBox.setBounds(203, 124, 168, 24);
 		removePanel_1.add(lessonNamesComboBox);
+		updateLessonComboBox(lessonNamesComboBox);
 		
 		JLabel lblRemoveLesson = new JLabel("= Remove Lesson =");
 		lblRemoveLesson.setHorizontalAlignment(SwingConstants.CENTER);
@@ -297,6 +295,49 @@ public class AdminMenuUI extends JFrame {
 		removeConfirmButton_Lessons.setBounds(129, 215, 147, 44);
 		removePanel_1.add(removeConfirmButton_Lessons);
 		
+		JButton addConfirmButton_Lessons = new JButton("Confirm");
+		addConfirmButton_Lessons.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//When clicked Add Lesson Confirm Button:
+				HashMap<String, Lesson> lessonMap = readLessonFile();
+				
+				String lessonCode = lessonCodeTextField.getText();
+				String lessonName = lessonNameTextField.getText();
+				Teacher lessonTeacher;
+				
+				if(lessonCreditsTextField.getText().length() == 0 || lessonCode.length() == 0 || lessonName.length() == 0) {
+					errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
+				}
+				else if(lessonTeachersComboBox.getSelectedIndex() < 0) {
+					errorBox("Nothing selected as a teacher!", "Error!");
+				}
+				else if(lessonMap.containsKey(lessonName)) {
+					errorBox("There is an another lesson named \"" + lessonName + "\", please enter an another lesson name!", "Name Exists!");
+					lessonCodeTextField.setText("");
+					lessonNameTextField.setText("");
+					lessonCreditsTextField.setText("");
+				}
+				else {
+					int lessonCredit = Integer.parseInt(lessonCreditsTextField.getText());
+					String teacherName = lessonTeachersComboBox.getSelectedItem().toString();
+					lessonTeacher = getTeacherByName(teacherName);
+					addNewLessonToFile(lessonCode, lessonName, lessonCredit, lessonTeacher);
+					updateLessonComboBox(lessonNamesComboBox);
+					
+					infoBox("New lesson\"" + lessonName + "\" added!","Successfull!");
+					
+					lessonCodeTextField.setText("");
+					lessonNameTextField.setText("");
+					lessonCreditsTextField.setText("");
+				}
+				
+			}
+		});
+		addConfirmButton_Lessons.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		addConfirmButton_Lessons.setBackground(UIManager.getColor("Button.light"));
+		addConfirmButton_Lessons.setBounds(119, 294, 147, 44);
+		addPanel_1.add(addConfirmButton_Lessons);
+		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_2, null);
 		
@@ -304,8 +345,18 @@ public class AdminMenuUI extends JFrame {
 		
 	}
 	
+	protected Teacher getTeacherByName(String teacherName) {
+		HashMap<String, User> userMap = readUserFile();
+		for(String usrName : userMap.keySet()) {
+			if(usrName.equals(teacherName)) {
+				return (Teacher)userMap.get(usrName);
+			}
+		}
+		return null;
+	}
+
 	
-	private void updateComboBox(JComboBox studentNamesComboBox) {
+	private void updateStudentComboBox(JComboBox studentNamesComboBox) {
 		HashMap<String, User> userMap = readUserFile();
 		studentNamesComboBox.removeAllItems();
 		for(String usrName : userMap.keySet()) {
@@ -314,8 +365,26 @@ public class AdminMenuUI extends JFrame {
 			}
 		}
 	}
+	
+	private void updateTeacherComboBox(JComboBox teacherNamesComboBox) {
+		HashMap<String, User> userMap = readUserFile();
+		teacherNamesComboBox.removeAllItems();
+		for(String usrName : userMap.keySet()) {
+			if(userMap.get(usrName).getTag().equals("Teacher")) {
+				teacherNamesComboBox.addItem(usrName);
+			}
+		}
+	}
+	
+	private void updateLessonComboBox(JComboBox lessonNamesComboBox) {
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		lessonNamesComboBox.removeAllItems();
+		for(String lessonName : lessonMap.keySet()) {
+			lessonNamesComboBox.addItem(lessonName);
+		}
+	}
 
-	protected void addNewUser(String username, String password, String tag) {
+	protected void addNewUserToFile(String username, String password, String tag) {
 		File userFile = new File("src/users.txt");
 		String userLine = username + "," + password + "," + tag + "\n";
 		if(!userFile.exists()) {
@@ -386,6 +455,76 @@ public class AdminMenuUI extends JFrame {
 		
 	}
 	
+	protected void addNewLessonToFile(String code, String name, int credit, Teacher teacher) {
+		File lessonFile = new File("src/lessons.txt");
+		String lessonLine = code + "," + name + "," + credit + "," + teacher.getName() + "\n";
+		if(!lessonFile.exists()) {
+			try {
+				lessonFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			FileWriter writer = new FileWriter("src/lessons.txt", true);
+			writer.write(lessonLine);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void deleteLessonFromFile(String lessonName) {
+		File oldFile = new File("src/lessons.txt"); 
+		File newFile = new File("src/lessonsTEMP.txt");
+		try {
+			newFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(!oldFile.exists()) {
+			try {
+				oldFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			Scanner oldFileScan = new Scanner(oldFile);
+			while(oldFileScan.hasNextLine()) {
+				String[] lessonStuff = oldFileScan.nextLine().split(",");
+				
+				//if line is the line we want to remove, skip it.
+				if(lessonStuff[1].equals(lessonName)) {
+					
+				}
+				//Write others onto new file
+				else {
+					try {
+						String lessonLine = lessonStuff[0] + "," + lessonStuff[1] + "," + lessonStuff[2] + "," + lessonStuff[3] + "\n";
+						FileWriter newWriter = new FileWriter("src/lessonsTEMP.txt", true);
+						newWriter.write(lessonLine);
+						newWriter.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			oldFileScan.close();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//Delete old file
+		oldFile.delete();
+		
+		//rename temp file
+		newFile.renameTo(oldFile);
+	}
+	
 	protected HashMap<String, User> readUserFile(){
 		HashMap<String,User> userMap = new HashMap<String,User>();
 		File userFile = new File("src/users.txt");
@@ -420,7 +559,40 @@ public class AdminMenuUI extends JFrame {
 		return userMap;
 	} 
 	
-	public static void infoBox(String infoMessage, String titleBar)
+	protected HashMap<String, Lesson> readLessonFile(){
+		HashMap<String, Lesson> lessonMap = new HashMap<String, Lesson>();
+		File lessonFile = new File("src/lessons.txt");
+		if(!lessonFile.exists()) {
+			try {
+				lessonFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			Scanner fileScan = new Scanner(lessonFile);
+			while(fileScan.hasNextLine()) {
+				String[] lessonStuff = fileScan.nextLine().split(",");
+				if(lessonStuff.length != 0) {
+					//Found lesson, adding...
+					String teacherName = lessonStuff[3];
+					Lesson lesson = new Lesson(lessonStuff[0],lessonStuff[1], Integer.parseInt(lessonStuff[2]) ,getTeacherByName(teacherName));
+					lessonMap.put(lessonStuff[1], lesson);			
+				}
+			}
+			fileScan.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return lessonMap;
+	}
+	
+	
+	
+ 	public static void infoBox(String infoMessage, String titleBar)
     {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }

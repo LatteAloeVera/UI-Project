@@ -27,5 +27,9 @@ public class User implements Comparable<User>{
 		return this.tag;
 	}
 	
+	protected String getName() {
+		return this.username;
+	}
+	
 	
 }
