@@ -26,9 +26,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.JSplitPane;
 
 public class AdminMenuUI extends JFrame {
 
@@ -64,19 +73,20 @@ public class AdminMenuUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 870, 460);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(SystemColor.inactiveCaptionBorder);
+		tabbedPane.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.setBounds(10, 11, 834, 399);
 		contentPane.add(tabbedPane);
 		
 		JPanel studentManagementPanel = new JPanel();
 		studentManagementPanel.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Add / Remove Student", null, studentManagementPanel, null);
+		tabbedPane.setBackgroundAt(0, SystemColor.inactiveCaption);
 		studentManagementPanel.setLayout(null);
 		
 		JPanel studentAddPanel = new JPanel();
@@ -199,6 +209,7 @@ public class AdminMenuUI extends JFrame {
 		JPanel lessonManagementPanel = new JPanel();
 		lessonManagementPanel.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Add / Remove Lessons", null, lessonManagementPanel, null);
+		tabbedPane.setBackgroundAt(1, SystemColor.inactiveCaption);
 		lessonManagementPanel.setLayout(null);
 		
 		JPanel lessonAddPanel = new JPanel();
@@ -334,6 +345,9 @@ public class AdminMenuUI extends JFrame {
 					lessonNameTextField.setText("");
 					lessonCreditsTextField.setText("");
 				}
+				else if(doesLessonHashmapHasTheCode(lessonCode)) {
+					errorBox("This code is the code of \"" + getLessonFromCode(lessonCode).getName() + "\". Please enter a different code.", "Code Exists!");
+				}
 				else {
 					int lessonCredit = Integer.parseInt(lessonCreditsTextField.getText());
 					String teacherName = lessonTeacherNamesComboBox.getSelectedItem().toString();
@@ -355,10 +369,77 @@ public class AdminMenuUI extends JFrame {
 		addConfirmButton_Lessons.setBounds(119, 294, 147, 44);
 		lessonAddPanel.add(addConfirmButton_Lessons);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(SystemColor.inactiveCaption);
-		tabbedPane.addTab("New tab", null, panel_2, null);
-		panel_2.setLayout(null);
+		JPanel enrollStudentsPanel = new JPanel();
+		enrollStudentsPanel.setBackground(SystemColor.inactiveCaption);
+		tabbedPane.addTab("Enroll Students", null, enrollStudentsPanel, null);
+		tabbedPane.setBackgroundAt(2, SystemColor.inactiveCaption);
+		enrollStudentsPanel.setLayout(null);
+		
+		JPanel studentsListPanel = new JPanel();
+		studentsListPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		studentsListPanel.setBackground(SystemColor.inactiveCaptionBorder);
+		studentsListPanel.setBounds(10, 11, 163, 349);
+		enrollStudentsPanel.add(studentsListPanel);
+		studentsListPanel.setLayout(null);
+		
+		JList studentsNameList = new JList();
+		studentsNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		studentsNameList.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		studentsNameList.setBackground(SystemColor.inactiveCaptionBorder);
+		studentsNameList.setModel(new AbstractListModel() {
+			
+			String[] values = getStudentNames();
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		studentsNameList.setBounds(10, 11, 143, 327);
+		studentsListPanel.add(studentsNameList);
+		
+		JPanel studentsLessonControlPanel = new JPanel();
+		studentsLessonControlPanel.setBackground(SystemColor.inactiveCaptionBorder);
+		studentsLessonControlPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		studentsLessonControlPanel.setBounds(183, 11, 636, 349);
+		enrollStudentsPanel.add(studentsLessonControlPanel);
+		studentsLessonControlPanel.setLayout(null);
+		
+		JList notEnrolledLessons = new JList();
+		notEnrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		notEnrolledLessons.setBackground(new Color(233, 240, 243));
+		notEnrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		notEnrolledLessons.setBounds(10, 11, 161, 327);
+		studentsLessonControlPanel.add(notEnrolledLessons);
+		
+		JList enrolledLessons = new JList();
+		enrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		enrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		enrolledLessons.setBackground(new Color(233, 240, 243));
+		enrolledLessons.setBounds(246, 11, 161, 327);
+		studentsLessonControlPanel.add(enrolledLessons);
+		
+		JButton btnNewButton = new JButton("►");
+		btnNewButton.setEnabled(false);
+		btnNewButton.setBounds(187, 120, 43, 41);
+		studentsLessonControlPanel.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("◄");
+		btnNewButton_1.setEnabled(false);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnNewButton_1.setBounds(187, 200, 43, 41);
+		studentsLessonControlPanel.add(btnNewButton_1);
+		
+		JLabel enrollLessonLabel = new JLabel("Enroll Lesson");
+		enrollLessonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		enrollLessonLabel.setBounds(169, 102, 81, 14);
+		studentsLessonControlPanel.add(enrollLessonLabel);
+		
+		JLabel lblDropLesson = new JLabel("Drop Lesson");
+		lblDropLesson.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDropLesson.setBounds(169, 184, 81, 14);
+		studentsLessonControlPanel.add(lblDropLesson);
 		
 		
 		
@@ -374,7 +455,6 @@ public class AdminMenuUI extends JFrame {
 		return null;
 	}
 
-	
 	private void updateStudentComboBox(JComboBox studentNamesComboBox) {
 		HashMap<String, User> userMap = readUserFile();
 		studentNamesComboBox.removeAllItems();
@@ -609,7 +689,48 @@ public class AdminMenuUI extends JFrame {
 		return lessonMap;
 	}
 	
+	protected String[] getStudentNames() {
+		HashMap<String, User> userMap = readUserFile();
+		ArrayList<String> names = new ArrayList<>();
+		for(User user : userMap.values()) {
+			if(user.getTag().equals("Student")) {
+				names.add(user.getName());
+			}
+		}
+		
+		
+		if(names.size() > 0) {
+			String[] arr = new String[names.size()];
+			for (int i = 0; i < names.size(); i++)
+	            arr[i] = names.get(i);
+			return arr;
+		}
+		else {
+			String[] arr = new String[names.size()];
+			return arr;
+		}
+		
+	}
 	
+	protected boolean doesLessonHashmapHasTheCode(String code) {
+		 HashMap<String, Lesson> lessonMap = readLessonFile();
+		 for(Lesson lesson: lessonMap.values()) {
+			 if(lesson.isTheSameCode(code)) {
+				 return true;
+			 }
+		 }
+		 return false;
+	}
+	
+	protected Lesson getLessonFromCode(String code) {
+		 HashMap<String, Lesson> lessonMap = readLessonFile();
+		 for(Lesson lesson: lessonMap.values()) {
+			 if(lesson.isTheSameCode(code)) {
+				 return lesson;
+			 }
+		 }
+		 return null;
+	}
 	
  	public static void infoBox(String infoMessage, String titleBar)
     {
