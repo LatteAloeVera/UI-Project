@@ -80,6 +80,7 @@ public class AdminMenuUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 870, 460);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
 		setContentPane(contentPane);
@@ -205,6 +206,7 @@ public class AdminMenuUI extends JFrame {
 
 					infoBox("Deleted from file!", "Successful!");
 					updateStudentComboBox(studentNamesComboBox);
+					//TODO: make a function to update studentNameList and update it here.
 				}
 			}
 		});

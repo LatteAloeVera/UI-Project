@@ -15,7 +15,7 @@ public class Student extends User {
 	protected void takeNewLesson(Lesson lesson) {
 		this.takenLessons.put(lesson.getName(), lesson);
 		
-		//TODO: implement writing to file.
+		//TODO: implement writing to file and delete the top part (HashMap<String, Lesson> takenLessons) . it will not work that way.
 	}
 	
 }

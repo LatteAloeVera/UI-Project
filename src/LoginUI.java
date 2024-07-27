@@ -28,6 +28,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import java.awt.Window.Type;
+import java.awt.SystemColor;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import java.awt.Toolkit;
 
 public class LoginUI extends JFrame {
 
@@ -57,26 +61,34 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\login.ico"));
+		setForeground(SystemColor.inactiveCaption);
+		setBackground(SystemColor.inactiveCaption);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 529, 285);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel.setBackground(SystemColor.inactiveCaptionBorder);
 		panel.setBounds(10, 11, 492, 224);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JRadioButton studentRadioButton = new JRadioButton("Student");
+		studentRadioButton.setBackground(SystemColor.inactiveCaptionBorder);
 		studentRadioButton.setHorizontalAlignment(SwingConstants.CENTER);
 		studentRadioButton.setBounds(108, 125, 109, 23);
 		panel.add(studentRadioButton);
 		
 		JRadioButton teacherRadioButton = new JRadioButton("Teacher");
+		teacherRadioButton.setBackground(SystemColor.inactiveCaptionBorder);
 		teacherRadioButton.setHorizontalAlignment(SwingConstants.CENTER);
 		teacherRadioButton.setBounds(269, 125, 109, 23);
 		panel.add(teacherRadioButton);
@@ -108,6 +120,7 @@ public class LoginUI extends JFrame {
 		panel.add(passwordField);
 		
 		JButton loginButton = new JButton("Login");
+		loginButton.setBackground(SystemColor.inactiveCaption);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//login pressed
@@ -156,7 +169,7 @@ public class LoginUI extends JFrame {
 				
 			}
 		});
-		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		loginButton.setBounds(108, 176, 112, 37);
 		panel.add(loginButton);
 		
@@ -164,6 +177,7 @@ public class LoginUI extends JFrame {
 
 		
 		JButton registerButton = new JButton("Register");
+		registerButton.setBackground(SystemColor.inactiveCaption);
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//register pressed
@@ -196,7 +210,7 @@ public class LoginUI extends JFrame {
 			
 		});
 		
-		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		registerButton.setBounds(266, 175, 112, 38);
 		panel.add(registerButton);
 		

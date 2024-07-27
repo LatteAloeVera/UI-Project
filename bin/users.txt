@@ -1,7 +1,7 @@
 Osman,12345,Teacher
 Hasan,321,Student
-Selim,1234,Student
 Ayşe,1432,Student
 Selen,uwu,Student
 Ayberk,123,Teacher
 Toprak,123123,Student
+selim,125,Teacher
