@@ -19,9 +19,12 @@ import javax.swing.UIManager;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -68,6 +71,10 @@ public class AdminMenuUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	static DefaultListModel<String> enrolledLessonsModel = new DefaultListModel<>();
+	static DefaultListModel<String> notEnrolledLessonsModel = new DefaultListModel<>();
+	static JList enrolledLessons;
+	static JList notEnrolledLessons;
 	public AdminMenuUI() {
 		setTitle("Teacher Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -378,11 +385,59 @@ public class AdminMenuUI extends JFrame {
 		JPanel studentsListPanel = new JPanel();
 		studentsListPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		studentsListPanel.setBackground(SystemColor.inactiveCaptionBorder);
-		studentsListPanel.setBounds(10, 11, 163, 349);
+		studentsListPanel.setBounds(10, 50, 163, 310);
 		enrollStudentsPanel.add(studentsListPanel);
 		studentsListPanel.setLayout(null);
 		
+		
+		
+		JPanel studentsLessonControlPanel = new JPanel();
+		studentsLessonControlPanel.setBackground(SystemColor.inactiveCaptionBorder);
+		studentsLessonControlPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		studentsLessonControlPanel.setBounds(183, 11, 636, 349);
+		enrollStudentsPanel.add(studentsLessonControlPanel);
+		studentsLessonControlPanel.setLayout(null);
+		
+		notEnrolledLessons = new JList<>( notEnrolledLessonsModel );
+		notEnrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		notEnrolledLessons.setBackground(new Color(233, 240, 243));
+		notEnrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		notEnrolledLessons.setBounds(61, 40, 196, 300);
+		studentsLessonControlPanel.add(notEnrolledLessons);
+		
+		enrolledLessons = new JList<>( enrolledLessonsModel );
+		enrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		enrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		enrolledLessons.setBackground(new Color(233, 240, 243));
+		enrolledLessons.setBounds(358, 40, 196, 300);
+		studentsLessonControlPanel.add(enrolledLessons);
+		
 		JList studentsNameList = new JList();
+		
+		JButton enrollLessonBtn = new JButton("►");
+		enrollLessonBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//When enrollLessonBtn Clicked:
+				String studentName = studentsNameList.getSelectedValue().toString();
+				Student student = getStudentByName(studentName);
+				String lessonName = notEnrolledLessons.getSelectedValue().toString();
+				Lesson lesson = getLessonByName(lessonName);
+				
+				student.takeNewLesson(lesson);
+				updateStudentLessonList(student);
+			}
+		});
+		enrollLessonBtn.setEnabled(false);
+		enrollLessonBtn.setBounds(285, 129, 44, 41);
+		studentsLessonControlPanel.add(enrollLessonBtn);
+		
+		JButton dropLessonBtn = new JButton("◄");
+		dropLessonBtn.setEnabled(false);
+		dropLessonBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		dropLessonBtn.setBounds(285, 211, 44, 41);
+		studentsLessonControlPanel.add(dropLessonBtn);
+		
+		
 		studentsNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		studentsNameList.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		studentsNameList.setBackground(SystemColor.inactiveCaptionBorder);
@@ -396,55 +451,74 @@ public class AdminMenuUI extends JFrame {
 				return values[index];
 			}
 		});
-		studentsNameList.setBounds(10, 11, 143, 327);
+		studentsNameList.setBounds(10, 11, 143, 288);
 		studentsListPanel.add(studentsNameList);
-		
-		JPanel studentsLessonControlPanel = new JPanel();
-		studentsLessonControlPanel.setBackground(SystemColor.inactiveCaptionBorder);
-		studentsLessonControlPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		studentsLessonControlPanel.setBounds(183, 11, 636, 349);
-		enrollStudentsPanel.add(studentsLessonControlPanel);
-		studentsLessonControlPanel.setLayout(null);
-		
-		JList notEnrolledLessons = new JList();
-		notEnrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		notEnrolledLessons.setBackground(new Color(233, 240, 243));
-		notEnrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		notEnrolledLessons.setBounds(10, 11, 161, 327);
-		studentsLessonControlPanel.add(notEnrolledLessons);
-		
-		JList enrolledLessons = new JList();
-		enrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		enrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		enrolledLessons.setBackground(new Color(233, 240, 243));
-		enrolledLessons.setBounds(246, 11, 161, 327);
-		studentsLessonControlPanel.add(enrolledLessons);
-		
-		JButton btnNewButton = new JButton("►");
-		btnNewButton.setEnabled(false);
-		btnNewButton.setBounds(187, 120, 43, 41);
-		studentsLessonControlPanel.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("◄");
-		btnNewButton_1.setEnabled(false);
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnNewButton_1.setBounds(187, 200, 43, 41);
-		studentsLessonControlPanel.add(btnNewButton_1);
+		studentsNameList.addMouseListener(new MouseAdapter() {
+			 public void mouseClicked(MouseEvent me) {
+				 if(me.getClickCount() == 1) {
+					 JList target = (JList)me.getSource();
+		             int index = target.locationToIndex(me.getPoint());
+		             if (index >= 0) {
+		            	 //Valid option clicked.
+		            	 Object item = target.getModel().getElementAt(index);
+		                 //JOptionPane.showMessageDialog(null, item.toString());  <--------    use this to debug
+		                 
+		            	 
+		                 updateStudentLessonList(getStudentByName(item.toString()));
+		                 dropLessonBtn.setEnabled(true);
+		                 enrollLessonBtn.setEnabled(true);
+		                 
+		             }
+				 }
+			 }
+
+		});
 		
 		JLabel enrollLessonLabel = new JLabel("Enroll Lesson");
+		enrollLessonLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		enrollLessonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		enrollLessonLabel.setBounds(169, 102, 81, 14);
+		enrollLessonLabel.setBounds(267, 104, 80, 14);
 		studentsLessonControlPanel.add(enrollLessonLabel);
 		
 		JLabel lblDropLesson = new JLabel("Drop Lesson");
+		lblDropLesson.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblDropLesson.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDropLesson.setBounds(169, 184, 81, 14);
+		lblDropLesson.setBounds(267, 186, 80, 14);
 		studentsLessonControlPanel.add(lblDropLesson);
+		
+		JLabel lblNotEnrolled = new JLabel("= Not Enrolled Lessons =");
+		lblNotEnrolled.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNotEnrolled.setForeground(new Color(100, 149, 237));
+		lblNotEnrolled.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNotEnrolled.setBounds(61, 11, 196, 18);
+		studentsLessonControlPanel.add(lblNotEnrolled);
+		
+		JLabel lblEnrolledLessons = new JLabel("= Enrolled Lessons =");
+		lblEnrolledLessons.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEnrolledLessons.setForeground(new Color(100, 149, 237));
+		lblEnrolledLessons.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblEnrolledLessons.setBounds(358, 11, 196, 18);
+		studentsLessonControlPanel.add(lblEnrolledLessons);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel.setBackground(SystemColor.inactiveCaptionBorder);
+		panel.setBounds(10, 11, 163, 28);
+		enrollStudentsPanel.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblStudents = new JLabel("= Students =");
+		lblStudents.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStudents.setForeground(new Color(100, 149, 237));
+		lblStudents.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblStudents.setBounds(0, 0, 163, 28);
+		panel.add(lblStudents);
 		
 		
 		
 	}
 	
+	//Returns a Teacher from the file with the given name
 	protected Teacher getTeacherByName(String teacherName) {
 		HashMap<String, User> userMap = readUserFile();
 		for(String usrName : userMap.keySet()) {
@@ -455,6 +529,29 @@ public class AdminMenuUI extends JFrame {
 		return null;
 	}
 
+	//Returns a Student from the file with the given name
+	protected Student getStudentByName(String studentName) {
+		HashMap<String, User> userMap = readUserFile();
+		for(String usrName : userMap.keySet()) {
+			if(usrName.equals(studentName)) {
+				return (Student)userMap.get(usrName);
+			}
+		}
+		return null;
+	}
+
+	//Returns a Lesson from the file with the given name
+	protected Lesson getLessonByName(String lessonName) {
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		for(String lsnName : lessonMap.keySet()) {
+			if(lsnName.equals(lessonName)) {
+				return (Lesson)lessonMap.get(lsnName);
+			}
+		}
+		return null;
+	}
+	
+	//Updates Student combo box inside adminMenuUI > Add&Remove Students > Remove Student 
 	private void updateStudentComboBox(JComboBox studentNamesComboBox) {
 		HashMap<String, User> userMap = readUserFile();
 		studentNamesComboBox.removeAllItems();
@@ -465,6 +562,7 @@ public class AdminMenuUI extends JFrame {
 		}
 	}
 	
+	//Updates Teacher combo box inside adminMenuUI > Add&Remove Lessons  > Add Lesson 
 	private void updateTeacherComboBox(JComboBox teacherNamesComboBox) {
 		HashMap<String, User> userMap = readUserFile();
 		teacherNamesComboBox.removeAllItems();
@@ -475,6 +573,7 @@ public class AdminMenuUI extends JFrame {
 		}
 	}
 	
+	//Updates Lesson combo box inside  adminMenuUI > Add&Remove Lessons  > Remove Lesson 
 	private void updateLessonComboBox(JComboBox lessonNamesComboBox) {
 		HashMap<String, Lesson> lessonMap = readLessonFile();
 		lessonNamesComboBox.removeAllItems();
@@ -483,6 +582,7 @@ public class AdminMenuUI extends JFrame {
 		}
 	}
 
+	//Adds a new user to    "users.txt"
 	protected void addNewUserToFile(String username, String password, String tag) {
 		File userFile = new File("src/users.txt");
 		String userLine = username + "," + password + "," + tag + "\n";
@@ -502,7 +602,8 @@ public class AdminMenuUI extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+	 
+	//Deletes a user from   "users.txt"
 	protected void deleteUserFromFile(String usrName) {
 		File oldFile = new File("src/users.txt"); 
 		File newFile = new File("src/usersTEMP.txt");
@@ -554,6 +655,7 @@ public class AdminMenuUI extends JFrame {
 		
 	}
 	
+	//Adds a new lesson to  "lessons.txt"
 	protected void addNewLessonToFile(String code, String name, int credit, Teacher teacher) {
 		File lessonFile = new File("src/lessons.txt");
 		String lessonLine = code + "," + name + "," + credit + "," + teacher.getName() + "\n";
@@ -574,6 +676,7 @@ public class AdminMenuUI extends JFrame {
 		}
 	}
 
+	//Deletes a lesson from "lessons.txt"
 	protected void deleteLessonFromFile(String lessonName) {
 		File oldFile = new File("src/lessons.txt"); 
 		File newFile = new File("src/lessonsTEMP.txt");
@@ -623,7 +726,8 @@ public class AdminMenuUI extends JFrame {
 		//rename temp file
 		newFile.renameTo(oldFile);
 	}
-	
+
+	//Returns a HashMap of User's name and Users from file     "users.txt"
 	protected HashMap<String, User> readUserFile(){
 		HashMap<String,User> userMap = new HashMap<String,User>();
 		File userFile = new File("src/users.txt");
@@ -658,6 +762,7 @@ public class AdminMenuUI extends JFrame {
 		return userMap;
 	} 
 	
+	//Returns a HashMap of Lesson's name and Lessons from file "lessons.txt"
 	protected HashMap<String, Lesson> readLessonFile(){
 		HashMap<String, Lesson> lessonMap = new HashMap<String, Lesson>();
 		File lessonFile = new File("src/lessons.txt");
@@ -689,6 +794,7 @@ public class AdminMenuUI extends JFrame {
 		return lessonMap;
 	}
 	
+	//Returns a String array of student names from file  	   "users.txt"
 	protected String[] getStudentNames() {
 		HashMap<String, User> userMap = readUserFile();
 		ArrayList<String> names = new ArrayList<>();
@@ -712,6 +818,7 @@ public class AdminMenuUI extends JFrame {
 		
 	}
 	
+	//Returns True if "lessons.txt" has the given code
 	protected boolean doesLessonHashmapHasTheCode(String code) {
 		 HashMap<String, Lesson> lessonMap = readLessonFile();
 		 for(Lesson lesson: lessonMap.values()) {
@@ -722,6 +829,7 @@ public class AdminMenuUI extends JFrame {
 		 return false;
 	}
 	
+	//Returns the lesson which has the given code
 	protected Lesson getLessonFromCode(String code) {
 		 HashMap<String, Lesson> lessonMap = readLessonFile();
 		 for(Lesson lesson: lessonMap.values()) {
@@ -730,6 +838,26 @@ public class AdminMenuUI extends JFrame {
 			 }
 		 }
 		 return null;
+	}
+	
+	//Updates the Enrolled/notEnrolled JList of lessons inside adminMenuUI > Enroll Students 
+	private void updateStudentLessonList(Student student) {
+		//TODO: Auto-generated method stub
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		HashMap<String, Lesson> enrolledLessonsMap = student.getTakenCourses();
+
+		enrolledLessonsModel.removeAllElements();
+		notEnrolledLessonsModel.removeAllElements();
+		
+		for(Lesson lesson : lessonMap.values()) {
+			if(enrolledLessonsMap.containsKey(lesson.getName())) {
+				enrolledLessonsModel.addElement(lesson.getName());
+			}
+			else {
+				notEnrolledLessonsModel.addElement(lesson.getName());
+			}
+		}
+		
 	}
 	
  	public static void infoBox(String infoMessage, String titleBar)
