@@ -729,6 +729,78 @@ public class AdminMenuUI extends JFrame {
 		newFile.renameTo(oldFile);
 	}
 
+	//Adds a new enrolled student with the lesson to "enrolledLessons.txt"
+	protected static void addNewEnrolledCourseToFile(String username, String lessonName) {
+		File enrolledFile = new File("src/enrolledLessons.txt");
+		String lessonLine = username + "," + lessonName + "\n";
+		if(!enrolledFile.exists()) {
+			try {
+				enrolledFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			FileWriter writer = new FileWriter("src/enrolledLessons.txt", true);
+			writer.write(lessonLine);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Removes a enrolled lesson from "enrolledLessons.txt"
+	protected void deleteEnrolledCourseFromFile(String username, String lessonName) {
+		File oldFile = new File("src/enrolledLessons.txt"); 
+		File newFile = new File("src/enrolledLessonsTEMP.txt");
+		try {
+			newFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(!oldFile.exists()) {
+			try {
+				oldFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			Scanner oldFileScan = new Scanner(oldFile);
+			while(oldFileScan.hasNextLine()) {
+				String[] enrollStuff = oldFileScan.nextLine().split(",");
+				
+				//if line is the line we want to remove, skip it.
+				if(enrollStuff[0].equals(username) && enrollStuff[1].equals(lessonName)) {
+					
+				}
+				//Write others onto new file
+				else {
+					try {
+						String lessonLine = enrollStuff[0] + "," + enrollStuff[1] + "\n";
+						FileWriter newWriter = new FileWriter("src/lessonsTEMP.txt", true);
+						newWriter.write(lessonLine);
+						newWriter.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			oldFileScan.close();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		//Delete old file
+		oldFile.delete();
+		
+		//rename temp file
+		newFile.renameTo(oldFile);
+	}
+	
 	//Returns a HashMap of User's name and Users from file     "users.txt"
 	protected HashMap<String, User> readUserFile(){
 		HashMap<String,User> userMap = new HashMap<String,User>();
@@ -796,6 +868,40 @@ public class AdminMenuUI extends JFrame {
 		return lessonMap;
 	}
 	
+	//Returns a HashMap of user's name and the list of enrolled lesson's name from file "enrolledLessons.txt"
+	protected static HashMap<String, ArrayList<String>> readEnrollFile(){
+		HashMap<String, ArrayList<String>> enrollMap = new HashMap<>();
+		File enrollFile = new File("src/enrolledLessons.txt");
+		if(!enrollFile.exists()) {
+			try {
+				enrollFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		try {
+			Scanner fileScan = new Scanner(enrollFile);
+			while(fileScan.hasNextLine()) {
+				String[] enrollStuff = fileScan.nextLine().split(",");
+				if(!enrollMap.containsKey(enrollStuff[0])) {
+					enrollMap.put(enrollStuff[0], new ArrayList<String>());
+					enrollMap.get(enrollStuff[0]).add(enrollStuff[1]);
+				}
+				else {
+					enrollMap.get(enrollStuff[0]).add(enrollStuff[1]);
+				}
+			}
+			fileScan.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return enrollMap;
+	}
+	
 	//Returns a String array of student names from file  	   "users.txt"
 	protected String[] getStudentNames() {
 		HashMap<String, User> userMap = readUserFile();
@@ -846,13 +952,13 @@ public class AdminMenuUI extends JFrame {
 	private void updateStudentLessonList(Student student) {
 		//TODO: Auto-generated method stub
 		HashMap<String, Lesson> lessonMap = readLessonFile();
-		HashMap<String, Lesson> enrolledLessonsMap = student.getTakenCourses();
+		ArrayList<String> enrolledLessons = student.getTakenCourses();
 
 		enrolledLessonsModel.removeAllElements();
 		notEnrolledLessonsModel.removeAllElements();
 		
 		for(Lesson lesson : lessonMap.values()) {
-			if(enrolledLessonsMap.containsKey(lesson.getName())) {
+			if(enrolledLessons.contains(lesson.getName())) {
 				enrolledLessonsModel.addElement(lesson.getName());
 			}
 			else {

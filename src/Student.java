@@ -1,21 +1,38 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Student extends User {
-	private HashMap<String, Lesson> takenLessons;
+	private ArrayList<String> takenLessons;
 
 	Student(String username, String password) {
 		super(username, password,"Student");
-		this.takenLessons = new HashMap<String, Lesson>();
+		
+		HashMap<String, ArrayList<String>> enrollMap = AdminMenuUI.readEnrollFile();
+		if(enrollMap.containsKey(username)) {
+			this.takenLessons = enrollMap.get(username);
+		}
+		else {
+			this.takenLessons = new ArrayList<String>();
+		}
+		
+		
 	}
 	
-	protected HashMap<String, Lesson> getTakenCourses(){
+	protected ArrayList<String> getTakenCourses(){
 		return this.takenLessons;
 	}
 
 	protected void takeNewLesson(Lesson lesson) {
-		this.takenLessons.put(lesson.getName(), lesson);
+		this.takenLessons.add(lesson.getName());
+		AdminMenuUI.addNewEnrolledCourseToFile(this.getName(), lesson.getName());
 		
-		//TODO: implement writing to file and delete the top part (HashMap<String, Lesson> takenLessons) . it will not work that way.
+		//TODO: implement writing to file.
 	}
+	
+	
 	
 }
