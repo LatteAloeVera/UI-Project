@@ -1,7 +1,8 @@
 Osman,12345,Teacher
-Hasan,321,Student
-Ayşe,1432,Student
 Selen,uwu,Student
 Ayberk,123,Teacher
-Toprak,123123,Student
 selim,125,Teacher
+Faruk,123456,Teacher
+Fatma,1234,Student
+Toprak,123,Student
+Mahmut,12345,Student

@@ -205,7 +205,7 @@ public class LoginUI extends JFrame {
 						
 					}
 				}
-				
+				passwordField.setText("");
 			}
 			
 		});

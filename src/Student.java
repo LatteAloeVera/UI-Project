@@ -29,8 +29,13 @@ public class Student extends User {
 	protected void takeNewLesson(Lesson lesson) {
 		this.takenLessons.add(lesson.getName());
 		AdminMenuUI.addNewEnrolledCourseToFile(this.getName(), lesson.getName());
+
+	}
+
+	protected void dropLesson(Lesson lesson) {
+		this.takenLessons.remove(lesson.getName());
+		AdminMenuUI.deleteEnrolledCourseFromFile(this.getName(), lesson.getName());
 		
-		//TODO: implement writing to file.
 	}
 	
 	
