@@ -1,5 +1,4 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -9,11 +8,12 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
+
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.JTextArea;
@@ -81,6 +81,7 @@ public class AdminMenuUI extends JFrame {
 
 	public AdminMenuUI() {
 		setTitle("Teacher Menu");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("content/adminPanelIco.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 870, 460);
 		contentPane = new JPanel();

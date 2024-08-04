@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -32,6 +34,8 @@ import java.awt.SystemColor;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import java.awt.Toolkit;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class LoginUI extends JFrame {
 
@@ -61,7 +65,8 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\login.ico"));
+		setFont(new Font("Dialog", Font.BOLD, 20));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("content/loginIco.png"));
 		setForeground(SystemColor.inactiveCaption);
 		setBackground(SystemColor.inactiveCaption);
 		setTitle("Login");
@@ -70,6 +75,7 @@ public class LoginUI extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -173,6 +179,7 @@ public class LoginUI extends JFrame {
 		loginButton.setBounds(108, 176, 112, 37);
 		panel.add(loginButton);
 		
+		
 
 
 		
@@ -213,6 +220,7 @@ public class LoginUI extends JFrame {
 		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		registerButton.setBounds(266, 175, 112, 38);
 		panel.add(registerButton);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{usernameField, passwordField, studentRadioButton, teacherRadioButton, loginButton, registerButton}));
 		
 		studentRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
