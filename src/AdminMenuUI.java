@@ -42,6 +42,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JSplitPane;
 
+
 public class AdminMenuUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -148,7 +149,7 @@ public class AdminMenuUI extends JFrame {
 		addStudentConfirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Student add button clicked:
-				HashMap<String, User> userMap = readUserFile();
+				HashMap<String, User> userMap = FuncManager.readUserFile();
 				String usrName = studentTextField.getText().trim();
 				String usrPass = studentPasswordField.getText().trim();
 
@@ -156,15 +157,15 @@ public class AdminMenuUI extends JFrame {
 				studentPasswordField.setText("");
 
 				if (usrName.length() == 0 || usrPass.length() == 0) {
-					errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
+					FuncManager.errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
 				} else if (userMap.containsKey(usrName)) {
-					errorBox("There is an another user named \"" + usrName + "\" , Please enter an another username!",
+					FuncManager.errorBox("There is an another user named \"" + usrName + "\" , Please enter an another username!",
 							"Name Exists!");
 				} else {
-					addNewUserToFile(usrName, usrPass, "Student");
+					FuncManager.addNewUserToFile(usrName, usrPass, "Student");
 					updateStudentComboBox(studentNamesComboBox);
 					updateEnrollingStudentList();
-					infoBox("New student \"" + usrName + "\" added!", "Successful!");
+					FuncManager.infoBox("New student \"" + usrName + "\" added!", "Successful!");
 				}
 
 			}
@@ -199,13 +200,13 @@ public class AdminMenuUI extends JFrame {
 				// Student remove button clicked:
 
 				if (studentNamesComboBox.getSelectedIndex() < 0) {
-					errorBox("Nothing selected!", "Error!");
+					FuncManager.errorBox("Nothing selected!", "Error!");
 				} else {
 					String studentName = studentNamesComboBox.getSelectedItem().toString();
-					deleteAllEnrolledLessonsFromFile(studentName);
-					deleteUserFromFile(studentName);
+					FuncManager.deleteAllEnrolledLessonsFromFile(studentName);
+					FuncManager.deleteUserFromFile(studentName);
 
-					infoBox("Deleted from file!", "Successful!");
+					FuncManager.infoBox("Deleted from file!", "Successful!");
 					updateStudentComboBox(studentNamesComboBox);
 					updateEnrollingStudentList();
 					// TODO: make a function to update studentNameList and update it here.
@@ -314,20 +315,20 @@ public class AdminMenuUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// When clicked Remove Lesson Confirm Button:
 				if (lessonNamesComboBox.getSelectedIndex() < 0) {
-					errorBox("Nothing selected!", "Error!");
+					FuncManager.errorBox("Nothing selected!", "Error!");
 				} else {
 					String lessonName = lessonNamesComboBox.getSelectedItem().toString();
 
-					deleteLessonFromFile(lessonName);
+					FuncManager.deleteLessonFromFile(lessonName);
 
-					infoBox("Deleted from file!", "Successful!");
+					FuncManager.infoBox("Deleted from file!", "Successful!");
 					updateLessonComboBox(lessonNamesComboBox);
 					
-					deleteEnrolledCourseFromFile(lessonName);
+					FuncManager.deleteEnrolledCourseFromFile(lessonName);
 					
 					if(!studentsNameList.isSelectionEmpty()){
 						String studentName = studentsNameList.getSelectedValue().toString();
-						updateStudentLessonList(getStudentByName(studentName));
+						updateStudentLessonList(FuncManager.getStudentByName(studentName));
 					}
 					
 					
@@ -346,7 +347,7 @@ public class AdminMenuUI extends JFrame {
 		addConfirmButton_Lessons.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// When clicked Add Lesson Confirm Button:
-				HashMap<String, Lesson> lessonMap = readLessonFile();
+				HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
 
 				String lessonCode = lessonCodeTextField.getText();
 				String lessonName = lessonNameTextField.getText();
@@ -354,26 +355,26 @@ public class AdminMenuUI extends JFrame {
 
 				if (lessonCreditsTextField.getText().length() == 0 || lessonCode.length() == 0
 						|| lessonName.length() == 0) {
-					errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
+					FuncManager.errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
 				} else if (lessonTeacherNamesComboBox.getSelectedIndex() < 0) {
-					errorBox("Nothing selected as a teacher!", "Error!");
+					FuncManager.errorBox("Nothing selected as a teacher!", "Error!");
 				} else if (lessonMap.containsKey(lessonName)) {
-					errorBox("There is an another lesson named \"" + lessonName
+					FuncManager.errorBox("There is an another lesson named \"" + lessonName
 							+ "\", please enter an another lesson name!", "Name Exists!");
 					lessonCodeTextField.setText("");
 					lessonNameTextField.setText("");
 					lessonCreditsTextField.setText("");
-				} else if (doesLessonHashmapHasTheCode(lessonCode)) {
-					errorBox("This code is the code of \"" + getLessonFromCode(lessonCode).getName()
+				} else if (FuncManager.doesLessonHashmapHasTheCode(lessonCode)) {
+					FuncManager.errorBox("This code is the code of \"" + FuncManager.getLessonFromCode(lessonCode).getName()
 							+ "\". Please enter a different code.", "Code Exists!");
 				} else {
 					int lessonCredit = Integer.parseInt(lessonCreditsTextField.getText());
 					String teacherName = lessonTeacherNamesComboBox.getSelectedItem().toString();
-					lessonTeacher = getTeacherByName(teacherName);
-					addNewLessonToFile(lessonCode, lessonName, lessonCredit, lessonTeacher);
+					lessonTeacher = FuncManager.getTeacherByName(teacherName);
+					FuncManager.addNewLessonToFile(lessonCode, lessonName, lessonCredit, lessonTeacher);
 					updateLessonComboBox(lessonNamesComboBox);
 
-					infoBox("New lesson\"" + lessonName + "\" added!", "Successfull!");
+					FuncManager.infoBox("New lesson\"" + lessonName + "\" added!", "Successfull!");
 
 					lessonCodeTextField.setText("");
 					lessonNameTextField.setText("");
@@ -381,7 +382,7 @@ public class AdminMenuUI extends JFrame {
 				}
 				if(!studentsNameList.isSelectionEmpty()){
 					String studentName = studentsNameList.getSelectedValue().toString();
-					updateStudentLessonList(getStudentByName(studentName));
+					updateStudentLessonList(FuncManager.getStudentByName(studentName));
 				}
 				
 			}
@@ -432,12 +433,12 @@ public class AdminMenuUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// When enrollLessonBtn Clicked:
 				String studentName = studentsNameList.getSelectedValue().toString();
-				Student student = getStudentByName(studentName);
+				Student student = FuncManager.getStudentByName(studentName);
 				if (notEnrolledLessons.isSelectionEmpty()) {
-					errorBox("There are no selected lesson to enroll!", "Error");
+					FuncManager.errorBox("There are no selected lesson to enroll!", "Error");
 				} else {
 					String lessonName = notEnrolledLessons.getSelectedValue().toString();
-					Lesson lesson = getLessonByName(lessonName);
+					Lesson lesson = FuncManager.getLessonByName(lessonName);
 					student.takeNewLesson(lesson);
 					updateStudentLessonList(student);
 				}
@@ -452,12 +453,12 @@ public class AdminMenuUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Pressed drop lesson button
 				String studentName = studentsNameList.getSelectedValue().toString();
-				Student student = getStudentByName(studentName);
+				Student student = FuncManager.getStudentByName(studentName);
 				if (enrolledLessons.isSelectionEmpty()) {
-					errorBox("There are no selected lesson to drop!", "Error");
+					FuncManager.errorBox("There are no selected lesson to drop!", "Error");
 				} else {
 					String lessonName = enrolledLessons.getSelectedValue().toString();
-					Lesson lesson = getLessonByName(lessonName);
+					Lesson lesson = FuncManager.getLessonByName(lessonName);
 					student.dropLesson(lesson);
 					updateStudentLessonList(student);
 				}
@@ -473,7 +474,7 @@ public class AdminMenuUI extends JFrame {
 		studentsNameList.setBackground(SystemColor.inactiveCaptionBorder);
 		studentsNameList.setModel(new AbstractListModel() {
 
-			String[] values = getStudentNames();
+			String[] values = FuncManager.getStudentNames();
 
 			public int getSize() {
 				return values.length;
@@ -496,7 +497,7 @@ public class AdminMenuUI extends JFrame {
 						// JOptionPane.showMessageDialog(null, item.toString()); <-------- use this to
 						// debug
 
-						updateStudentLessonList(getStudentByName(item.toString()));
+						updateStudentLessonList(FuncManager.getStudentByName(item.toString()));
 						dropLessonBtn.setEnabled(true);
 						enrollLessonBtn.setEnabled(true);
 
@@ -547,501 +548,12 @@ public class AdminMenuUI extends JFrame {
 		panel.add(lblStudents);
 
 	}
-
-	// Returns a Teacher from the file with the given name
-	protected Teacher getTeacherByName(String teacherName) {
-		HashMap<String, User> userMap = readUserFile();
-		for (String usrName : userMap.keySet()) {
-			if (usrName.equals(teacherName)) {
-				return (Teacher) userMap.get(usrName);
-			}
-		}
-		return null;
-	}
-
-	// Returns a Student from the file with the given name
-	protected Student getStudentByName(String studentName) {
-		HashMap<String, User> userMap = readUserFile();
-		for (String usrName : userMap.keySet()) {
-			if (usrName.equals(studentName)) {
-				return (Student) userMap.get(usrName);
-			}
-		}
-		return null;
-	}
-
-	// Returns a Lesson from the file with the given name
-	protected Lesson getLessonByName(String lessonName) {
-		HashMap<String, Lesson> lessonMap = readLessonFile();
-		for (String lsnName : lessonMap.keySet()) {
-			if (lsnName.equals(lessonName)) {
-				return (Lesson) lessonMap.get(lsnName);
-			}
-		}
-		return null;
-	}
-
-	// Updates Student combo box inside adminMenuUI > Add&Remove Students > Remove
-	// Student
-	private void updateStudentComboBox(JComboBox studentNamesComboBox) {
-		HashMap<String, User> userMap = readUserFile();
-		studentNamesComboBox.removeAllItems();
-		for (String usrName : userMap.keySet()) {
-			if (userMap.get(usrName).getTag().equals("Student")) {
-				studentNamesComboBox.addItem(usrName);
-			}
-		}
-	}
-
-	// Updates Teacher combo box inside adminMenuUI > Add&Remove Lessons > Add
-	// Lesson
-	private void updateTeacherComboBox(JComboBox teacherNamesComboBox) {
-		HashMap<String, User> userMap = readUserFile();
-		teacherNamesComboBox.removeAllItems();
-		for (String usrName : userMap.keySet()) {
-			if (userMap.get(usrName).getTag().equals("Teacher")) {
-				teacherNamesComboBox.addItem(usrName);
-			}
-		}
-	}
-
-	// Updates Lesson combo box inside adminMenuUI > Add&Remove Lessons > Remove
-	// Lesson
-	private void updateLessonComboBox(JComboBox lessonNamesComboBox) {
-		HashMap<String, Lesson> lessonMap = readLessonFile();
-		lessonNamesComboBox.removeAllItems();
-		for (String lessonName : lessonMap.keySet()) {
-			lessonNamesComboBox.addItem(lessonName);
-		}
-	}
-
-	// Adds a new user to "users.txt"
-	protected void addNewUserToFile(String username, String password, String tag) {
-		File userFile = new File("src/users.txt");
-		String userLine = username + "," + password + "," + tag + "\n";
-		if (!userFile.exists()) {
-			try {
-				userFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			FileWriter writer = new FileWriter("src/users.txt", true);
-			writer.write(userLine);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Deletes a user from "users.txt"
-	protected void deleteUserFromFile(String usrName) {
-		File oldFile = new File("src/users.txt");
-		File newFile = new File("src/usersTEMP.txt");
-		try {
-			newFile.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (!oldFile.exists()) {
-			try {
-				oldFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner oldFileScan = new Scanner(oldFile);
-			while (oldFileScan.hasNextLine()) {
-				String[] userStuff = oldFileScan.nextLine().split(",");
-
-				// if line is the line we want to remove, skip it.
-				if (userStuff[0].equals(usrName)) {
-
-				}
-				// Write others onto new file
-				else {
-					try {
-						String userLine = userStuff[0] + "," + userStuff[1] + "," + userStuff[2] + "\n";
-						FileWriter newWriter = new FileWriter("src/usersTEMP.txt", true);
-						newWriter.write(userLine);
-						newWriter.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-			}
-			oldFileScan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// Delete old file
-		oldFile.delete();
-
-		// rename temp file
-		newFile.renameTo(oldFile);
-
-	}
-
-	// Adds a new lesson to "lessons.txt"
-	protected void addNewLessonToFile(String code, String name, int credit, Teacher teacher) {
-		File lessonFile = new File("src/lessons.txt");
-		String lessonLine = code + "," + name + "," + credit + "," + teacher.getName() + "\n";
-		if (!lessonFile.exists()) {
-			try {
-				lessonFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			FileWriter writer = new FileWriter("src/lessons.txt", true);
-			writer.write(lessonLine);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Deletes a lesson from "lessons.txt"
-	protected void deleteLessonFromFile(String lessonName) {
-		File oldFile = new File("src/lessons.txt");
-		File newFile = new File("src/lessonsTEMP.txt");
-		try {
-			newFile.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (!oldFile.exists()) {
-			try {
-				oldFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner oldFileScan = new Scanner(oldFile);
-			while (oldFileScan.hasNextLine()) {
-				String[] lessonStuff = oldFileScan.nextLine().split(",");
-
-				// if line is the line we want to remove, skip it.
-				if (lessonStuff[1].equals(lessonName)) {
-
-				}
-				// Write others onto new file
-				else {
-					try {
-						String lessonLine = lessonStuff[0] + "," + lessonStuff[1] + "," + lessonStuff[2] + ","
-								+ lessonStuff[3] + "\n";
-						FileWriter newWriter = new FileWriter("src/lessonsTEMP.txt", true);
-						newWriter.write(lessonLine);
-						newWriter.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-			}
-			oldFileScan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// Delete old file
-		oldFile.delete();
-
-		// rename temp file
-		newFile.renameTo(oldFile);
-	}
-
-	// Adds a new enrolled student with the lesson to "enrolledLessons.txt"
-	protected static void addNewEnrolledCourseToFile(String username, String lessonName) {
-		File enrolledFile = new File("src/enrolledLessons.txt");
-		String lessonLine = username + "," + lessonName + "\n";
-		if (!enrolledFile.exists()) {
-			try {
-				enrolledFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			FileWriter writer = new FileWriter("src/enrolledLessons.txt", true);
-			writer.write(lessonLine);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Removes a enrolled lesson from "enrolledLessons.txt"
-	protected static void deleteEnrolledCourseFromFile(String username, String lessonName) {
-		File oldFile = new File("src/enrolledLessons.txt");
-		File newFile = new File("src/enrolledLessonsTEMP.txt");
-		try {
-			newFile.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (!oldFile.exists()) {
-			try {
-				oldFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner oldFileScan = new Scanner(oldFile);
-			while (oldFileScan.hasNextLine()) {
-				String[] enrollStuff = oldFileScan.nextLine().split(",");
-
-				// if line is the line we want to remove, skip it.
-				if (enrollStuff[0].equals(username) && enrollStuff[1].equals(lessonName)) {
-
-				}
-				// Write others onto new file
-				else {
-					try {
-						String lessonLine = enrollStuff[0] + "," + enrollStuff[1] + "\n";
-						FileWriter newWriter = new FileWriter("src/enrolledLessonsTEMP.txt", true);
-						newWriter.write(lessonLine);
-						newWriter.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-			}
-			oldFileScan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// Delete old file
-		oldFile.delete();
-
-		// rename temp file
-		newFile.renameTo(oldFile);
-	}
-
-	// Deletes all of the enrolled lessons of a student from file "enrolledLessons.txt"
-	protected void deleteAllEnrolledLessonsFromFile(String studentName) {
-		HashMap<String, ArrayList<String>> enrollMap = readEnrollFile();
-
-		if(enrollMap.get(studentName) != null) {
-			for (String lessonName : enrollMap.get(studentName)) {
-				deleteEnrolledCourseFromFile(studentName, lessonName);
-			}
-		}
-	}
 	
-	//OVERLOAD FUNCTION: Deletes all of the enrolled students of a lesson from file "enrolledLessons.txt"
-	protected static void deleteEnrolledCourseFromFile(String lessonName) {
-		File oldFile = new File("src/enrolledLessons.txt");
-		File newFile = new File("src/enrolledLessonsTEMP.txt");
-		try {
-			newFile.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (!oldFile.exists()) {
-			try {
-				oldFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner oldFileScan = new Scanner(oldFile);
-			while (oldFileScan.hasNextLine()) {
-				String[] enrollStuff = oldFileScan.nextLine().split(",");
-
-				// if line is the line we want to remove, skip it.
-				if (enrollStuff[1].equals(lessonName)) {
-
-				}
-				// Write others onto new file
-				else {
-					try {
-						String lessonLine = enrollStuff[0] + "," + enrollStuff[1] + "\n";
-						FileWriter newWriter = new FileWriter("src/enrolledLessonsTEMP.txt", true);
-						newWriter.write(lessonLine);
-						newWriter.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-			}
-			oldFileScan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// Delete old file
-		oldFile.delete();
-
-		// rename temp file
-		newFile.renameTo(oldFile);
-	}
-
-	// Returns a HashMap of User's name and Users from file "users.txt"
-	protected HashMap<String, User> readUserFile() {
-		HashMap<String, User> userMap = new HashMap<String, User>();
-		File userFile = new File("src/users.txt");
-		if (!userFile.exists()) {
-			try {
-				userFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner fileScan = new Scanner(userFile);
-			while (fileScan.hasNextLine()) {
-				String[] userStuff = fileScan.nextLine().split(",");
-				if (userStuff.length != 0) {
-					if (userStuff[2].compareTo("Teacher") == 0) {
-						Teacher teacher = new Teacher(userStuff[0], userStuff[1]);
-						userMap.put(userStuff[0], teacher);
-					} else {
-						Student student = new Student(userStuff[0], userStuff[1]);
-						userMap.put(userStuff[0], student);
-					}
-
-				}
-			}
-			fileScan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return userMap;
-	}
-
-	// Returns a HashMap of Lesson's name and Lessons from file "lessons.txt"
-	protected HashMap<String, Lesson> readLessonFile() {
-		HashMap<String, Lesson> lessonMap = new HashMap<String, Lesson>();
-		File lessonFile = new File("src/lessons.txt");
-		if (!lessonFile.exists()) {
-			try {
-				lessonFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			Scanner fileScan = new Scanner(lessonFile);
-			while (fileScan.hasNextLine()) {
-				String[] lessonStuff = fileScan.nextLine().split(",");
-				if (lessonStuff.length != 0) {
-					// Found lesson, adding...
-					String teacherName = lessonStuff[3];
-					Lesson lesson = new Lesson(lessonStuff[0], lessonStuff[1], Integer.parseInt(lessonStuff[2]),
-							getTeacherByName(teacherName));
-					lessonMap.put(lessonStuff[1], lesson);
-				}
-			}
-			fileScan.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return lessonMap;
-	}
-
-	// Returns a HashMap of user's name and the list of enrolled lesson's name from file "enrolledLessons.txt"
-	protected static HashMap<String, ArrayList<String>> readEnrollFile() {
-		HashMap<String, ArrayList<String>> enrollMap = new HashMap<>();
-		File enrollFile = new File("src/enrolledLessons.txt");
-		if (!enrollFile.exists()) {
-			try {
-				enrollFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			Scanner fileScan = new Scanner(enrollFile);
-			while (fileScan.hasNextLine()) {
-				String[] enrollStuff = fileScan.nextLine().split(",");
-				if (!enrollMap.containsKey(enrollStuff[0])) {
-					enrollMap.put(enrollStuff[0], new ArrayList<String>());
-					enrollMap.get(enrollStuff[0]).add(enrollStuff[1]);
-				} else {
-					enrollMap.get(enrollStuff[0]).add(enrollStuff[1]);
-				}
-			}
-			fileScan.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return enrollMap;
-	}
-
-	// Returns a String array of student names from file "users.txt"
-	protected String[] getStudentNames() {
-		HashMap<String, User> userMap = readUserFile();
-		ArrayList<String> names = new ArrayList<>();
-		for (User user : userMap.values()) {
-			if (user.getTag().equals("Student")) {
-				names.add(user.getName());
-			}
-		}
-
-		if (names.size() > 0) {
-			String[] arr = new String[names.size()];
-			for (int i = 0; i < names.size(); i++)
-				arr[i] = names.get(i);
-			return arr;
-		} else {
-			String[] arr = new String[names.size()];
-			return arr;
-		}
-
-	}
-
-	// Returns True if "lessons.txt" has the given code
-	protected boolean doesLessonHashmapHasTheCode(String code) {
-		HashMap<String, Lesson> lessonMap = readLessonFile();
-		for (Lesson lesson : lessonMap.values()) {
-			if (lesson.isTheSameCode(code)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// Returns the lesson which has the given code
-	protected Lesson getLessonFromCode(String code) {
-		HashMap<String, Lesson> lessonMap = readLessonFile();
-		for (Lesson lesson : lessonMap.values()) {
-			if (lesson.isTheSameCode(code)) {
-				return lesson;
-			}
-		}
-		return null;
-	}
 
 	// Updates the Enrolled/notEnrolled JList of lessons inside adminMenuUI > Enroll Students
 	private void updateStudentLessonList(Student student) {
 		// TODO: Auto-generated method stub
-		HashMap<String, Lesson> lessonMap = readLessonFile();
+		HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
 		ArrayList<String> enrolledLessons = student.getTakenCourses();
 
 		enrolledLessonsModel.removeAllElements();
@@ -1057,9 +569,9 @@ public class AdminMenuUI extends JFrame {
 
 	}
 
-		// Updates the Enrolling Students JList of students inside adminMenuUI > Enroll Students
+	// Updates the Enrolling Students JList of students inside adminMenuUI > Enroll Students
 	private void updateEnrollingStudentList() {
-		HashMap<String, User> userMap = readUserFile();
+		HashMap<String, User> userMap = FuncManager.readUserFile();
 		studentsNameListModel.removeAllElements();
 
 		for (User user : userMap.values()) {
@@ -1070,12 +582,39 @@ public class AdminMenuUI extends JFrame {
 
 		studentsNameList.setModel(studentsNameListModel);
 	}
+	
 
-	public static void infoBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+	// Updates Student combo box inside adminMenuUI > Add&Remove Students > Remove Student
+	private void updateStudentComboBox(JComboBox studentNamesComboBox) {
+		HashMap<String, User> userMap = FuncManager.readUserFile();
+		studentNamesComboBox.removeAllItems();
+		for (String usrName : userMap.keySet()) {
+			if (userMap.get(usrName).getTag().equals("Student")) {
+				studentNamesComboBox.addItem(usrName);
+			}
+		}
 	}
 
-	public static void errorBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
+	// Updates Teacher combo box inside adminMenuUI > Add&Remove Lessons > Add Lesson
+	private void updateTeacherComboBox(JComboBox teacherNamesComboBox) {
+		HashMap<String, User> userMap = FuncManager.readUserFile();
+		teacherNamesComboBox.removeAllItems();
+		for (String usrName : userMap.keySet()) {
+			if (userMap.get(usrName).getTag().equals("Teacher")) {
+				teacherNamesComboBox.addItem(usrName);
+			}
+		}
 	}
+
+	// Updates Lesson combo box inside adminMenuUI > Add&Remove Lessons > Remove Lesson
+	private void updateLessonComboBox(JComboBox lessonNamesComboBox) {
+		HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
+		lessonNamesComboBox.removeAllItems();
+		for (String lessonName : lessonMap.keySet()) {
+			lessonNamesComboBox.addItem(lessonName);
+		}
+	}
+
+
+
 }

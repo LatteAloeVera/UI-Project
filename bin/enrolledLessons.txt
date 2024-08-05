@@ -1,8 +1,10 @@
 Selen,Biology
 Selen,Math
-Fatma,Literature
 Toprak,Coding
 Mahmut,Coding
 Mahmut,Biology
 Mahmut,Math
 Fatma,Biology
+Buse,Coding
+Buse,Biology
+Buse,Math

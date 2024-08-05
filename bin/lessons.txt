@@ -1,4 +1,4 @@
 0002,Biology,6,Ayberk
 001,Math,10,Osman
-003,Literature,8,Ayberk
 005,Coding,10,Ayberk
+003,Literature,10,Osman

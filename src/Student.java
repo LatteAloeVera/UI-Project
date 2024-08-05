@@ -11,7 +11,7 @@ public class Student extends User {
 	Student(String username, String password) {
 		super(username, password,"Student");
 		
-		HashMap<String, ArrayList<String>> enrollMap = AdminMenuUI.readEnrollFile();
+		HashMap<String, ArrayList<String>> enrollMap = FuncManager.readEnrollFile();
 		if(enrollMap.containsKey(username)) {
 			this.takenLessons = enrollMap.get(username);
 		}
@@ -28,13 +28,13 @@ public class Student extends User {
 
 	protected void takeNewLesson(Lesson lesson) {
 		this.takenLessons.add(lesson.getName());
-		AdminMenuUI.addNewEnrolledCourseToFile(this.getName(), lesson.getName());
+		FuncManager.addNewEnrolledCourseToFile(this.getName(), lesson.getName());
 
 	}
 
 	protected void dropLesson(Lesson lesson) {
 		this.takenLessons.remove(lesson.getName());
-		AdminMenuUI.deleteEnrolledCourseFromFile(this.getName(), lesson.getName());
+		FuncManager.deleteEnrolledCourseFromFile(this.getName(), lesson.getName());
 		
 	}
 	
