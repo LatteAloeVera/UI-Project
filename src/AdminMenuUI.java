@@ -203,7 +203,7 @@ public class AdminMenuUI extends JFrame {
 					FuncManager.errorBox("Nothing selected!", "Error!");
 				} else {
 					String studentName = studentNamesComboBox.getSelectedItem().toString();
-					FuncManager.deleteAllEnrolledLessonsFromFile(studentName);
+					FuncManager.deleteAllStudentDataFromEnrolledCourses(studentName);
 					FuncManager.deleteUserFromFile(studentName);
 
 					FuncManager.infoBox("Deleted from file!", "Successful!");
@@ -324,7 +324,7 @@ public class AdminMenuUI extends JFrame {
 					FuncManager.infoBox("Deleted from file!", "Successful!");
 					updateLessonComboBox(lessonNamesComboBox);
 					
-					FuncManager.deleteEnrolledCourseFromFile(lessonName);
+					FuncManager.deleteAllLessonDataFromEnrolledCourses(lessonName);
 					
 					if(!studentsNameList.isSelectionEmpty()){
 						String studentName = studentsNameList.getSelectedValue().toString();
@@ -364,8 +364,8 @@ public class AdminMenuUI extends JFrame {
 					lessonCodeTextField.setText("");
 					lessonNameTextField.setText("");
 					lessonCreditsTextField.setText("");
-				} else if (FuncManager.doesLessonHashmapHasTheCode(lessonCode)) {
-					FuncManager.errorBox("This code is the code of \"" + FuncManager.getLessonFromCode(lessonCode).getName()
+				} else if (FuncManager.doesLessonFileHasTheCode(lessonCode)) {
+					FuncManager.errorBox("This code is the code of \"" + FuncManager.getLessonByCode(lessonCode).getName()
 							+ "\". Please enter a different code.", "Code Exists!");
 				} else {
 					int lessonCredit = Integer.parseInt(lessonCreditsTextField.getText());

@@ -11,7 +11,11 @@ import javax.swing.JOptionPane;
 
 public class FuncManager {
 
-
+	//						--------------------------------------------------------------
+	//						================== FILE MANAGEMENT FUNCTIONS ==================
+	//						--------------------------------------------------------------
+	
+	
 	// Returns a HashMap of User's name and Users from file "users.txt"
 	protected static HashMap<String, User> readUserFile() {
 		HashMap<String, User> userMap = new HashMap<String, User>();
@@ -111,42 +115,10 @@ public class FuncManager {
 		return enrollMap;
 	}
 
-	// Returns a Teacher from the file with the given name
-	protected static Teacher getTeacherByName(String teacherName) {
-		HashMap<String, User> userMap = readUserFile();
-		for (String usrName : userMap.keySet()) {
-			if (usrName.equals(teacherName)) {
-				return (Teacher) userMap.get(usrName);
-			}
-		}
-		return null;
-	}
-
-	// Returns a Student from the file with the given name
-	protected static Student getStudentByName(String studentName) {
-		HashMap<String, User> userMap = readUserFile();
-		for (String usrName : userMap.keySet()) {
-			if (usrName.equals(studentName)) {
-				return (Student) userMap.get(usrName);
-			}
-		}
-		return null;
-	}
-
-	// Returns a Lesson from the file with the given name
-	protected static Lesson getLessonByName(String lessonName) {
-		HashMap<String, Lesson> lessonMap = readLessonFile();
-		for (String lsnName : lessonMap.keySet()) {
-			if (lsnName.equals(lessonName)) {
-				return (Lesson) lessonMap.get(lsnName);
-			}
-		}
-		return null;
-	}
-
 	// Adds a new user to "users.txt"
 	protected static void addNewUserToFile(String username, String password, String tag) {
 		File userFile = new File("src/users.txt");
+		//TODO: ADD ID TO THE LINE.
 		String userLine = username + "," + password + "," + tag + "\n";
 		if (!userFile.exists()) {
 			try {
@@ -195,6 +167,7 @@ public class FuncManager {
 				else {
 					try {
 						String userLine = userStuff[0] + "," + userStuff[1] + "," + userStuff[2] + "\n";
+						//TODO: ADD ID TO THE TEMP FILE.
 						FileWriter newWriter = new FileWriter("src/usersTEMP.txt", true);
 						newWriter.write(userLine);
 						newWriter.close();
@@ -363,7 +336,7 @@ public class FuncManager {
 	}
 
 	// Deletes all of the enrolled lessons of a student from file "enrolledLessons.txt"
-	protected static void deleteAllEnrolledLessonsFromFile(String studentName) {
+	protected static void deleteAllStudentDataFromEnrolledCourses(String studentName) {
 		HashMap<String, ArrayList<String>> enrollMap = readEnrollFile();
 
 		if(enrollMap.get(studentName) != null) {
@@ -373,8 +346,8 @@ public class FuncManager {
 		}
 	}
 	
-	//OVERLOAD FUNCTION: Deletes all of the enrolled students of a lesson from file "enrolledLessons.txt"
-	protected static void deleteEnrolledCourseFromFile(String lessonName) {
+	// Deletes all of the enrolled students of a lesson from file "enrolledLessons.txt"
+	protected static void deleteAllLessonDataFromEnrolledCourses(String lessonName) {
 		File oldFile = new File("src/enrolledLessons.txt");
 		File newFile = new File("src/enrolledLessonsTEMP.txt");
 		try {
@@ -424,6 +397,46 @@ public class FuncManager {
 		newFile.renameTo(oldFile);
 	}
 
+	
+	
+	//						--------------------------------------------------------------
+	//						================== FILE OPERATION FUNCTIONS ==================
+	//						--------------------------------------------------------------
+	
+	
+	// Returns a Teacher from the file with the given name
+	protected static Teacher getTeacherByName(String teacherName) {
+		HashMap<String, User> userMap = readUserFile();
+		for (String usrName : userMap.keySet()) {
+			if (usrName.equals(teacherName)) {
+				return (Teacher) userMap.get(usrName);
+			}
+		}
+		return null;
+	}
+
+	// Returns a Student from the file with the given name
+	protected static Student getStudentByName(String studentName) {
+		HashMap<String, User> userMap = readUserFile();
+		for (String usrName : userMap.keySet()) {
+			if (usrName.equals(studentName)) {
+				return (Student) userMap.get(usrName);
+			}
+		}
+		return null;
+	}
+
+	// Returns a Lesson from the file with the given name
+	protected static Lesson getLessonByName(String lessonName) {
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		for (String lsnName : lessonMap.keySet()) {
+			if (lsnName.equals(lessonName)) {
+				return (Lesson) lessonMap.get(lsnName);
+			}
+		}
+		return null;
+	}
+	
 	// Returns a String array of student names from file "users.txt"
 	protected static String[] getStudentNames() {
 		HashMap<String, User> userMap = readUserFile();
@@ -447,7 +460,7 @@ public class FuncManager {
 	}
 
 	// Returns True if "lessons.txt" has the given code
-	protected static boolean doesLessonHashmapHasTheCode(String code) {
+	protected static boolean doesLessonFileHasTheCode(String code) {
 		HashMap<String, Lesson> lessonMap = readLessonFile();
 		for (Lesson lesson : lessonMap.values()) {
 			if (lesson.isTheSameCode(code)) {
@@ -458,7 +471,7 @@ public class FuncManager {
 	}
 
 	// Returns the lesson which has the given code
-	protected static Lesson getLessonFromCode(String code) {
+	protected static Lesson getLessonByCode(String code) {
 		HashMap<String, Lesson> lessonMap = readLessonFile();
 		for (Lesson lesson : lessonMap.values()) {
 			if (lesson.isTheSameCode(code)) {
@@ -467,13 +480,22 @@ public class FuncManager {
 		}
 		return null;
 	}
+	
+	
+	
+	//						--------------------------------------------------------------
+	//						==================   OTHER TYPE FUNCTIONS   ==================
+	//						--------------------------------------------------------------
 
+	
+	// Makes a pop-up infoBox with wanted message & title
 	public static void infoBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	// Makes a pop-up errorBox with wanted message & title
 	public static void errorBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	
