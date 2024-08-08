@@ -2,8 +2,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JComboBox;
@@ -33,10 +35,10 @@ public class FuncManager {
 				String[] userStuff = fileScan.nextLine().split(",");
 				if (userStuff.length != 0) {
 					if (userStuff[2].compareTo("Teacher") == 0) {
-						Teacher teacher = new Teacher(userStuff[0], userStuff[1]);
+						Teacher teacher = new Teacher(userStuff[0], userStuff[1],userStuff[3]);
 						userMap.put(userStuff[0], teacher);
 					} else {
-						Student student = new Student(userStuff[0], userStuff[1]);
+						Student student = new Student(userStuff[0], userStuff[1],userStuff[3]);
 						userMap.put(userStuff[0], student);
 					}
 
@@ -118,8 +120,8 @@ public class FuncManager {
 	// Adds a new user to "users.txt"
 	protected static void addNewUserToFile(String username, String password, String tag) {
 		File userFile = new File("src/users.txt");
-		//TODO: ADD ID TO THE LINE.
-		String userLine = username + "," + password + "," + tag + "\n";
+		String id = generateNewID();
+		String userLine = username + "," + password + "," + tag + "," + id + "\n";
 		if (!userFile.exists()) {
 			try {
 				userFile.createNewFile();
@@ -166,8 +168,7 @@ public class FuncManager {
 				// Write others onto new file
 				else {
 					try {
-						String userLine = userStuff[0] + "," + userStuff[1] + "," + userStuff[2] + "\n";
-						//TODO: ADD ID TO THE TEMP FILE.
+						String userLine = userStuff[0] + "," + userStuff[1] + "," + userStuff[2] + "," + userStuff[3] + "\n";
 						FileWriter newWriter = new FileWriter("src/usersTEMP.txt", true);
 						newWriter.write(userLine);
 						newWriter.close();
@@ -437,8 +438,28 @@ public class FuncManager {
 		return null;
 	}
 	
+	// Returns a ID from the file with the given name
+	protected static String getIDByName(String userName) {
+		HashMap<String, User> userMap = readUserFile();
+		for(User user : userMap.values()) {
+			if(user.getName() == userName) {
+				return user.getID();
+			}
+		}
+		return null;
+		
+	}
+	
+	// Returns true if the given ID is not used in the file
+	protected static boolean isIDAvailable(String id) {
+		if(getIDByName(id) == null)
+			return true;
+		else
+			return false;
+	}
+	
 	// Returns a String array of student names from file "users.txt"
-	protected static String[] getStudentNames() {
+ 	protected static String[] getStudentNames() {
 		HashMap<String, User> userMap = readUserFile();
 		ArrayList<String> names = new ArrayList<>();
 		for (User user : userMap.values()) {
@@ -498,5 +519,30 @@ public class FuncManager {
 		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	// Generates a unique ID code that is different than the other IDs inside "User.txt"
+	public static String generateNewID() {
+		//The year student joins in...
+		int year = Year.now().getValue();
+		int modifiedYear = year % 100;
+		int id = 0;
+		String newID = null;
+		
+		//Random number between 0 - 99
+		Random rand = new Random();
+		int rand_int1 = rand.nextInt(100);
 	
+		//ID will be first a 2, 2 numbers of the current year, then 2 random number , and then it will add up until it finds a unique id
+		//example: 224XX0000 (XX is a random number)
+		id = 200000000 + modifiedYear * 1000000 + rand_int1 * 10000;
+		newID = Integer.toString(id);
+		
+		while(!isIDAvailable(newID)) {
+			id++;
+			newID = Integer.toString(id);
+		}
+			
+		
+		return newID;
+				
+	}
 }

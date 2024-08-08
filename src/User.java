@@ -3,11 +3,13 @@ public class User implements Comparable<User>{
 	private String username;
 	private String password;
 	private String tag;
+	private String id;
 	
-	User(String username, String password, String tag){
+	User(String username, String password, String tag, String id){
 		this.username = username;
 		this.password = password;
 		this.tag = tag;
+		this.id = id;
 	}
 
 	@Override
@@ -23,6 +25,7 @@ public class User implements Comparable<User>{
 		return 1;
 	}
 	
+	
 	protected String getTag() {
 		return this.tag;
 	}
@@ -31,5 +34,8 @@ public class User implements Comparable<User>{
 		return this.username;
 	}
 	
+	protected String getID() {
+		return this.id;
+	}
 	
 }

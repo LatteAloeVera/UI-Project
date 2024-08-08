@@ -130,24 +130,24 @@ public class LoginUI extends JFrame {
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//login pressed
-				HashMap<String, User> userMap = readUserFile();
+				HashMap<String, User> userMap = FuncManager.readUserFile();
 				String usrName = usernameField.getText();
 				String usrPass = passwordField.getText();	
 				
 				if(getSelectedButtonText(buttonGroup) == null){
-					//didnt selected student or teacher
-					errorBox("Please select teacher or student!","Warning!");
+					//didn't selected student or teacher
+					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
 					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
 						//empty fields
-						errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
+						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
 						if(userMap.containsKey(usrName)) {
-							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup))) == 0) {
+							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 0) {
 								//login successful!
-								infoBox("Login successful, returning to main menu...", "Successful!");
+								FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
 								dispose();
 								
 								if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) {
@@ -157,18 +157,18 @@ public class LoginUI extends JFrame {
 									new StudentMenuUI().setVisible(true);
 								}
 							}
-							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup))) == 2) {
+							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 2) {
 								//wrong tag!
-								errorBox("There's not a user with this username, please try again!", "Warning!");
+								FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
 							}
 							else {
 								//wrong password!
-								errorBox("Password is wrong, please try again!", "Warning!");
+								FuncManager.errorBox("Password is wrong, please try again!", "Warning!");
 							}
 						}
 						else {
 							//wrong username!
-							errorBox("There's not a user with this username, please try again!", "Warning!");
+							FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
 						}
 					}
 				}
@@ -189,25 +189,25 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//register pressed
 				if(getSelectedButtonText(buttonGroup) == null){
-					//didnt selected student or teacher
-					errorBox("Please select teacher or student!","Warning!");
+					//didn't selected student or teacher
+					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
 					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
 						//empty fields
-						errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
+						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
-						HashMap<String, User> userMap = readUserFile();
+						HashMap<String, User> userMap = FuncManager.readUserFile();
 						
 						if(userMap.containsKey(usernameField.getText())) {
 							//user already exists!
-							errorBox("User already exists! Please use login.", "Warning!");
+							FuncManager.errorBox("User already exists! Please use login.", "Warning!");
 						}
 						else {
 							//create user!
-							addNewUser(usernameField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
-							infoBox("Register successful, please login with your username.","Successful!");
+							FuncManager.addNewUserToFile(usernameField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
+							FuncManager.infoBox("Register successful, please login with your username.","Successful!");
 						}
 						
 					}
@@ -235,79 +235,10 @@ public class LoginUI extends JFrame {
 				registerButton.setEnabled(true);
 			}
 		});
-		
-		
-		
 
+		
 	}
 	
-	public static void infoBox(String infoMessage, String titleBar)
-    {
-        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
-    }
-	
-	public static void errorBox(String infoMessage, String titleBar)
-    {
-        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
-    }
-	
-	protected void addNewUser(String username, String password, String tag) {
-		File userFile = new File("src/users.txt");
-		String userLine = username + "," + password + "," + tag + "\n";
-		if(!userFile.exists()) {
-			try {
-				userFile.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		try {
-			FileWriter writer = new FileWriter("src/users.txt", true);
-			writer.write(userLine);
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	protected HashMap<String, User> readUserFile(){
-		HashMap<String,User> userMap = new HashMap<String,User>();
-		File userFile = new File("src/users.txt");
-		if(!userFile.exists()) {
-			try {
-				userFile.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			Scanner fileScan = new Scanner(userFile);
-			while(fileScan.hasNextLine()) {
-				String[] userStuff = fileScan.nextLine().split(",");
-				if(userStuff.length != 0) {
-					if(userStuff[2].compareTo("Teacher") == 0) {
-						Teacher teacher = new Teacher(userStuff[0], userStuff[1]);
-						userMap.put(userStuff[0], teacher);
-					}
-					else {
-						Student student = new Student(userStuff[0], userStuff[1]);
-						userMap.put(userStuff[0], student);
-					}
-					
-				}
-			}
-			fileScan.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return userMap;
-	} 
 	
 	public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {

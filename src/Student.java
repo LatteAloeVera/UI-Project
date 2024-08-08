@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Student extends User {
 	private ArrayList<String> takenLessons;
 
-	Student(String username, String password) {
-		super(username, password,"Student");
+	Student(String username, String password, String id) {
+		super(username, password,"Student",id);
 		
 		HashMap<String, ArrayList<String>> enrollMap = FuncManager.readEnrollFile();
 		if(enrollMap.containsKey(username)) {
