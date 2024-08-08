@@ -9,4 +9,3 @@ Mahmut,12345,Student,224210008
 Buse,123,Student,224210009
 Sadık,1243,Student,224210010
 mehmeta,123,Student,224310000
-Test,123,Teacher,224080000

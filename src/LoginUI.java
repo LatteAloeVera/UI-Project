@@ -43,6 +43,7 @@ public class LoginUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
+	protected static String sessionUserName;
 
 	/**
 	 * Launch the application.
@@ -126,48 +127,50 @@ public class LoginUI extends JFrame {
 		panel.add(passwordField);
 		
 		JButton loginButton = new JButton("Login");
+		loginButton.setEnabled(false);
 		loginButton.setBackground(SystemColor.inactiveCaption);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//login pressed
+				//Login button pressed
 				HashMap<String, User> userMap = FuncManager.readUserFile();
 				String usrName = usernameField.getText();
 				String usrPass = passwordField.getText();	
 				
 				if(getSelectedButtonText(buttonGroup) == null){
-					//didn't selected student or teacher
+					//Didn't selected student or teacher
 					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
 					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
-						//empty fields
+						//Empty fields
 						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
 						if(userMap.containsKey(usrName)) {
 							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 0) {
-								//login successful!
+								//Login successful!
 								FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
 								dispose();
 								
-								if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) {
+								sessionUserName = usrName;
+								
+								if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) 
 									new AdminMenuUI().setVisible(true);
-								}
-								else{
+								else
 									new StudentMenuUI().setVisible(true);
-								}
+								
 							}
 							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 2) {
-								//wrong tag!
+								//Wrong tag!
 								FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
 							}
 							else {
-								//wrong password!
+								//Wrong password!
 								FuncManager.errorBox("Password is wrong, please try again!", "Warning!");
 							}
 						}
 						else {
-							//wrong username!
+							//Wrong username!
 							FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
 						}
 					}
@@ -184,28 +187,34 @@ public class LoginUI extends JFrame {
 
 		
 		JButton registerButton = new JButton("Register");
+		registerButton.setEnabled(false);
 		registerButton.setBackground(SystemColor.inactiveCaption);
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//register pressed
+				//Register button pressed
 				if(getSelectedButtonText(buttonGroup) == null){
 					//didn't selected student or teacher
 					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
+					
 					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
-						//empty fields
+						//Empty fields
 						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
 						HashMap<String, User> userMap = FuncManager.readUserFile();
-						
 						if(userMap.containsKey(usernameField.getText())) {
-							//user already exists!
+							//User already exists!
 							FuncManager.errorBox("User already exists! Please use login.", "Warning!");
 						}
+						else if(getSelectedButtonText(buttonGroup).compareTo("Teacher") != 0) {
+							//illegal register action! normally this shouldn't be reachable...
+							FuncManager.errorBox("This place should not be able to be reached. How did you ended up here?", "Nu-uh!");
+							
+						}
 						else {
-							//create user!
+							//Create user!
 							FuncManager.addNewUserToFile(usernameField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
 							FuncManager.infoBox("Register successful, please login with your username.","Successful!");
 						}
@@ -225,6 +234,7 @@ public class LoginUI extends JFrame {
 		studentRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Student radio button pressed
+				loginButton.setEnabled(true);
 				registerButton.setEnabled(false);
 			}
 		});
@@ -232,7 +242,9 @@ public class LoginUI extends JFrame {
 		teacherRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Teacher radio button pressed
+				loginButton.setEnabled(true);
 				registerButton.setEnabled(true);
+				
 			}
 		});
 
