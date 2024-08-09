@@ -442,7 +442,7 @@ public class FuncManager {
 	protected static String getIDByName(String userName) {
 		HashMap<String, User> userMap = readUserFile();
 		for(User user : userMap.values()) {
-			if(user.getName() == userName) {
+			if(user.getName().equals(userName)) {
 				return user.getID();
 			}
 		}
@@ -452,10 +452,14 @@ public class FuncManager {
 	
 	// Returns true if the given ID is not used in the file
 	protected static boolean isIDAvailable(String id) {
-		if(getIDByName(id) == null)
-			return true;
-		else
-			return false;
+		HashMap<String, User> userMap = readUserFile();
+		
+		for(User user : userMap.values()) {
+			if(user.getID().equals(id) ) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	// Returns a String array of student names from file "users.txt"
