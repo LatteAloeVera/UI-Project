@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ public class FuncManager {
 	//						================== FILE MANAGEMENT FUNCTIONS ==================
 	//						--------------------------------------------------------------
 	
+	//TODO: hem öğretmen hem öğrenci aynı isimde olabilir. Bu yüzden kontrol esnasında id kullanımına geçir
 	
 	// Returns a HashMap of User's name and Users from file "users.txt"
 	protected static HashMap<String, User> readUserFile() {
@@ -65,14 +67,13 @@ public class FuncManager {
 		}
 
 		try {
-			Scanner fileScan = new Scanner(lessonFile);
+			Scanner fileScan = new Scanner(lessonFile); 
 			while (fileScan.hasNextLine()) {
 				String[] lessonStuff = fileScan.nextLine().split(",");
 				if (lessonStuff.length != 0) {
 					// Found lesson, adding...
 					String teacherName = lessonStuff[3];
-					Lesson lesson = new Lesson(lessonStuff[0], lessonStuff[1], Integer.parseInt(lessonStuff[2]),
-							getTeacherByName(teacherName));
+					Lesson lesson = new Lesson(lessonStuff[0], lessonStuff[1], Integer.parseInt(lessonStuff[2]), getTeacherByName(teacherName));
 					lessonMap.put(lessonStuff[1], lesson);
 				}
 			}
@@ -194,7 +195,7 @@ public class FuncManager {
 	// Adds a new lesson to "lessons.txt"
 	protected static void addNewLessonToFile(String code, String name, int credit, Teacher teacher) {
 		File lessonFile = new File("src/lessons.txt");
-		String lessonLine = code + "," + name + "," + credit + "," + teacher.getName() + "\n";
+		String lessonLine = code + "," + name + "," + credit + "," + teacher.getName() + "," + teacher.getID() + "\n";
 		if (!lessonFile.exists()) {
 			try {
 				lessonFile.createNewFile();
@@ -241,8 +242,7 @@ public class FuncManager {
 				// Write others onto new file
 				else {
 					try {
-						String lessonLine = lessonStuff[0] + "," + lessonStuff[1] + "," + lessonStuff[2] + ","
-								+ lessonStuff[3] + "\n";
+						String lessonLine = lessonStuff[0] + "," + lessonStuff[1] + "," + lessonStuff[2] + "," + lessonStuff[3] + "," + lessonStuff[4] + "\n";
 						FileWriter newWriter = new FileWriter("src/lessonsTEMP.txt", true);
 						newWriter.write(lessonLine);
 						newWriter.close();
@@ -415,7 +415,18 @@ public class FuncManager {
 		}
 		return null;
 	}
-
+	
+	// Returns a Teacher from the file with the given id
+	protected static Teacher getTeacherByID(String id) {
+		HashMap<String, User> userMap = readUserFile();
+		for (User usr : userMap.values()) {
+			if (usr.isSameID(id)) {
+				return (Teacher) usr;
+			}
+		}
+		return null;
+	}
+	
 	// Returns a Student from the file with the given name
 	protected static Student getStudentByName(String studentName) {
 		HashMap<String, User> userMap = readUserFile();
@@ -426,6 +437,39 @@ public class FuncManager {
 		}
 		return null;
 	}
+	
+	// Returns a Student from the file with the given id
+	protected static Student getStudentByID(String id) {
+			HashMap<String, User> userMap = readUserFile();
+			for (User usr : userMap.values()) {
+				if (usr.isSameID(id)) {
+					return (Student) usr;
+				}
+			}
+			return null;
+		}
+	
+	// Returns a User from the file with the given id
+	protected static User getUserByID(String id) {
+				HashMap<String, User> userMap = readUserFile();
+				for (User usr : userMap.values()) {
+					if (usr.isSameID(id)) {
+						return usr;
+					}
+				}
+				return null;
+			}
+
+	// Returns a User from the file with the given partial id
+		protected static User getUserByPartialID(String idPart) {
+					HashMap<String, User> userMap = readUserFile();
+					for (User usr : userMap.values()) {
+						if (usr.isSamePartialID(idPart)) {
+							return usr;
+						}
+					}
+					return null;
+				}
 
 	// Returns a Lesson from the file with the given name
 	protected static Lesson getLessonByName(String lessonName) {
@@ -450,20 +494,32 @@ public class FuncManager {
 		
 	}
 	
-	// Returns true if the given ID is not used in the file
-	protected static boolean isIDAvailable(String id) {
+	// Returns true if the given ID is used in the file
+ 	protected static boolean doesIDExists(String id) {
 		HashMap<String, User> userMap = readUserFile();
 		
 		for(User user : userMap.values()) {
 			if(user.getID().equals(id) ) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
+ 	
+ 	// Returns true if the given partial ID is used in the file
+ 	protected static boolean doesPartialIDExists(String partialID) {
+ 		HashMap<String, User> userMap = readUserFile();
+		
+		for(User user : userMap.values()) {
+			if(user.getPartialID().equals(partialID) ) {
+				return true;
+			}
+		}
+		return false;
+ 	}
 	
 	// Returns a String array of student names from file "users.txt"
- 	protected static String[] getStudentNames() {
+  	protected static String[] getStudentNames() {
 		HashMap<String, User> userMap = readUserFile();
 		ArrayList<String> names = new ArrayList<>();
 		for (User user : userMap.values()) {
@@ -525,28 +581,10 @@ public class FuncManager {
 	
 	// Generates a unique ID code that is different than the other IDs inside "User.txt"
 	public static String generateNewID() {
-		//The year student joins in...
-		int year = Year.now().getValue();
-		int modifiedYear = year % 100;
-		int id = 0;
-		String newID = null;
 		
-		//Random number between 0 - 99
-		Random rand = new Random();
-		int rand_int1 = rand.nextInt(100);
-	
-		//ID will be first a 2, 2 numbers of the current year, then 2 random number , and then it will add up until it finds a unique id
-		//example: 224XX0000 (XX is a random number)
-		id = 200000000 + modifiedYear * 1000000 + rand_int1 * 10000;
-		newID = Integer.toString(id);
-		
-		while(!isIDAvailable(newID)) {
-			id++;
-			newID = Integer.toString(id);
-		}
+		String uniqueID = UUID.randomUUID().toString();
 			
 		
-		return newID;
-				
+		return uniqueID;
 	}
 }

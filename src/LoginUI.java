@@ -41,7 +41,7 @@ public class LoginUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField usernameField;
+	private JTextField usernamePartialIDField;
 	private JPasswordField passwordField;
 	protected static String sessionUserName;
 
@@ -104,10 +104,10 @@ public class LoginUI extends JFrame {
 		buttonGroup.add(teacherRadioButton);
 		buttonGroup.add(studentRadioButton);
 		
-		JLabel usernameLabel = new JLabel("Username :");
+		JLabel usernameLabel = new JLabel("Username ID :");
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		usernameLabel.setBounds(74, 11, 126, 44);
+		usernameLabel.setBounds(49, 11, 151, 44);
 		panel.add(usernameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password :");
@@ -117,10 +117,10 @@ public class LoginUI extends JFrame {
 		panel.add(passwordLabel);
 		
 		
-		usernameField = new JTextField();
-		usernameField.setBounds(210, 24, 193, 27);
-		panel.add(usernameField);
-		usernameField.setColumns(10);
+		usernamePartialIDField = new JTextField();
+		usernamePartialIDField.setBounds(210, 24, 193, 27);
+		panel.add(usernamePartialIDField);
+		usernamePartialIDField.setColumns(10);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(210, 80, 193, 27);
@@ -133,7 +133,7 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed
 				HashMap<String, User> userMap = FuncManager.readUserFile();
-				String usrName = usernameField.getText();
+				String usrPartialID = usernamePartialIDField.getText();
 				String usrPass = passwordField.getText();	
 				
 				if(getSelectedButtonText(buttonGroup) == null){
@@ -141,12 +141,14 @@ public class LoginUI extends JFrame {
 					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
-					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
+					if(usrPartialID.trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
 						//Empty fields
 						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
-						if(userMap.containsKey(usrName)) {
+						if(FuncManager.doesPartialIDExists(usrPartialID)) {
+							User usr =  FuncManager.getUserByPartialID(usrPartialID);;
+							String usrName = usr.getName();
 							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 0) {
 								//Login successful!
 								FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
@@ -198,13 +200,13 @@ public class LoginUI extends JFrame {
 				}
 				else {
 					
-					if(usernameField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
+					if(usernamePartialIDField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
 						//Empty fields
 						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
 						HashMap<String, User> userMap = FuncManager.readUserFile();
-						if(userMap.containsKey(usernameField.getText())) {
+						if(userMap.containsKey(usernamePartialIDField.getText())) {
 							//User already exists!
 							FuncManager.errorBox("User already exists! Please use login.", "Warning!");
 						}
@@ -215,7 +217,7 @@ public class LoginUI extends JFrame {
 						}
 						else {
 							//Create user!
-							FuncManager.addNewUserToFile(usernameField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
+							FuncManager.addNewUserToFile(usernamePartialIDField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
 							FuncManager.infoBox("Register successful, please login with your username.","Successful!");
 						}
 						
@@ -229,7 +231,7 @@ public class LoginUI extends JFrame {
 		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		registerButton.setBounds(266, 175, 112, 38);
 		panel.add(registerButton);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{usernameField, passwordField, studentRadioButton, teacherRadioButton, loginButton, registerButton}));
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{usernamePartialIDField, passwordField, studentRadioButton, teacherRadioButton, loginButton, registerButton}));
 		
 		studentRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -243,7 +245,7 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//Teacher radio button pressed
 				loginButton.setEnabled(true);
-				registerButton.setEnabled(true);
+				registerButton.setEnabled(false);
 				
 			}
 		});

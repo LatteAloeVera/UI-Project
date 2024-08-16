@@ -1,6 +1,0 @@
-Selen,Math
-Mahmut,Coding
-Mahmut,Math
-Buse,Coding
-Buse,Math
-Toprak,Literature
