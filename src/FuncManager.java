@@ -460,17 +460,6 @@ public class FuncManager {
 				return null;
 			}
 
-	// Returns a User from the file with the given partial id
-		protected static User getUserByPartialID(String idPart) {
-					HashMap<String, User> userMap = readUserFile();
-					for (User usr : userMap.values()) {
-						if (usr.isSamePartialID(idPart)) {
-							return usr;
-						}
-					}
-					return null;
-				}
-
 	// Returns a Lesson from the file with the given name
 	protected static Lesson getLessonByName(String lessonName) {
 		HashMap<String, Lesson> lessonMap = readLessonFile();
@@ -506,17 +495,6 @@ public class FuncManager {
 		return false;
 	}
  	
- 	// Returns true if the given partial ID is used in the file
- 	protected static boolean doesPartialIDExists(String partialID) {
- 		HashMap<String, User> userMap = readUserFile();
-		
-		for(User user : userMap.values()) {
-			if(user.getPartialID().equals(partialID) ) {
-				return true;
-			}
-		}
-		return false;
- 	}
 	
 	// Returns a String array of student names from file "users.txt"
   	protected static String[] getStudentNames() {
@@ -583,8 +561,9 @@ public class FuncManager {
 	public static String generateNewID() {
 		
 		String uniqueID = UUID.randomUUID().toString();
-			
+		String[] idParts = uniqueID.split("-");
+		String tempIDPart = idParts[0];
 		
-		return uniqueID;
+		return tempIDPart;
 	}
 }

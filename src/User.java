@@ -25,30 +25,14 @@ public class User implements Comparable<User>{
 		return 1;
 	}
 
-	//Returns true if this user has the same id part with the given.
-	protected boolean isSamePartialID(String idPart) {
-		if(this.getPartialID().equals(idPart)) {
-			return true;
-		}
-		return false;
-	}
-	
-
 	//Returns true if this user has the same id with the given.
 	protected boolean isSameID(String id) {
-		if(id.equals(id)) {
+		if(this.id.equals(id)) {
 			return true;
 		}
 		return false;
 	}
 	
-	//Returns this user's id part
-	protected String getPartialID() {
-		String[] idParts = this.id.split("-");
-		String tempIDPart = idParts[0];
-		
-		return tempIDPart;
-	}
 	
  	protected String getTag() {
 		return this.tag;

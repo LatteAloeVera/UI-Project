@@ -36,6 +36,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.Toolkit;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.Color;
 
 public class LoginUI extends JFrame {
 
@@ -72,7 +73,7 @@ public class LoginUI extends JFrame {
 		setBackground(SystemColor.inactiveCaption);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 529, 285);
+		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,50 +82,35 @@ public class LoginUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel.setBackground(SystemColor.inactiveCaptionBorder);
-		panel.setBounds(10, 11, 492, 224);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JRadioButton studentRadioButton = new JRadioButton("Student");
-		studentRadioButton.setBackground(SystemColor.inactiveCaptionBorder);
-		studentRadioButton.setHorizontalAlignment(SwingConstants.CENTER);
-		studentRadioButton.setBounds(108, 125, 109, 23);
-		panel.add(studentRadioButton);
-		
-		JRadioButton teacherRadioButton = new JRadioButton("Teacher");
-		teacherRadioButton.setBackground(SystemColor.inactiveCaptionBorder);
-		teacherRadioButton.setHorizontalAlignment(SwingConstants.CENTER);
-		teacherRadioButton.setBounds(269, 125, 109, 23);
-		panel.add(teacherRadioButton);
+		JPanel loginPanel = new JPanel();
+		loginPanel.setBackground(SystemColor.window);
+		loginPanel.setBounds(0, 0, 639, 681);
+		contentPane.add(loginPanel);
+		loginPanel.setLayout(null);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(teacherRadioButton);
-		buttonGroup.add(studentRadioButton);
 		
 		JLabel usernameLabel = new JLabel("Username ID :");
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		usernameLabel.setBounds(49, 11, 151, 44);
-		panel.add(usernameLabel);
+		usernameLabel.setBounds(129, 244, 151, 44);
+		loginPanel.add(usernameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password :");
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		passwordLabel.setBounds(74, 67, 126, 44);
-		panel.add(passwordLabel);
+		passwordLabel.setBounds(154, 300, 126, 44);
+		loginPanel.add(passwordLabel);
 		
 		
 		usernamePartialIDField = new JTextField();
-		usernamePartialIDField.setBounds(210, 24, 193, 27);
-		panel.add(usernamePartialIDField);
+		usernamePartialIDField.setBounds(290, 257, 193, 27);
+		loginPanel.add(usernamePartialIDField);
 		usernamePartialIDField.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(210, 80, 193, 27);
-		panel.add(passwordField);
+		passwordField.setBounds(290, 313, 193, 27);
+		loginPanel.add(passwordField);
 		
 		JButton loginButton = new JButton("Login");
 		loginButton.setEnabled(false);
@@ -133,23 +119,26 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed
 				HashMap<String, User> userMap = FuncManager.readUserFile();
-				String usrPartialID = usernamePartialIDField.getText();
+				String usrID = usernamePartialIDField.getText();
 				String usrPass = passwordField.getText();	
 				
 				if(getSelectedButtonText(buttonGroup) == null){
-					//Didn't selected student or teacher
+					//Didn't selected student or teacher!
 					FuncManager.errorBox("Please select teacher or student!","Warning!");
 				}
 				else {
-					if(usrPartialID.trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
-						//Empty fields
+					if(usrID.trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
+						//Empty fields!
 						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 					}
 					else {
-						if(FuncManager.doesPartialIDExists(usrPartialID)) {
-							User usr =  FuncManager.getUserByPartialID(usrPartialID);;
+						//Checking id...
+						if(FuncManager.doesIDExists(usrID)) {
+							User usr =  FuncManager.getUserByID(usrID);;
 							String usrName = usr.getName();
-							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 0) {
+							
+							//Cheking password and Tag...
+							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),usr.getID())) == 0) {
 								//Login successful!
 								FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
 								dispose();
@@ -162,94 +151,45 @@ public class LoginUI extends JFrame {
 									new StudentMenuUI().setVisible(true);
 								
 							}
-							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 2) {
-								//Wrong tag!
+							//Checking if tag is wrong...
+							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 2) 
 								FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
-							}
-							else {
-								//Wrong password!
+							//Password is wrong!
+							else 
 								FuncManager.errorBox("Password is wrong, please try again!", "Warning!");
-							}
 						}
-						else {
-							//Wrong username!
+						//Username Wrong!
+						else 
 							FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
-						}
 					}
 				}
 				
 			}
 		});
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		loginButton.setBounds(108, 176, 112, 37);
-		panel.add(loginButton);
-		
+		loginButton.setBounds(249, 375, 112, 37);
+		loginPanel.add(loginButton);
 		
 
-
 		
-		JButton registerButton = new JButton("Register");
-		registerButton.setEnabled(false);
-		registerButton.setBackground(SystemColor.inactiveCaption);
-		registerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Register button pressed
-				if(getSelectedButtonText(buttonGroup) == null){
-					//didn't selected student or teacher
-					FuncManager.errorBox("Please select teacher or student!","Warning!");
-				}
-				else {
-					
-					if(usernamePartialIDField.getText().trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
-						//Empty fields
-						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
-					}
-					else {
-						HashMap<String, User> userMap = FuncManager.readUserFile();
-						if(userMap.containsKey(usernamePartialIDField.getText())) {
-							//User already exists!
-							FuncManager.errorBox("User already exists! Please use login.", "Warning!");
-						}
-						else if(getSelectedButtonText(buttonGroup).compareTo("Teacher") != 0) {
-							//illegal register action! normally this shouldn't be reachable...
-							FuncManager.errorBox("This place should not be able to be reached. How did you ended up here?", "Nu-uh!");
-							
-						}
-						else {
-							//Create user!
-							FuncManager.addNewUserToFile(usernamePartialIDField.getText(), passwordField.getText(), getSelectedButtonText(buttonGroup));
-							FuncManager.infoBox("Register successful, please login with your username.","Successful!");
-						}
-						
-					}
-				}
-				passwordField.setText("");
-			}
-			
-		});
+		JLabel backgroundLabel = new JLabel("New label");
+		backgroundLabel.setBounds(0, 0, 639, 681);
+		loginPanel.add(backgroundLabel);
+		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\Test.jpg"));
 		
-		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		registerButton.setBounds(266, 175, 112, 38);
-		panel.add(registerButton);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{usernamePartialIDField, passwordField, studentRadioButton, teacherRadioButton, loginButton, registerButton}));
+		JPanel artPanel = new JPanel();
+		artPanel.setBackground(new Color(252, 249, 255));
+		artPanel.setBounds(638, 0, 626, 681);
+		contentPane.add(artPanel);
+		artPanel.setLayout(null);
 		
-		studentRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Student radio button pressed
-				loginButton.setEnabled(true);
-				registerButton.setEnabled(false);
-			}
-		});
 		
-		teacherRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Teacher radio button pressed
-				loginButton.setEnabled(true);
-				registerButton.setEnabled(false);
-				
-			}
-		});
-
+		JLabel illustrationLabel = new JLabel("New label");
+		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
+		illustrationLabel.setBounds(139, 181, 330, 281);
+		artPanel.add(illustrationLabel);
+		
+		
 		
 	}
 	
