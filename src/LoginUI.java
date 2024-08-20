@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
@@ -74,7 +75,8 @@ public class LoginUI extends JFrame {
 		setBackground(SystemColor.inactiveCaption);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1280, 720);
+		setBounds(300, 175, 1280, 720);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,11 +85,52 @@ public class LoginUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JPanel artPanel = new JPanel();
+		artPanel.setBackground(new Color(252, 249, 255));
+		artPanel.setBounds(769, 0, 495, 681);
+		contentPane.add(artPanel);
+		artPanel.setLayout(null);
+		
+
+		Random rand = new Random();
+		int rand_int1 = rand.nextInt(10);
+		String motivationMsg = "";
+		
+		switch(rand_int1) {
+		case 0  -> motivationMsg = "          - \"The future belongs to those who believe in the beauty of their dreams.\"";
+		case 1  -> motivationMsg = "          - \"It always seems impossible until its done.\"";
+		case 2  -> motivationMsg = "          - \"No one is perfect. That's why pencils have erasers.\"";
+		case 3  -> motivationMsg = "          - \"Today a reader, tomorrow a leader.\"";
+		case 4  -> motivationMsg = "          - \"Develop a passion for learning. If you do, you will never cease to grow.\"";
+		case 5  -> motivationMsg = "          - \"You learn something every day if you pay attention.\"";
+		case 6  -> motivationMsg = "          - \"You have to expect things of yourself before you can do them.\"";
+		case 7  -> motivationMsg = "          - \"The best way to predict your future is to create it.\"";
+		case 8  -> motivationMsg = "          - \"Life is beatiful... Live every moment, be happy...\"";
+		case 9  -> motivationMsg = "          - \"You got this, don't worry.\"";
+		default -> motivationMsg = "          - \"What a beatiful day today!\"";
+		}
+		
+		
+		JLabel motivationLabel = new JLabel("<HTML> <p style=\"text-align:center\" color=\"#707070\"> " + motivationMsg + "</p> </HTML>");
+		motivationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		motivationLabel.setFont(new Font("Geist Medium", Font.PLAIN, 16));
+		motivationLabel.setForeground(new Color(0, 0, 0, 120));
+		motivationLabel.setBounds(39, 478, 369, 100);
+		artPanel.add(motivationLabel);
+		
+		
+		JLabel illustrationLabel = new JLabel("");
+		illustrationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
+		illustrationLabel.setBounds(0, 180, 495, 281);
+		artPanel.add(illustrationLabel);
+		
 		JPanel loginPanel = new JPanel();
 		loginPanel.setBackground(SystemColor.window);
 		loginPanel.setBounds(0, 0, 770, 681);
 		contentPane.add(loginPanel);
 		loginPanel.setLayout(null);
+		
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		
@@ -118,7 +161,7 @@ public class LoginUI extends JFrame {
 		
 		JButton loginButton = new JButton("Login");
 		loginButton.setForeground(Color.DARK_GRAY);
-		loginButton.setBackground(UIManager.getColor("activeCaption"));
+		loginButton.setBackground(new Color(128, 128, 192));
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed
@@ -170,37 +213,27 @@ public class LoginUI extends JFrame {
 				
 			}
 		});
-		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		loginButton.setFont(new Font("Geist Medium", Font.PLAIN, 25));
 		loginButton.setBounds(276, 396, 112, 37);
 		loginPanel.add(loginButton);
 		
 		JLabel loginLabel = new JLabel("Welcome!");
-		loginLabel.setBackground(Color.DARK_GRAY);
+		loginLabel.setBackground(new Color(0, 0, 64));
 		loginLabel.setForeground(Color.DARK_GRAY);
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 45));
 		loginLabel.setBounds(0, 124, 678, 71);
 		loginPanel.add(loginLabel);
 		
-
-		
+	
 		JLabel backgroundLabel = new JLabel("New label");
+		backgroundLabel.setBackground(new Color(128, 128, 192));
+		backgroundLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		backgroundLabel.setBounds(0, 0, 770, 681);
 		loginPanel.add(backgroundLabel);
-		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lgnBackground3.png"));
+		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lgnBackground4.png"));
 		
-		JPanel artPanel = new JPanel();
-		artPanel.setBackground(new Color(252, 249, 255));
-		artPanel.setBounds(769, 0, 495, 681);
-		contentPane.add(artPanel);
-		artPanel.setLayout(null);
-		
-		
-		JLabel illustrationLabel = new JLabel("");
-		illustrationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
-		illustrationLabel.setBounds(0, 180, 495, 281);
-		artPanel.add(illustrationLabel);
+
 		
 		
 		
