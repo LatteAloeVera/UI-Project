@@ -81,7 +81,7 @@ public class AdminMenuUI extends JFrame {
 	static JList notEnrolledLessons;
 
 	public AdminMenuUI() {
-		setTitle("Teacher Menu");
+		setTitle("Admin Menu");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("content/adminPanelIco.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 870, 460);
@@ -163,7 +163,11 @@ public class AdminMenuUI extends JFrame {
 					FuncManager.errorBox("There is an another user named \"" + usrName + "\" , Please enter an another username!",
 							"Name Exists!");
 				} else {
-					FuncManager.addNewUserToFile(usrName, usrPass, "Student");
+					try {
+						FuncManager.addNewUserToFile(usrName, usrPass, "Student");
+					} catch (UnsupportedTypeException e1) {
+						e1.printStackTrace();
+					}
 					updateStudentComboBox(studentNamesComboBox);
 					updateEnrollingStudentList();
 					FuncManager.infoBox("New student \"" + usrName + "\" added!", "Successful!");

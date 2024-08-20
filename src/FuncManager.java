@@ -36,10 +36,16 @@ public class FuncManager {
 			while (fileScan.hasNextLine()) {
 				String[] userStuff = fileScan.nextLine().split(",");
 				if (userStuff.length != 0) {
-					if (userStuff[2].compareTo("Teacher") == 0) {
+					
+					if(userStuff[2].compareTo("Admin") == 0) {
+						User user = new User(userStuff[0], userStuff[1],"Admin",userStuff[3]);
+						userMap.put(userStuff[0], user);
+					}
+					else if (userStuff[2].compareTo("Teacher") == 0) {
 						Teacher teacher = new Teacher(userStuff[0], userStuff[1],userStuff[3]);
 						userMap.put(userStuff[0], teacher);
-					} else {
+					} 
+					else {
 						Student student = new Student(userStuff[0], userStuff[1],userStuff[3]);
 						userMap.put(userStuff[0], student);
 					}
@@ -119,9 +125,9 @@ public class FuncManager {
 	}
 
 	// Adds a new user to "users.txt"
-	protected static void addNewUserToFile(String username, String password, String tag) {
+	protected static void addNewUserToFile(String username, String password, String tag) throws UnsupportedTypeException {
 		File userFile = new File("src/users.txt");
-		String id = generateNewID();
+		String id = generateNewID(tag);
 		String userLine = username + "," + password + "," + tag + "," + id + "\n";
 		if (!userFile.exists()) {
 			try {
@@ -558,12 +564,22 @@ public class FuncManager {
 	}
 	
 	// Generates a unique ID code that is different than the other IDs inside "User.txt"
-	public static String generateNewID() {
-		
+	public static String generateNewID(String tag) throws UnsupportedTypeException {
 		String uniqueID = UUID.randomUUID().toString();
 		String[] idParts = uniqueID.split("-");
 		String tempIDPart = idParts[0];
+		String ID;
 		
-		return tempIDPart;
+		if(tag.equals("Teacher")) {
+			ID = "T" + tempIDPart;
+		}
+		else if(tag.equals("Student")) {
+			ID = "S" + tempIDPart;
+		}
+		else {
+			throw new UnsupportedTypeException("Tag is not valid!");
+		}
+		
+		return ID;
 	}
 }

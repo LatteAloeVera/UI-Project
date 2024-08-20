@@ -44,7 +44,7 @@ public class LoginUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField usernamePartialIDField;
+	private JTextField idField;
 	private JPasswordField passwordField;
 	protected static String sessionUserName;
 
@@ -131,90 +131,81 @@ public class LoginUI extends JFrame {
 		contentPane.add(loginPanel);
 		loginPanel.setLayout(null);
 		
-		
-		ButtonGroup buttonGroup = new ButtonGroup();
-		
 		JLabel usernameLabel = new JLabel("Username ID :");
 		usernameLabel.setForeground(Color.DARK_GRAY);
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		usernameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
 		usernameLabel.setBounds(115, 245, 151, 44);
 		loginPanel.add(usernameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password :");
 		passwordLabel.setForeground(Color.DARK_GRAY);
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
 		passwordLabel.setBounds(140, 300, 126, 44);
 		loginPanel.add(passwordLabel);
 		
 		
-		usernamePartialIDField = new JTextField();
-		usernamePartialIDField.setBounds(290, 258, 193, 27);
-		loginPanel.add(usernamePartialIDField);
-		usernamePartialIDField.setColumns(10);
+		idField = new JTextField();
+		idField.setBackground(new Color(252, 249, 255));
+		idField.setBounds(290, 258, 193, 27);
+		loginPanel.add(idField);
+		idField.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.setBackground(new Color(252, 249, 255));
 		passwordField.setEchoChar('*');
 		passwordField.setBounds(290, 313, 193, 27);
 		loginPanel.add(passwordField);
 		
 		JButton loginButton = new JButton("Login");
 		loginButton.setForeground(Color.DARK_GRAY);
-		loginButton.setBackground(new Color(128, 128, 192));
+		loginButton.setBackground(new Color(252, 249, 255));
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed
 				HashMap<String, User> userMap = FuncManager.readUserFile();
-				String usrID = usernamePartialIDField.getText();
+				String usrID = idField.getText();
 				String usrPass = passwordField.getText();	
 				
-				if(getSelectedButtonText(buttonGroup) == null){
-					//Didn't selected student or teacher!
-					FuncManager.errorBox("Please select teacher or student!","Warning!");
+				if(usrID.trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
+					//Empty fields!
+					FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
 				}
 				else {
-					if(usrID.trim().compareTo("") == 0 || passwordField.getText().trim().compareTo("") == 0) {
-						//Empty fields!
-						FuncManager.errorBox("Please fill in all the empty areas!","Empty Area Remaining!");
-					}
-					else {
-						//Checking id...
-						if(FuncManager.doesIDExists(usrID)) {
-							User usr =  FuncManager.getUserByID(usrID);;
-							String usrName = usr.getName();
+					//Checking id...
+					if(FuncManager.doesIDExists(usrID)) {
+						User usr =  FuncManager.getUserByID(usrID);;
+						String usrName = usr.getName();
+						
+						//Cheking password
+						if(userMap.get(usrName).compareTo(new User(usrName,usrPass,usr.getTag(),usr.getID())) == 0) {
+							//Login successful!
+							FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
+							dispose();
 							
-							//Cheking password and Tag...
-							if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),usr.getID())) == 0) {
-								//Login successful!
-								FuncManager.infoBox("Login successful, returning to main menu...", "Successful!");
-								dispose();
-								
-								sessionUserName = usrName;
-								
-								if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) 
-									new AdminMenuUI().setVisible(true);
-								else
-									new StudentMenuUI().setVisible(true);
-								
-							}
-							//Checking if tag is wrong...
-							else if(userMap.get(usrName).compareTo(new User(usrName,usrPass,getSelectedButtonText(buttonGroup),null)) == 2) 
-								FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
-							//Password is wrong!
-							else 
-								FuncManager.errorBox("Password is wrong, please try again!", "Warning!");
+							sessionUserName = usrName;
+							if(userMap.get(usrName).getTag().compareTo("Admin") == 0)
+								new AdminMenuUI().setVisible(true);
+							else if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) 
+								new TeacherMenuUI().setVisible(true);
+							else
+								new StudentMenuUI().setVisible(true);
+							
 						}
-						//Username Wrong!
+						//Password is wrong!
 						else 
-							FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
+							FuncManager.errorBox("Password is wrong, please try again!", "Warning!");
 					}
+					//Username Wrong!
+					else 
+						FuncManager.errorBox("There's not a user with this username, please try again!", "Warning!");
 				}
 				
 			}
 		});
 		loginButton.setFont(new Font("Geist Medium", Font.PLAIN, 25));
-		loginButton.setBounds(276, 396, 112, 37);
+		loginButton.setBounds(276, 397, 112, 37);
 		loginPanel.add(loginButton);
 		
 		JLabel loginLabel = new JLabel("Welcome!");
@@ -238,17 +229,4 @@ public class LoginUI extends JFrame {
 		
 		
 	}
-	
-	
-	public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-
-            if (button.isSelected()) {
-                return button.getText();
-            }
-        }
-
-        return null;
-    }
 }
