@@ -37,6 +37,7 @@ import java.awt.Toolkit;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.Color;
+import javax.swing.DropMode;
 
 public class LoginUI extends JFrame {
 
@@ -84,37 +85,40 @@ public class LoginUI extends JFrame {
 		
 		JPanel loginPanel = new JPanel();
 		loginPanel.setBackground(SystemColor.window);
-		loginPanel.setBounds(0, 0, 639, 681);
+		loginPanel.setBounds(0, 0, 770, 681);
 		contentPane.add(loginPanel);
 		loginPanel.setLayout(null);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		
 		JLabel usernameLabel = new JLabel("Username ID :");
+		usernameLabel.setForeground(Color.DARK_GRAY);
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		usernameLabel.setBounds(129, 244, 151, 44);
+		usernameLabel.setBounds(115, 245, 151, 44);
 		loginPanel.add(usernameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password :");
+		passwordLabel.setForeground(Color.DARK_GRAY);
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		passwordLabel.setBounds(154, 300, 126, 44);
+		passwordLabel.setBounds(140, 300, 126, 44);
 		loginPanel.add(passwordLabel);
 		
 		
 		usernamePartialIDField = new JTextField();
-		usernamePartialIDField.setBounds(290, 257, 193, 27);
+		usernamePartialIDField.setBounds(290, 258, 193, 27);
 		loginPanel.add(usernamePartialIDField);
 		usernamePartialIDField.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
 		passwordField.setBounds(290, 313, 193, 27);
 		loginPanel.add(passwordField);
 		
 		JButton loginButton = new JButton("Login");
-		loginButton.setEnabled(false);
-		loginButton.setBackground(SystemColor.inactiveCaption);
+		loginButton.setForeground(Color.DARK_GRAY);
+		loginButton.setBackground(UIManager.getColor("activeCaption"));
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed
@@ -167,26 +171,35 @@ public class LoginUI extends JFrame {
 			}
 		});
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		loginButton.setBounds(249, 375, 112, 37);
+		loginButton.setBounds(276, 396, 112, 37);
 		loginPanel.add(loginButton);
+		
+		JLabel loginLabel = new JLabel("Welcome!");
+		loginLabel.setBackground(Color.DARK_GRAY);
+		loginLabel.setForeground(Color.DARK_GRAY);
+		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 45));
+		loginLabel.setBounds(0, 124, 678, 71);
+		loginPanel.add(loginLabel);
 		
 
 		
 		JLabel backgroundLabel = new JLabel("New label");
-		backgroundLabel.setBounds(0, 0, 639, 681);
+		backgroundLabel.setBounds(0, 0, 770, 681);
 		loginPanel.add(backgroundLabel);
-		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\Test.jpg"));
+		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lgnBackground3.png"));
 		
 		JPanel artPanel = new JPanel();
 		artPanel.setBackground(new Color(252, 249, 255));
-		artPanel.setBounds(638, 0, 626, 681);
+		artPanel.setBounds(769, 0, 495, 681);
 		contentPane.add(artPanel);
 		artPanel.setLayout(null);
 		
 		
-		JLabel illustrationLabel = new JLabel("New label");
+		JLabel illustrationLabel = new JLabel("");
+		illustrationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
-		illustrationLabel.setBounds(139, 181, 330, 281);
+		illustrationLabel.setBounds(0, 180, 495, 281);
 		artPanel.add(illustrationLabel);
 		
 		
