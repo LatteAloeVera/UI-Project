@@ -164,6 +164,7 @@ public class LoginUI extends JFrame {
 		loginButton.setText("Login");
 		loginButton.setForeground(Color.decode("#fcf9ff"));
 		loginButton.setBackground(new Color(252, 249, 255));
+		loginButton.setButtonClickEffect(true);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Login button pressed

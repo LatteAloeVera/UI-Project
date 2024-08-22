@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,13 +22,51 @@ public class ButtonGradient extends JButton {
 	//private Color color2 = Color.decode("#f64f59");
 	
 	private Color color1 = Color.decode("#7eb4fa");
+	public Color getColor1() {
+		return color1;
+	}
+
+	public void setColor1(Color color1) {
+		this.color1 = color1;
+	}
+
+	public Color getColor2() {
+		return color2;
+	}
+
+	public void setColor2(Color color2) {
+		this.color2 = color2;
+	}
+
+	public float getSizeSpeed() {
+		return sizeSpeed;
+	}
+
+	public void setSizeSpeed(float sizeSpeed) {
+		this.sizeSpeed = sizeSpeed;
+	}
+	
+	public boolean isButtonClickEffect() {
+		return buttonClickEffect;
+	}
+
+	public void setButtonClickEffect(boolean buttonClickEffect) {
+		this.buttonClickEffect = buttonClickEffect;
+	}
+
+
 	private Color color2 = Color.decode("#e4b7ee");
 	private final Timer timer;
-	//private final Timer timerPressed;
+	private final Timer timerPressed;
 	private float alpha = 0.3f;
 	private boolean mouseOver;
-	//private boolean pressed;
-	//private boolean pressedLocation;
+	private boolean pressed;
+	private Point pressedLocation;
+	private float pressedSize;
+	private float sizeSpeed = 16f;						//Speed of the click area increase
+	private float alphaPressed = 0.5f;
+	private boolean buttonClickEffect = true;
+
 
 	protected ButtonGradient(){
 		Color txtColor = new Color(252, 249, 255);
@@ -53,7 +92,14 @@ public class ButtonGradient extends JButton {
 			
 			@Override
 			public void mousePressed(MouseEvent me) {
-				
+				pressedSize = 0;
+				alphaPressed = 0.5f;
+				pressed = true;
+				pressedLocation = me.getPoint();
+				if(buttonClickEffect) {
+					timerPressed.setDelay(0);
+					timerPressed.start();
+				}
 			}
 			
 			
@@ -85,6 +131,22 @@ public class ButtonGradient extends JButton {
 				}
 			}
 		});
+	
+		timerPressed = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				pressedSize += sizeSpeed;
+				if(alphaPressed<=0) {
+					pressed = false;
+					timerPressed.stop();
+				}
+				else {
+					repaint();
+				}
+			}
+		});
+			
+			
 		
 		
 	}
@@ -108,7 +170,12 @@ public class ButtonGradient extends JButton {
 		//Adding style:
 		createStyle(g2);
 		
+		if(pressed) {
+			paintPressed(g2);
+		}
 		
+		
+		g2.dispose();
 		grphcs.drawImage(img, 0, 0, null);
 		
 		super.paintComponent(grphcs); //To change body of generated methods, choose Tools -> Templates.
@@ -127,5 +194,21 @@ public class ButtonGradient extends JButton {
 		int controll = height + (height/2);
 		f.curveTo(0, 0, width/2, height, width, 0);
 		g2.fill(f);
+	}
+	
+	private void paintPressed(Graphics2D g2) {
+		if (pressedLocation.x - (pressedSize / 2) < 0 && pressedLocation.x + (pressedSize / 2) > getWidth()) {
+	        timerPressed.setDelay(20);
+	        alphaPressed -= 0.05f;
+	        if (alphaPressed < 0) {
+	            alphaPressed = 0;
+	        }
+	    }
+
+	    g2.setColor(Color.WHITE);
+	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alphaPressed));
+	    float x = pressedLocation.x - (pressedSize / 2);
+	    float y = pressedLocation.y - (pressedSize / 2);
+	    g2.fillOval((int) x, (int) y, (int) pressedSize, (int) pressedSize);
 	}
 }
