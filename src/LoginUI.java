@@ -132,34 +132,37 @@ public class LoginUI extends JFrame {
 		loginPanel.setLayout(null);
 		
 		JLabel usernameLabel = new JLabel("Username ID :");
-		usernameLabel.setForeground(Color.DARK_GRAY);
+		usernameLabel.setForeground(new Color(93, 93, 93));
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
-		usernameLabel.setBounds(115, 245, 151, 44);
+		usernameLabel.setBounds(139, 247, 151, 44);
 		loginPanel.add(usernameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password :");
-		passwordLabel.setForeground(Color.DARK_GRAY);
+		passwordLabel.setForeground(new Color(93, 93, 93));
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
-		passwordLabel.setBounds(140, 300, 126, 44);
+		passwordLabel.setBounds(164, 302, 126, 44);
 		loginPanel.add(passwordLabel);
 		
 		
 		idField = new JTextField();
+		idField.setFont(new Font("Geist", Font.PLAIN, 15));
 		idField.setBackground(new Color(252, 249, 255));
-		idField.setBounds(290, 258, 193, 27);
+		idField.setBounds(300, 258, 193, 27);
 		loginPanel.add(idField);
 		idField.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Geist", Font.PLAIN, 15));
 		passwordField.setBackground(new Color(252, 249, 255));
 		passwordField.setEchoChar('*');
-		passwordField.setBounds(290, 313, 193, 27);
+		passwordField.setBounds(300, 313, 193, 27);
 		loginPanel.add(passwordField);
 		
-		JButton loginButton = new JButton("Login");
-		loginButton.setForeground(Color.DARK_GRAY);
+		ButtonGradient loginButton = new ButtonGradient();
+		loginButton.setText("Login");
+		loginButton.setForeground(Color.decode("#fcf9ff"));
 		loginButton.setBackground(new Color(252, 249, 255));
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -204,16 +207,16 @@ public class LoginUI extends JFrame {
 				
 			}
 		});
-		loginButton.setFont(new Font("Geist Medium", Font.PLAIN, 25));
-		loginButton.setBounds(276, 397, 112, 37);
+		loginButton.setFont(new Font("Geist Medium", Font.BOLD, 27));
+		loginButton.setBounds(254, 390, 161, 57);
 		loginPanel.add(loginButton);
 		
 		JLabel loginLabel = new JLabel("Welcome!");
 		loginLabel.setBackground(new Color(0, 0, 64));
 		loginLabel.setForeground(Color.DARK_GRAY);
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 45));
-		loginLabel.setBounds(0, 124, 678, 71);
+		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 54));
+		loginLabel.setBounds(0, 124, 656, 71);
 		loginPanel.add(loginLabel);
 		
 	
