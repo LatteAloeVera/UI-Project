@@ -131,7 +131,7 @@ public class LoginUI extends JFrame {
 		contentPane.add(loginPanel);
 		loginPanel.setLayout(null);
 		
-		JLabel usernameLabel = new JLabel("Username ID :");
+		JLabel usernameLabel = new JLabel("User ID :");
 		usernameLabel.setForeground(new Color(93, 93, 93));
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));

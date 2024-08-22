@@ -5,10 +5,15 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 public class ButtonGradient extends JButton {
@@ -17,6 +22,12 @@ public class ButtonGradient extends JButton {
 	
 	private Color color1 = Color.decode("#7eb4fa");
 	private Color color2 = Color.decode("#e4b7ee");
+	private final Timer timer;
+	//private final Timer timerPressed;
+	private float alpha = 0.3f;
+	private boolean mouseOver;
+	//private boolean pressed;
+	//private boolean pressedLocation;
 
 	protected ButtonGradient(){
 		Color txtColor = new Color(252, 249, 255);
@@ -25,6 +36,57 @@ public class ButtonGradient extends JButton {
 		setForeground(txtColor);						//Makes the text a specific color.
 		setCursor(new Cursor(Cursor.HAND_CURSOR));		//On hover, makes the cursor hand cursor.
 		setBorder(new EmptyBorder(10, 20, 10, 20));
+		
+		addMouseListener(new MouseAdapter() {			//To make actions whenever mouse hovers etc.
+			@Override
+			public void mouseEntered(MouseEvent me) {
+				mouseOver = true;
+				timer.start();
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent me) {
+				mouseOver = false;
+				timer.start();
+
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent me) {
+				
+			}
+			
+			
+		});
+		timer = new Timer(40,new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				if(mouseOver) {
+					if(alpha<0.8f) {			//if this part is higher, the higher lightning will be.
+						alpha += 0.1f;			//if these alpha increaser is lower, smoother the animation will be. Default => Fast=0.5f; Medium=0.1f; Slow=0.01f;
+						repaint();
+					}
+					else {
+						alpha = 0.8f;			//Finalizes the alpha. Higher means more lighy.
+						timer.stop();
+						repaint();
+					}
+				}
+				else {
+					if(alpha > 0.3f) {
+						alpha -= 0.1f;			//if these alpha increaser is lower, smoother the animation will be.
+						repaint();
+					}
+					else {
+						alpha = 0.3f;			//if this part is lower, the lower lightning will be.
+						timer.stop();
+						repaint();
+					}
+				}
+			}
+		});
+		
+		
 	}
 	
 	@Override
@@ -55,7 +117,7 @@ public class ButtonGradient extends JButton {
 	
 	private void createStyle(Graphics2D g2) {
 		//Adding shade:
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f));
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
 		int width = getWidth();
 		int height = getHeight();
 		GradientPaint gradientWhite = new GradientPaint(0, 0, new Color(255, 255, 255, 60), 0, height, new Color(255, 255, 255, 30)); 
