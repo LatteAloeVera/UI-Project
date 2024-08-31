@@ -1,6 +1,7 @@
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -75,6 +76,7 @@ public class ButtonGradient extends JButton {
 		setForeground(txtColor);						//Makes the text a specific color.
 		setCursor(new Cursor(Cursor.HAND_CURSOR));		//On hover, makes the cursor hand cursor.
 		setBorder(new EmptyBorder(10, 20, 10, 20));
+		setFont(new Font("Geist Medium", Font.BOLD, 27));
 		
 		addMouseListener(new MouseAdapter() {			//To make actions whenever mouse hovers etc.
 			@Override
@@ -148,6 +150,7 @@ public class ButtonGradient extends JButton {
 			
 			
 		
+
 		
 	}
 	

@@ -161,6 +161,7 @@ public class LoginUI extends JFrame {
 		loginPanel.add(passwordField);
 		
 		ButtonGradient loginButton = new ButtonGradient();
+		this.setFont(new Font("Geist Medium", Font.BOLD, 27));
 		loginButton.setText("Login");
 		loginButton.setForeground(Color.decode("#fcf9ff"));
 		loginButton.setBackground(new Color(252, 249, 255));
@@ -208,7 +209,6 @@ public class LoginUI extends JFrame {
 				
 			}
 		});
-		loginButton.setFont(new Font("Geist Medium", Font.BOLD, 27));
 		loginButton.setBounds(254, 390, 161, 57);
 		loginPanel.add(loginButton);
 		

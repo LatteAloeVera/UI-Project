@@ -79,74 +79,81 @@ public class AdminMenuUI extends JFrame {
 	static JList studentsNameList;
 	static JList enrolledLessons;
 	static JList notEnrolledLessons;
+	private JTextField textField;
+	private JPasswordField passwordField;
 
 	public AdminMenuUI() {
 		setTitle("Admin Menu");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("content/adminPanelIco.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 870, 460);
+		setBounds(300, 175, 1280, 720);
 		setResizable(false);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBackground(new Color(252, 249, 255));
 		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.setFont(new Font("Geist Medium", Font.PLAIN, 13));
 		tabbedPane.setBackground(SystemColor.inactiveCaption);
-		tabbedPane.setBounds(10, 11, 834, 399);
+		tabbedPane.setBounds(0, 0, 1264, 681);
 		contentPane.add(tabbedPane);
 
 		JPanel studentManagementPanel = new JPanel();
-		studentManagementPanel.setBackground(SystemColor.inactiveCaption);
+		studentManagementPanel.setBackground(new Color(252, 249, 255));
 		tabbedPane.addTab("Add / Remove Student", null, studentManagementPanel, null);
 		tabbedPane.setBackgroundAt(0, SystemColor.inactiveCaption);
 		studentManagementPanel.setLayout(null);
 
 		JPanel studentAddPanel = new JPanel();
-		studentAddPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		studentAddPanel.setBackground(SystemColor.inactiveCaptionBorder);
-		studentAddPanel.setForeground(SystemColor.inactiveCaptionBorder);
-		studentAddPanel.setBounds(10, 11, 394, 349);
+		studentAddPanel.setBorder(null);
+		studentAddPanel.setBackground(new Color(252, 249, 255));
+		studentAddPanel.setForeground(new Color(252, 249, 255));
+		studentAddPanel.setBounds(10, 11, 615, 631);
 		studentManagementPanel.add(studentAddPanel);
 		studentAddPanel.setLayout(null);
 
 		studentTextField = new JTextField();
 		studentTextField.setColumns(10);
-		studentTextField.setBounds(147, 108, 206, 27);
+		studentTextField.setBounds(294, 219, 206, 27);
 		studentAddPanel.add(studentTextField);
 
 		studentPasswordField = new JPasswordField();
-		studentPasswordField.setBounds(147, 146, 206, 27);
+		studentPasswordField.setBounds(294, 273, 206, 27);
 		studentAddPanel.add(studentPasswordField);
 
 		JLabel passwordLabel = new JLabel("Password :");
+		passwordLabel.setForeground(new Color(93, 93, 93));
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		passwordLabel.setBounds(10, 136, 126, 44);
+		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		passwordLabel.setBounds(157, 263, 126, 44);
 		studentAddPanel.add(passwordLabel);
 
-		JLabel usernameLabel = new JLabel("Username :");
-		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		usernameLabel.setBounds(10, 97, 126, 44);
-		studentAddPanel.add(usernameLabel);
-
+		JLabel nameLabel = new JLabel("Student Name :");
+		nameLabel.setForeground(new Color(93, 93, 93));
+		nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		nameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		nameLabel.setBounds(116, 208, 167, 44);
+		studentAddPanel.add(nameLabel);
+		
 		JPanel studentRemovePanel = new JPanel();
-		studentRemovePanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		studentRemovePanel.setBackground(SystemColor.inactiveCaptionBorder);
-		studentRemovePanel.setBounds(425, 11, 394, 349);
+		studentRemovePanel.setBounds(634, 11, 615, 631);
 		studentManagementPanel.add(studentRemovePanel);
+		studentRemovePanel.setBorder(null);
+		studentRemovePanel.setBackground(new Color(252, 249, 255));
 		studentRemovePanel.setLayout(null);
-
+		
 		JComboBox studentNamesComboBox = new JComboBox();
-		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		studentNamesComboBox.setBounds(216, 127, 168, 24);
+		studentNamesComboBox.setBounds(320, 235, 206, 27);
 		studentRemovePanel.add(studentNamesComboBox);
+		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		updateStudentComboBox(studentNamesComboBox);
 
-		JButton addStudentConfirmButton = new JButton("Confirm");
+		ButtonGradient addStudentConfirmButton = new ButtonGradient();
+		addStudentConfirmButton.setText("Add Student");
+		addStudentConfirmButton.setFont(new Font("Geist Medium", Font.BOLD, 22));
 		addStudentConfirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Student add button clicked:
@@ -175,31 +182,39 @@ public class AdminMenuUI extends JFrame {
 
 			}
 		});
-		addStudentConfirmButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addStudentConfirmButton.setBackground(UIManager.getColor("Button.light"));
-		addStudentConfirmButton.setBounds(119, 215, 147, 44);
+		addStudentConfirmButton.setBounds(194, 353, 223, 61);
+		addStudentConfirmButton.setFont(new Font("Geist Medium", Font.BOLD, 22));	
 		studentAddPanel.add(addStudentConfirmButton);
 
 		JLabel addStudentTitle = new JLabel("= Add A New Student =");
-		addStudentTitle.setForeground(new Color(100, 149, 237));
+		addStudentTitle.setForeground(Color.DARK_GRAY);
 		addStudentTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		addStudentTitle.setFont(new Font("Tahoma", Font.BOLD, 19));
-		addStudentTitle.setBounds(10, 23, 374, 53);
+		addStudentTitle.setFont(new Font("Geist Medium", Font.BOLD, 34));
+		addStudentTitle.setBounds(0, 99, 615, 61);
 		studentAddPanel.add(addStudentTitle);
-
+		
+		
+		
+		
 		JLabel removeStudentTitle = new JLabel("= Remove Student =");
-		removeStudentTitle.setBounds(10, 23, 374, 48);
+		removeStudentTitle.setBounds(0, 99, 615, 58);
 		removeStudentTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		removeStudentTitle.setForeground(new Color(100, 149, 237));
-		removeStudentTitle.setFont(new Font("Tahoma", Font.BOLD, 19));
+		removeStudentTitle.setForeground(Color.DARK_GRAY);
+		removeStudentTitle.setFont(new Font("Geist Medium", Font.BOLD, 34));
 		studentRemovePanel.add(removeStudentTitle);
-
+								
 		JLabel lblNewLabel = new JLabel("Select Student Name :");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		lblNewLabel.setBounds(10, 105, 196, 58);
+		lblNewLabel.setForeground(new Color(93, 93, 93));
+		lblNewLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		lblNewLabel.setBounds(87, 218, 217, 58);
 		studentRemovePanel.add(lblNewLabel);
-
-		JButton removeStudentConfirmButton = new JButton("Confirm");
+		
+		ButtonGradient removeStudentConfirmButton = new ButtonGradient();
+		removeStudentConfirmButton.setBounds(208, 341, 223, 61);
+		studentRemovePanel.add(removeStudentConfirmButton);
+		removeStudentConfirmButton.setFont(new Font("Geist Medium", Font.BOLD, 22));
+		removeStudentConfirmButton.setText("Remove Student");
 		removeStudentConfirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Student remove button clicked:
@@ -218,10 +233,10 @@ public class AdminMenuUI extends JFrame {
 				}
 			}
 		});
-		removeStudentConfirmButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		removeStudentConfirmButton.setBackground(UIManager.getColor("Button.light"));
-		removeStudentConfirmButton.setBounds(129, 215, 147, 44);
-		studentRemovePanel.add(removeStudentConfirmButton);
+		
+		
+		
 
 		JPanel lessonManagementPanel = new JPanel();
 		lessonManagementPanel.setBackground(SystemColor.inactiveCaption);
@@ -551,6 +566,83 @@ public class AdminMenuUI extends JFrame {
 		lblStudents.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblStudents.setBounds(0, 0, 163, 28);
 		panel.add(lblStudents);
+		
+		JPanel teacherManagementPanel = new JPanel();
+		teacherManagementPanel.setLayout(null);
+		teacherManagementPanel.setBackground(SystemColor.inactiveCaption);
+		tabbedPane.addTab("New tab", null, teacherManagementPanel, null);
+		
+		JPanel teacherAddPanel = new JPanel();
+		teacherAddPanel.setLayout(null);
+		teacherAddPanel.setForeground(SystemColor.inactiveCaptionBorder);
+		teacherAddPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		teacherAddPanel.setBackground(SystemColor.inactiveCaptionBorder);
+		teacherAddPanel.setBounds(10, 11, 394, 349);
+		teacherManagementPanel.add(teacherAddPanel);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(147, 108, 206, 27);
+		teacherAddPanel.add(textField);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(147, 146, 206, 27);
+		teacherAddPanel.add(passwordField);
+		
+		JLabel passwordLabel_1 = new JLabel("Password :");
+		passwordLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		passwordLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		passwordLabel_1.setBounds(10, 136, 126, 44);
+		teacherAddPanel.add(passwordLabel_1);
+		
+		JLabel usernameLabel_1 = new JLabel("Username :");
+		usernameLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		usernameLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		usernameLabel_1.setBounds(10, 97, 126, 44);
+		teacherAddPanel.add(usernameLabel_1);
+		
+		JButton addStudentConfirmButton_1 = new JButton("Confirm");
+		addStudentConfirmButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		addStudentConfirmButton_1.setBackground(UIManager.getColor("Button.light"));
+		addStudentConfirmButton_1.setBounds(119, 215, 147, 44);
+		teacherAddPanel.add(addStudentConfirmButton_1);
+		
+		JLabel addStudentTitle_1 = new JLabel("= Add A New Student =");
+		addStudentTitle_1.setHorizontalAlignment(SwingConstants.CENTER);
+		addStudentTitle_1.setForeground(new Color(100, 149, 237));
+		addStudentTitle_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		addStudentTitle_1.setBounds(10, 23, 374, 53);
+		teacherAddPanel.add(addStudentTitle_1);
+		
+		JPanel studentRemovePanel_1 = new JPanel();
+		studentRemovePanel_1.setLayout(null);
+		studentRemovePanel_1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		studentRemovePanel_1.setBackground(SystemColor.inactiveCaptionBorder);
+		studentRemovePanel_1.setBounds(425, 11, 394, 349);
+		teacherManagementPanel.add(studentRemovePanel_1);
+		
+		JComboBox studentNamesComboBox_1 = new JComboBox();
+		studentNamesComboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		studentNamesComboBox_1.setBounds(216, 127, 168, 24);
+		studentRemovePanel_1.add(studentNamesComboBox_1);
+		
+		JLabel removeStudentTitle_1 = new JLabel("= Remove Student =");
+		removeStudentTitle_1.setHorizontalAlignment(SwingConstants.CENTER);
+		removeStudentTitle_1.setForeground(new Color(100, 149, 237));
+		removeStudentTitle_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		removeStudentTitle_1.setBounds(10, 23, 374, 48);
+		studentRemovePanel_1.add(removeStudentTitle_1);
+		
+		JLabel lblNewLabel_1 = new JLabel("Select Student Name :");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblNewLabel_1.setBounds(10, 105, 196, 58);
+		studentRemovePanel_1.add(lblNewLabel_1);
+		
+		JButton removeStudentConfirmButton_1 = new JButton("Confirm");
+		removeStudentConfirmButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		removeStudentConfirmButton_1.setBackground(UIManager.getColor("Button.light"));
+		removeStudentConfirmButton_1.setBounds(129, 215, 147, 44);
+		studentRemovePanel_1.add(removeStudentConfirmButton_1);
 
 	}
 	
