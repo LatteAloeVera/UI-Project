@@ -70,7 +70,7 @@ public class LoginUI extends JFrame {
 	 */
 	public LoginUI() {
 		setFont(new Font("Dialog", Font.BOLD, 20));
-		setIconImage(Toolkit.getDefaultToolkit().getImage("content/loginIco.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\adminPanelIco.png"));
 		setForeground(SystemColor.inactiveCaption);
 		setBackground(SystemColor.inactiveCaption);
 		setTitle("Login");
@@ -121,7 +121,7 @@ public class LoginUI extends JFrame {
 		
 		JLabel illustrationLabel = new JLabel("");
 		illustrationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
+		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\loginArt.png"));
 		illustrationLabel.setBounds(0, 180, 495, 281);
 		artPanel.add(illustrationLabel);
 		
@@ -226,7 +226,7 @@ public class LoginUI extends JFrame {
 		backgroundLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		backgroundLabel.setBounds(0, 0, 770, 681);
 		loginPanel.add(backgroundLabel);
-		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lgnBackground4.png"));
+		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\lgnBackground4.png"));
 		
 
 		

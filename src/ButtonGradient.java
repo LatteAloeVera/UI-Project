@@ -22,7 +22,7 @@ public class ButtonGradient extends JButton {
 	//private Color color1 = Color.decode("#7F7FD5");
 	//private Color color2 = Color.decode("#f64f59");
 	
-	private Color color1 = Color.decode("#7eb4fa");
+	
 	public Color getColor1() {
 		return color1;
 	}
@@ -47,6 +47,10 @@ public class ButtonGradient extends JButton {
 		this.sizeSpeed = sizeSpeed;
 	}
 	
+	public void setPressedWhiteness(float alphaPressedWanted) {
+		this.alphaPressedDefault = alphaPressedWanted;
+	}
+	
 	public boolean isButtonClickEffect() {
 		return buttonClickEffect;
 	}
@@ -54,9 +58,13 @@ public class ButtonGradient extends JButton {
 	public void setButtonClickEffect(boolean buttonClickEffect) {
 		this.buttonClickEffect = buttonClickEffect;
 	}
+	
+	
 
-
-	private Color color2 = Color.decode("#e4b7ee");
+	private float  alphaPressedDefault = 0.3f;	//How much will the button highlight itself on click (0f = none, 1f = fully white, 0.3f = default)
+	
+	private Color color1 = Color.decode("#7eb4fa");		//Default color
+	private Color color2 = Color.decode("#e4b7ee");		//Default color
 	private final Timer timer;
 	private final Timer timerPressed;
 	private float alpha = 0.3f;
@@ -64,8 +72,9 @@ public class ButtonGradient extends JButton {
 	private boolean pressed;
 	private Point pressedLocation;
 	private float pressedSize;
-	private float sizeSpeed = 16f;						//Speed of the click area increase
-	private float alphaPressed = 0.5f;
+	private float sizeSpeed = 16f;						//Speed of the click area increase (16f = default)
+	private float alphaPressed = alphaPressedDefault;	
+	
 	private boolean buttonClickEffect = true;
 
 
@@ -95,7 +104,7 @@ public class ButtonGradient extends JButton {
 			@Override
 			public void mousePressed(MouseEvent me) {
 				pressedSize = 0;
-				alphaPressed = 0.5f;
+				alphaPressed = alphaPressedDefault;
 				pressed = true;
 				pressedLocation = me.getPoint();
 				if(buttonClickEffect) {
