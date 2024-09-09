@@ -131,19 +131,20 @@ public class LoginUI extends JFrame {
 		contentPane.add(loginPanel);
 		loginPanel.setLayout(null);
 		
+		JLabel loginLabel = new JLabel("Welcome!");
+		loginLabel.setBackground(new Color(0, 0, 64));
+		loginLabel.setForeground(Color.DARK_GRAY);
+		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 54));
+		loginLabel.setBounds(0, 124, 656, 71);
+		loginPanel.add(loginLabel);
+		
 		JLabel usernameLabel = new JLabel("User ID :");
 		usernameLabel.setForeground(new Color(93, 93, 93));
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
 		usernameLabel.setBounds(139, 247, 151, 44);
 		loginPanel.add(usernameLabel);
-		
-		JLabel passwordLabel = new JLabel("Password :");
-		passwordLabel.setForeground(new Color(93, 93, 93));
-		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
-		passwordLabel.setBounds(164, 302, 126, 44);
-		loginPanel.add(passwordLabel);
 		
 		
 		idField = new JTextField();
@@ -153,6 +154,13 @@ public class LoginUI extends JFrame {
 		loginPanel.add(idField);
 		idField.setColumns(10);
 		
+		JLabel passwordLabel = new JLabel("Password :");
+		passwordLabel.setForeground(new Color(93, 93, 93));
+		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		passwordLabel.setBounds(164, 302, 126, 44);
+		loginPanel.add(passwordLabel);
+		
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Geist", Font.PLAIN, 15));
 		passwordField.setBackground(new Color(252, 249, 255));
@@ -161,6 +169,7 @@ public class LoginUI extends JFrame {
 		loginPanel.add(passwordField);
 		
 		ButtonGradient loginButton = new ButtonGradient();
+		loginButton.setPressedShineColor(new Color(255, 255, 255));
 		this.setFont(new Font("Geist Medium", Font.BOLD, 27));
 		loginButton.setText("Login");
 		loginButton.setForeground(Color.decode("#fcf9ff"));
@@ -211,14 +220,6 @@ public class LoginUI extends JFrame {
 		});
 		loginButton.setBounds(254, 390, 161, 57);
 		loginPanel.add(loginButton);
-		
-		JLabel loginLabel = new JLabel("Welcome!");
-		loginLabel.setBackground(new Color(0, 0, 64));
-		loginLabel.setForeground(Color.DARK_GRAY);
-		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 54));
-		loginLabel.setBounds(0, 124, 656, 71);
-		loginPanel.add(loginLabel);
 		
 	
 		JLabel backgroundLabel = new JLabel("New label");
