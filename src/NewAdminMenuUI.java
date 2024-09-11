@@ -14,11 +14,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
+import javax.swing.JTextField;
 
 public class NewAdminMenuUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private TextField textField;
 
 	/**
 	 * Launch the application.
@@ -199,11 +201,17 @@ public class NewAdminMenuUI extends JFrame {
 		enrollMenuIcon_1.setBounds(45, 582, 25, 25);
 		navBarPanel.add(enrollMenuIcon_1);
 		
-		JLabel adminUIMenuPanelBgLabel = new JLabel("New label");
-		adminUIMenuPanelBgLabel.setBackground(new Color(249, 249, 249));
-		adminUIMenuPanelBgLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIMenuPanelBg.png"));
-		adminUIMenuPanelBgLabel.setBounds(0, 0, 260, 681);
-		navBarPanel.add(adminUIMenuPanelBgLabel);
+		JLabel schoolIcon = new JLabel("");
+		schoolIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		schoolIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\schoolLogoBig.png"));
+		schoolIcon.setBounds(0, 0, 260, 149);
+		navBarPanel.add(schoolIcon);
+		
+		JLabel adminUIMenuPanelBg = new JLabel("New label");
+		adminUIMenuPanelBg.setBackground(new Color(249, 249, 249));
+		adminUIMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIMenuPanelBg.png"));
+		adminUIMenuPanelBg.setBounds(0, 0, 260, 681);
+		navBarPanel.add(adminUIMenuPanelBg);
 		
 		JPanel uiPanel = new JPanel();
 		uiPanel.setBackground(new Color(250, 244, 255));
@@ -211,9 +219,19 @@ public class NewAdminMenuUI extends JFrame {
 		contentPane.add(uiPanel);
 		uiPanel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIPanelBg2.png"));
-		lblNewLabel.setBounds(0, 0, 1004, 681);
-		uiPanel.add(lblNewLabel);
+		textField = new TextField();
+		textField.setBounds(72, 111, 115, 42);
+		uiPanel.add(textField);
+		textField.setColumns(10);
+		
+		TextField textField_1 = new TextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(72, 185, 115, 42);
+		uiPanel.add(textField_1);
+		
+		JLabel adminUILeftMenuPanelBg = new JLabel("New label");
+		adminUILeftMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIPanelBg2.png"));
+		adminUILeftMenuPanelBg.setBounds(0, 0, 1004, 681);
+		uiPanel.add(adminUILeftMenuPanelBg);
 	}
 }

@@ -228,7 +228,7 @@ public class ButtonGradient extends JButton {
 			
 		
 
-		
+		repaint();
 	}
 	
 	@Override
