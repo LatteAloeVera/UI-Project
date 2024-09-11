@@ -44,8 +44,8 @@ public class LoginUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField idField;
-	private JPasswordField passwordField;
+	private TextField idField;
+	private PasswordField passwordField;
 	protected static String sessionUserName;
 
 	/**
@@ -135,37 +135,27 @@ public class LoginUI extends JFrame {
 		loginLabel.setBackground(new Color(0, 0, 64));
 		loginLabel.setForeground(Color.DARK_GRAY);
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 54));
+		loginLabel.setFont(new Font("Geist Medium", Font.BOLD, 64));
 		loginLabel.setBounds(0, 124, 656, 71);
 		loginPanel.add(loginLabel);
 		
-		JLabel usernameLabel = new JLabel("User ID :");
-		usernameLabel.setForeground(new Color(93, 93, 93));
-		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		usernameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
-		usernameLabel.setBounds(139, 247, 151, 44);
-		loginPanel.add(usernameLabel);
 		
-		
-		idField = new JTextField();
+		idField = new TextField();
+		idField.setHintLabelColor(new Color(110, 110, 110));
+		idField.setHintLabelText("User ID");
+		idField.setLineColor(new Color(176, 148, 204));
 		idField.setFont(new Font("Geist", Font.PLAIN, 15));
-		idField.setBackground(new Color(252, 249, 255));
-		idField.setBounds(300, 258, 193, 27);
+		idField.setBounds(218, 250, 220, 50);
 		loginPanel.add(idField);
-		idField.setColumns(10);
 		
-		JLabel passwordLabel = new JLabel("Password :");
-		passwordLabel.setForeground(new Color(93, 93, 93));
-		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		passwordLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
-		passwordLabel.setBounds(164, 302, 126, 44);
-		loginPanel.add(passwordLabel);
-		
-		passwordField = new JPasswordField();
+		passwordField = new PasswordField();
+		passwordField.setHintLabelColor(new Color(110, 110, 110));
+		passwordField.setHintLabelText("Password");
+		passwordField.setLineColor(new Color(176, 148, 204));
 		passwordField.setFont(new Font("Geist", Font.PLAIN, 15));
 		passwordField.setBackground(new Color(252, 249, 255));
-		passwordField.setEchoChar('*');
-		passwordField.setBounds(300, 313, 193, 27);
+		passwordField.setEchoChar('•');
+		passwordField.setBounds(218, 340, 220, 50);
 		loginPanel.add(passwordField);
 		
 		ButtonGradient loginButton = new ButtonGradient();
@@ -218,7 +208,7 @@ public class LoginUI extends JFrame {
 				
 			}
 		});
-		loginButton.setBounds(254, 390, 161, 57);
+		loginButton.setBounds(248, 440, 160, 55);
 		loginPanel.add(loginButton);
 		
 	

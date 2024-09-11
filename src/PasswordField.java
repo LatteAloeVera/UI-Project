@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -19,18 +20,18 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 
-public class TextField extends JTextField {
+public class PasswordField extends JPasswordField {
 
 	private final Animator animator;
 	private float location;
 	private boolean show;
 	private boolean mouseOver = false;
-	private String hintLabelText = "Label";
 	private boolean animateHinText = true;
+	private String hintLabelText = "Label";
 	private Font hintLabelFont = new Font("Geist", Font.PLAIN, 19);
 	private Color hintLabelColor = new Color(150, 150, 150);
 	private Color lineColor = hintLabelColor;
-	
+
 	public Font getHintLabelFont() {
 		return hintLabelFont;
 	}
@@ -38,7 +39,7 @@ public class TextField extends JTextField {
 	public void setHintLabelFont(Font hintLabelFont) {
 		this.hintLabelFont = hintLabelFont;
 	}
-
+	
 	public String getHintLabelText() {
 		return hintLabelText;
 	}
@@ -54,7 +55,7 @@ public class TextField extends JTextField {
 	public void setHintLabelColor(Color hintLabelColor) {
 		this.hintLabelColor = hintLabelColor;
 	}
-
+	
 	public String getLabelText() {
 		return hintLabelText;
 	}
@@ -72,7 +73,7 @@ public class TextField extends JTextField {
 	}
 
 	
-	public TextField() {
+	public PasswordField() {
 			setBorder(new EmptyBorder(20, 3, 10, 3));
 			setSelectionColor(new Color(176, 204, 255));			//The color when you select a part of the text
 			setOpaque(false);										//Sets background invisible
@@ -106,7 +107,7 @@ public class TextField extends JTextField {
 				@Override
 				public void begin() {
 					super.begin();
-					animateHinText = getText().equals("");			//This makes so if we fill the field, hint label not fall.
+					animateHinText = String.valueOf(getPassword()).equals("");
 				}
 				
 				@Override
@@ -202,7 +203,7 @@ public class TextField extends JTextField {
 
 	@Override 
 	public void setText(String string){
-			if(!getText().equals(string)) {
+			if(!String.valueOf(getPassword()).equals(string)) {
 				showing(string.equals(string));
 			}
 			super.setText(string);
