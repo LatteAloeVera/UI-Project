@@ -86,7 +86,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(mainMenuButton);
 		
 		JLabel mainMenuIconLabel = new JLabel("New label");
-		mainMenuIconLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\homeIcon.png"));
+		mainMenuIconLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\homeIcon.png"));
 		mainMenuIconLabel.setBounds(45, 172, 25, 25);
 		navBarPanel.add(mainMenuIconLabel);
 		
@@ -109,7 +109,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(studentManagementMenuButton);
 		
 		JLabel studentMenuIcon = new JLabel("New label");
-		studentMenuIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\studentIcon.png"));
+		studentMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\studentIcon.png"));
 		studentMenuIcon.setBounds(45, 232, 25, 25);
 		navBarPanel.add(studentMenuIcon);
 		
@@ -131,7 +131,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(teacherManagementMenuButton);
 		
 		JLabel teacherMenuIcon = new JLabel("New label");
-		teacherMenuIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\teacherIcon.png"));
+		teacherMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\teacherIcon.png"));
 		teacherMenuIcon.setBounds(45, 292, 25, 25);
 		navBarPanel.add(teacherMenuIcon);
 		
@@ -153,7 +153,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(lessonManagementMenuButton);
 		
 		JLabel lessonMenuIcon = new JLabel("New label");
-		lessonMenuIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\lessonIcon.png"));
+		lessonMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lessonIcon.png"));
 		lessonMenuIcon.setBounds(45, 352, 25, 25);
 		navBarPanel.add(lessonMenuIcon);
 		
@@ -175,7 +175,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(enrollMenuButton);
 		
 		JLabel enrollMenuIcon = new JLabel("New label");
-		enrollMenuIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\enrollmentIcon.png"));
+		enrollMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\enrollmentIcon.png"));
 		enrollMenuIcon.setBounds(45, 412, 25, 25);
 		navBarPanel.add(enrollMenuIcon);
 		
@@ -197,19 +197,19 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(logoutMenuButton);
 		
 		JLabel enrollMenuIcon_1 = new JLabel("New label");
-		enrollMenuIcon_1.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\logoutIcon.png"));
+		enrollMenuIcon_1.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\logoutIcon.png"));
 		enrollMenuIcon_1.setBounds(45, 582, 25, 25);
 		navBarPanel.add(enrollMenuIcon_1);
 		
 		JLabel schoolIcon = new JLabel("");
 		schoolIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		schoolIcon.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\schoolLogoBig.png"));
+		schoolIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\schoolLogoBig.png"));
 		schoolIcon.setBounds(0, 0, 260, 149);
 		navBarPanel.add(schoolIcon);
 		
 		JLabel adminUIMenuPanelBg = new JLabel("New label");
 		adminUIMenuPanelBg.setBackground(new Color(249, 249, 249));
-		adminUIMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIMenuPanelBg.png"));
+		adminUIMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIMenuPanelBg2.png"));
 		adminUIMenuPanelBg.setBounds(0, 0, 260, 681);
 		navBarPanel.add(adminUIMenuPanelBg);
 		
@@ -230,7 +230,7 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.add(textField_1);
 		
 		JLabel adminUILeftMenuPanelBg = new JLabel("New label");
-		adminUILeftMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\AdminUIPanelBg2.png"));
+		adminUILeftMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
 		adminUILeftMenuPanelBg.setBounds(0, 0, 1004, 681);
 		uiPanel.add(adminUILeftMenuPanelBg);
 	}

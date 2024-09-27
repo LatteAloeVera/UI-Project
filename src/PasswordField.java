@@ -148,7 +148,7 @@ public class PasswordField extends JPasswordField {
 			g2.setColor(lineColor);						//Changes the line when mouseOver
 		}
 		else {
-			g2.setColor(new Color(150, 150, 150));		//Changes the line when mouse leaves
+			g2.setColor(hintLabelColor);		//Changes the line when mouse leaves
 		}
 		
 		

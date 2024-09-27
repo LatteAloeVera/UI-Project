@@ -121,7 +121,7 @@ public class LoginUI extends JFrame {
 		
 		JLabel illustrationLabel = new JLabel("");
 		illustrationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\loginArt.png"));
+		illustrationLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\loginArt.png"));
 		illustrationLabel.setBounds(0, 180, 495, 281);
 		artPanel.add(illustrationLabel);
 		
@@ -141,7 +141,9 @@ public class LoginUI extends JFrame {
 		
 		
 		idField = new TextField();
-		idField.setHintLabelColor(new Color(110, 110, 110));
+		idField.setHintLabelFont(new Font("Geist", Font.BOLD, 19));
+		idField.setForeground(new Color(110, 110, 110));
+		idField.setHintLabelColor(new Color(90, 90, 90));
 		idField.setHintLabelText("User ID");
 		idField.setLineColor(new Color(176, 148, 204));
 		idField.setFont(new Font("Geist", Font.PLAIN, 15));
@@ -149,7 +151,9 @@ public class LoginUI extends JFrame {
 		loginPanel.add(idField);
 		
 		passwordField = new PasswordField();
-		passwordField.setHintLabelColor(new Color(110, 110, 110));
+		passwordField.setHintLabelFont(new Font("Geist", Font.BOLD, 19));
+		passwordField.setForeground(new Color(110, 110, 110));
+		passwordField.setHintLabelColor(new Color(90, 90, 90));
 		passwordField.setHintLabelText("Password");
 		passwordField.setLineColor(new Color(176, 148, 204));
 		passwordField.setFont(new Font("Geist", Font.PLAIN, 15));
@@ -190,7 +194,7 @@ public class LoginUI extends JFrame {
 							
 							sessionUserName = usrName;
 							if(userMap.get(usrName).getTag().compareTo("Admin") == 0)
-								new AdminMenuUI().setVisible(true);
+								new NewAdminMenuUI().setVisible(true);
 							else if(userMap.get(usrName).getTag().compareTo("Teacher") == 0) 
 								new TeacherMenuUI().setVisible(true);
 							else
@@ -213,11 +217,11 @@ public class LoginUI extends JFrame {
 		
 	
 		JLabel backgroundLabel = new JLabel("New label");
-		backgroundLabel.setBackground(new Color(128, 128, 192));
+		backgroundLabel.setBackground(Color.GRAY);
 		backgroundLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		backgroundLabel.setBounds(0, 0, 770, 681);
 		loginPanel.add(backgroundLabel);
-		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\lgnBackground4.png"));
+		backgroundLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lgnBackground4.png"));
 		
 
 		
