@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
 public class NewAdminMenuUI extends JFrame {
 
@@ -62,20 +63,47 @@ public class NewAdminMenuUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel uiPanel = new JPanel();
-		uiPanel.setBackground(new Color(250, 244, 255));
+		uiPanel.setBackground(new Color(250, 255, 255));
 		uiPanel.setBounds(260, 0, 1004, 681);
 		contentPane.add(uiPanel);
 		uiPanel.setLayout(null);
 		
 		JPanel studentMenuPanel = new JPanel();
-		studentMenuPanel.setBackground(new Color(250, 244, 255));
+		studentMenuPanel.setBackground(new Color(250, 255, 255));
 		studentMenuPanel.setBounds(0, 0, 1004, 681);
 		uiPanel.add(studentMenuPanel);
 		studentMenuPanel.setLayout(null);
 		studentMenuPanel.setVisible(false);
 		
-		ButtonGradient addNewStudentButton = new ButtonGradient();
-		addNewStudentButton.addActionListener(new ActionListener() {
+		studentNameField = new TextField();
+		studentNameField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		studentNameField.setForeground(new Color(90, 90, 90));
+		studentNameField.setFont(new Font("Geist", Font.PLAIN, 17));
+		studentNameField.setLineColor(new Color(154, 188, 252));
+		studentNameField.setHintLabelColor(new Color(150, 150, 150));
+		studentNameField.setHintLabelText("Student's Name\r\n");
+		studentNameField.setBounds(140, 252, 220, 50);
+		studentMenuPanel.add(studentNameField);
+		studentNameField.setColumns(10);
+		
+		studentPassField = new TextField();
+		studentPassField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		studentPassField.setForeground(new Color(90, 90, 90));
+		studentPassField.setFont(new Font("Geist", Font.PLAIN, 17));
+		studentPassField.setLineColor(new Color(154, 188, 252));
+		studentPassField.setHintLabelColor(new Color(150, 150, 150));
+		studentPassField.setHintLabelText("Student's Password");
+		studentPassField.setColumns(10);
+		studentPassField.setBounds(140, 331, 220, 50);
+		studentMenuPanel.add(studentPassField);
+		
+		JComboBox studentNamesComboBox = new JComboBox();
+		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		studentNamesComboBox.setBounds(733, 317, 206, 27);
+		studentMenuPanel.add(studentNamesComboBox);
+		
+		ButtonGradient addStudentButton = new ButtonGradient();
+		addStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Student add button clicked:
 				HashMap<String, User> userMap = FuncManager.readUserFile();
@@ -105,35 +133,22 @@ public class NewAdminMenuUI extends JFrame {
 
 			}
 		});
+		addStudentButton.setSizeSpeed(18.0f);
+		addStudentButton.setColor2(new Color(223, 188, 233));
+		addStudentButton.setColor1(new Color(135, 181, 241));
+		addStudentButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		addStudentButton.setText("Add!");
+		addStudentButton.setBounds(177, 432, 160, 50);
+		studentMenuPanel.add(addStudentButton);
 		
-		studentNameField = new TextField();
-		studentNameField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
-		studentNameField.setForeground(new Color(90, 90, 90));
-		studentNameField.setFont(new Font("Geist", Font.PLAIN, 17));
-		studentNameField.setLineColor(new Color(154, 188, 252));
-		studentNameField.setHintLabelColor(new Color(150, 150, 150));
-		studentNameField.setHintLabelText("Student's Name\r\n");
-		studentNameField.setBounds(140, 252, 220, 50);
-		studentMenuPanel.add(studentNameField);
-		studentNameField.setColumns(10);
-		
-		studentPassField = new TextField();
-		studentPassField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
-		studentPassField.setForeground(new Color(90, 90, 90));
-		studentPassField.setFont(new Font("Geist", Font.PLAIN, 17));
-		studentPassField.setLineColor(new Color(154, 188, 252));
-		studentPassField.setHintLabelColor(new Color(150, 150, 150));
-		studentPassField.setHintLabelText("Student's Password");
-		studentPassField.setColumns(10);
-		studentPassField.setBounds(140, 331, 220, 50);
-		studentMenuPanel.add(studentPassField);
-		addNewStudentButton.setSizeSpeed(18.0f);
-		addNewStudentButton.setColor2(new Color(223, 188, 233));
-		addNewStudentButton.setColor1(new Color(135, 181, 241));
-		addNewStudentButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
-		addNewStudentButton.setText("Add!");
-		addNewStudentButton.setBounds(177, 432, 140, 40);
-		studentMenuPanel.add(addNewStudentButton);
+		ButtonGradient removeStudentButton = new ButtonGradient();
+		removeStudentButton.setText("Remove!");
+		removeStudentButton.setSizeSpeed(18.0f);
+		removeStudentButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		removeStudentButton.setColor2(new Color(223, 188, 233));
+		removeStudentButton.setColor1(new Color(135, 181, 241));
+		removeStudentButton.setBounds(660, 432, 160, 50);
+		studentMenuPanel.add(removeStudentButton);
 		
 		JLabel lblNewLabel = new JLabel("= Add A New Student =                    = Remove A Student =");
 		lblNewLabel.setForeground(new Color(120, 120, 120));
@@ -142,10 +157,16 @@ public class NewAdminMenuUI extends JFrame {
 		lblNewLabel.setBounds(10, 120, 972, 75);
 		studentMenuPanel.add(lblNewLabel);
 		
+		JLabel lblNewLabel_2 = new JLabel("Select Student Name :");
+		lblNewLabel_2.setForeground(new Color(150, 150, 150));
+		lblNewLabel_2.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(506, 300, 217, 58);
+		studentMenuPanel.add(lblNewLabel_2);
+		
 		JLabel adminUILeftMenuPanelBg_1 = new JLabel("New label");
 		adminUILeftMenuPanelBg_1.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
 		adminUILeftMenuPanelBg_1.setBackground(new Color(249, 249, 249));
-		adminUILeftMenuPanelBg_1.setBounds(0, 11, 1004, 681);
+		adminUILeftMenuPanelBg_1.setBounds(0, 0, 1004, 681);
 		studentMenuPanel.add(adminUILeftMenuPanelBg_1);
 		
 		JPanel teacherMenuPanel = new JPanel();
@@ -225,7 +246,7 @@ public class NewAdminMenuUI extends JFrame {
 		mainMenuPanel.add(adminUILeftMenuPanelBg);
 		
 		JPanel navBarPanel = new JPanel();
-		navBarPanel.setBackground(new Color(250, 244, 255));
+		navBarPanel.setBackground(new Color(250, 255, 255));
 		navBarPanel.setBounds(0, 0, 260, 681);
 		contentPane.add(navBarPanel);
 		navBarPanel.setLayout(null);
@@ -427,7 +448,7 @@ public class NewAdminMenuUI extends JFrame {
 		navBarPanel.add(schoolIcon);
 		
 		JLabel adminUIMenuPanelBg = new JLabel("New label");
-		adminUIMenuPanelBg.setBackground(new Color(249, 249, 249));
+		adminUIMenuPanelBg.setBackground(new Color(250, 255, 255));
 		adminUIMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIMenuPanelBg2.png"));
 		adminUIMenuPanelBg.setBounds(0, 0, 260, 681);
 		navBarPanel.add(adminUIMenuPanelBg);
