@@ -5,11 +5,13 @@ import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -25,8 +27,7 @@ public class NewAdminMenuUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private TextField studentNameField;
-	private TextField studentPassField;
+	private JComboBox teacherNamesForLessonComboBox;
 
 	/**
 	 * Launch the application.
@@ -63,19 +64,45 @@ public class NewAdminMenuUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel uiPanel = new JPanel();
-		uiPanel.setBackground(new Color(250, 255, 255));
+		uiPanel.setBackground(new Color(250, 244, 255));
 		uiPanel.setBounds(260, 0, 1004, 681);
 		contentPane.add(uiPanel);
 		uiPanel.setLayout(null);
 		
+		JPanel mainMenuPanel = new JPanel();
+		mainMenuPanel.setBackground(new Color(250, 244, 255));
+		mainMenuPanel.setBounds(0, 0, 1004, 681);
+		uiPanel.add(mainMenuPanel);
+		mainMenuPanel.setLayout(null);
+		
+		JList x = new JList<>();
+		x.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		x.setBackground(new Color(233, 240, 243));
+		x.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		x.setBounds(40, 122, 196, 300);
+		mainMenuPanel.add(x);
+		
+		JLabel welcomeLabel = new JLabel("Welcome To The Admin Menu");
+		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		welcomeLabel.setForeground(new Color(95, 90, 103));
+		welcomeLabel.setFont(new Font("Geist Medium", Font.BOLD, 32));
+		welcomeLabel.setBounds(10, 51, 972, 51);
+		mainMenuPanel.add(welcomeLabel);
+		
+		JLabel adminUILeftMenuPanelBg = new JLabel("New label");
+		adminUILeftMenuPanelBg.setBackground(new Color(249, 249, 249));
+		adminUILeftMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
+		adminUILeftMenuPanelBg.setBounds(0, 0, 1004, 681);
+		mainMenuPanel.add(adminUILeftMenuPanelBg);
+		
 		JPanel studentMenuPanel = new JPanel();
-		studentMenuPanel.setBackground(new Color(250, 255, 255));
+		studentMenuPanel.setBackground(new Color(250, 244, 255));
 		studentMenuPanel.setBounds(0, 0, 1004, 681);
 		uiPanel.add(studentMenuPanel);
 		studentMenuPanel.setLayout(null);
 		studentMenuPanel.setVisible(false);
 		
-		studentNameField = new TextField();
+		TextField studentNameField = new TextField();
 		studentNameField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
 		studentNameField.setForeground(new Color(90, 90, 90));
 		studentNameField.setFont(new Font("Geist", Font.PLAIN, 17));
@@ -86,7 +113,7 @@ public class NewAdminMenuUI extends JFrame {
 		studentMenuPanel.add(studentNameField);
 		studentNameField.setColumns(10);
 		
-		studentPassField = new TextField();
+		TextField studentPassField = new TextField();
 		studentPassField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
 		studentPassField.setForeground(new Color(90, 90, 90));
 		studentPassField.setFont(new Font("Geist", Font.PLAIN, 17));
@@ -101,6 +128,7 @@ public class NewAdminMenuUI extends JFrame {
 		studentNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		studentNamesComboBox.setBounds(733, 317, 206, 27);
 		studentMenuPanel.add(studentNamesComboBox);
+		updateStudentComboBox(studentNamesComboBox);
 		
 		ButtonGradient addStudentButton = new ButtonGradient();
 		addStudentButton.addActionListener(new ActionListener() {
@@ -126,7 +154,7 @@ public class NewAdminMenuUI extends JFrame {
 					}
 					//TODO: After implementing other stuff, make sure to uncomment these!!!!
 					
-					//updateStudentComboBox(studentNamesComboBox);
+					updateStudentComboBox(studentNamesComboBox);
 					//updateEnrollingStudentList();
 					FuncManager.infoBox("New student \"" + usrName + "\" added!", "Successful!");
 				}
@@ -142,6 +170,24 @@ public class NewAdminMenuUI extends JFrame {
 		studentMenuPanel.add(addStudentButton);
 		
 		ButtonGradient removeStudentButton = new ButtonGradient();
+		removeStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Student remove button clicked:
+
+				if (studentNamesComboBox.getSelectedIndex() < 0) {
+					FuncManager.errorBox("Nothing selected!", "Error!");
+				} else {
+					String studentName = studentNamesComboBox.getSelectedItem().toString();
+					FuncManager.deleteAllStudentDataFromEnrolledCourses(studentName);
+					FuncManager.deleteUserFromFile(studentName);
+
+					FuncManager.infoBox("Deleted from file!", "Successful!");
+					updateStudentComboBox(studentNamesComboBox);
+					//updateEnrollingStudentList();
+					// TODO: make a function to update studentNameList and update it here.
+				}
+			}
+		});
 		removeStudentButton.setText("Remove!");
 		removeStudentButton.setSizeSpeed(18.0f);
 		removeStudentButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
@@ -175,12 +221,115 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.add(teacherMenuPanel);
 		teacherMenuPanel.setLayout(null);
 		teacherMenuPanel.setVisible(false);
-
 		
-		JLabel lblNewLabel_1 = new JLabel("Teacher");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(0, 0, 157, 44);
-		teacherMenuPanel.add(lblNewLabel_1);
+		TextField teacherNameField = new TextField();
+		teacherNameField.setLineColor(new Color(154, 188, 252));
+		teacherNameField.setHintLabelText("Teacher's Name\r\n");
+		teacherNameField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		teacherNameField.setHintLabelColor(new Color(150, 150, 150));
+		teacherNameField.setForeground(new Color(90, 90, 90));
+		teacherNameField.setFont(new Font("Geist", Font.PLAIN, 17));
+		teacherNameField.setColumns(10);
+		teacherNameField.setBounds(140, 252, 220, 50);
+		teacherMenuPanel.add(teacherNameField);
+		
+		TextField teacherPassField = new TextField();
+		teacherPassField.setLineColor(new Color(154, 188, 252));
+		teacherPassField.setHintLabelText("Teacher's Password");
+		teacherPassField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		teacherPassField.setHintLabelColor(new Color(150, 150, 150));
+		teacherPassField.setForeground(new Color(90, 90, 90));
+		teacherPassField.setFont(new Font("Geist", Font.PLAIN, 17));
+		teacherPassField.setColumns(10);
+		teacherPassField.setBounds(140, 331, 220, 50);
+		teacherMenuPanel.add(teacherPassField);
+		
+		JComboBox teacherNamesComboBox = new JComboBox();
+		teacherNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		teacherNamesComboBox.setBounds(733, 317, 206, 27);
+		teacherMenuPanel.add(teacherNamesComboBox);
+		updateTeacherComboBox(teacherNamesComboBox);
+		
+		ButtonGradient addTeacherButton = new ButtonGradient();
+		addTeacherButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Teacher add button clicked:
+				HashMap<String, User> userMap = FuncManager.readUserFile();
+				String usrName = teacherNameField.getText().trim();
+				String usrPass = teacherPassField.getText().trim();
+
+				teacherNameField.setText("");
+				teacherPassField.setText("");
+
+				if (usrName.length() == 0 || usrPass.length() == 0) {
+					FuncManager.errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
+				} else if (userMap.containsKey(usrName)) {
+					FuncManager.errorBox("There is an another user named \"" + usrName + "\" , Please enter an another username!",
+							"Name Exists!");
+				} else {
+					try {
+						FuncManager.addNewUserToFile(usrName, usrPass, "Teacher");
+					} catch (UnsupportedTypeException e1) {
+						e1.printStackTrace();
+					}
+					//TODO: After implementing other stuff, make sure to uncomment these!!!!
+					
+					updateTeacherComboBox(teacherNamesComboBox);
+					updateTeacherComboBox(teacherNamesForLessonComboBox);
+					//updateEnrollingStudentList();
+					FuncManager.infoBox("New student \"" + usrName + "\" added!", "Successful!");
+				}
+			}
+		});
+		addTeacherButton.setText("Add!");
+		addTeacherButton.setSizeSpeed(18.0f);
+		addTeacherButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		addTeacherButton.setColor2(new Color(223, 188, 233));
+		addTeacherButton.setColor1(new Color(135, 181, 241));
+		addTeacherButton.setBounds(177, 432, 160, 50);
+		teacherMenuPanel.add(addTeacherButton);
+		
+		ButtonGradient removeTeacherButton = new ButtonGradient();
+		removeTeacherButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Teacher remove button clicked:
+
+				if (teacherNamesComboBox.getSelectedIndex() < 0) {
+					FuncManager.errorBox("Nothing selected!", "Error!");
+				} else {
+					String teacherName = teacherNamesComboBox.getSelectedItem().toString();
+					FuncManager.deleteAllLessonsFromTeacher(teacherName);
+					FuncManager.deleteAllStudentDataFromEnrolledCourses(teacherName);
+					FuncManager.deleteUserFromFile(teacherName);
+
+					FuncManager.infoBox("Deleted from file!", "Successful!");
+					updateTeacherComboBox(teacherNamesComboBox);
+					updateTeacherComboBox(teacherNamesForLessonComboBox);
+					//updateEnrollingStudentList();
+					// TODO: make a function to update studentNameList and update it here.
+				}
+			}
+		});
+		removeTeacherButton.setText("Remove!");
+		removeTeacherButton.setSizeSpeed(18.0f);
+		removeTeacherButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		removeTeacherButton.setColor2(new Color(223, 188, 233));
+		removeTeacherButton.setColor1(new Color(135, 181, 241));
+		removeTeacherButton.setBounds(660, 432, 160, 50);
+		teacherMenuPanel.add(removeTeacherButton);
+		
+		JLabel selectTeacherNameLabel = new JLabel("Select a Teacher :");
+		selectTeacherNameLabel.setForeground(new Color(150, 150, 150));
+		selectTeacherNameLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		selectTeacherNameLabel.setBounds(506, 300, 220, 58);
+		teacherMenuPanel.add(selectTeacherNameLabel);
+		
+		JLabel lblAddA = new JLabel("= Add A New Teacher =                    = Remove A Teacher =");
+		lblAddA.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddA.setForeground(new Color(120, 120, 120));
+		lblAddA.setFont(new Font("Geist Medium", Font.BOLD, 30));
+		lblAddA.setBounds(10, 120, 972, 75);
+		teacherMenuPanel.add(lblAddA);
 		
 		JLabel adminUILeftMenuPanelBg_2 = new JLabel("New label");
 		adminUILeftMenuPanelBg_2.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
@@ -194,12 +343,147 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.add(lessonMenuPanel);
 		lessonMenuPanel.setLayout(null);
 		lessonMenuPanel.setVisible(false);
-
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Lesson");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_1.setBounds(0, 0, 157, 44);
-		lessonMenuPanel.add(lblNewLabel_1_1);
+		TextField lessonNameField = new TextField();
+		lessonNameField.setLineColor(new Color(154, 188, 252));
+		lessonNameField.setHintLabelText("Lesson Name\r\n");
+		lessonNameField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		lessonNameField.setHintLabelColor(new Color(150, 150, 150));
+		lessonNameField.setForeground(new Color(90, 90, 90));
+		lessonNameField.setFont(new Font("Geist", Font.PLAIN, 17));
+		lessonNameField.setColumns(10);
+		lessonNameField.setBounds(154, 206, 220, 50);
+		lessonMenuPanel.add(lessonNameField);
+		
+		TextField lessonCreditField = new TextField();
+		lessonCreditField.setLineColor(new Color(154, 188, 252));
+		lessonCreditField.setHintLabelText("Lesson Credit");
+		lessonCreditField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		lessonCreditField.setHintLabelColor(new Color(150, 150, 150));
+		lessonCreditField.setForeground(new Color(90, 90, 90));
+		lessonCreditField.setFont(new Font("Geist", Font.PLAIN, 17));
+		lessonCreditField.setColumns(10);
+		lessonCreditField.setBounds(154, 272, 220, 50);
+		lessonMenuPanel.add(lessonCreditField);
+		
+		TextField lessonCodeField = new TextField();
+		lessonCodeField.setLineColor(new Color(154, 188, 252));
+		lessonCodeField.setHintLabelText("Lesson Code");
+		lessonCodeField.setHintLabelFont(new Font("Geist Medium", Font.PLAIN, 17));
+		lessonCodeField.setHintLabelColor(new Color(150, 150, 150));
+		lessonCodeField.setForeground(new Color(90, 90, 90));
+		lessonCodeField.setFont(new Font("Geist", Font.PLAIN, 17));
+		lessonCodeField.setColumns(10);
+		lessonCodeField.setBounds(154, 337, 220, 50);
+		lessonMenuPanel.add(lessonCodeField);
+		
+		JComboBox teacherNamesForLessonComboBox = new JComboBox();
+		teacherNamesForLessonComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		teacherNamesForLessonComboBox.setBounds(255, 423, 206, 27);
+		lessonMenuPanel.add(teacherNamesForLessonComboBox);
+		updateTeacherComboBox(teacherNamesForLessonComboBox);
+		
+		JComboBox lessonNamesComboBox = new JComboBox();
+		lessonNamesComboBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lessonNamesComboBox.setBounds(732, 285, 206, 27);
+		lessonMenuPanel.add(lessonNamesComboBox);
+		updateLessonComboBox(lessonNamesComboBox);
+		
+		ButtonGradient addLessonButton = new ButtonGradient();
+		addLessonButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// When clicked Add Lesson Confirm Button:
+				HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
+
+				String lessonCode = lessonCodeField.getText();
+				String lessonName = lessonNameField.getText();
+				Teacher lessonTeacher;
+
+				if (lessonCreditField.getText().length() == 0 || lessonCode.length() == 0
+						|| lessonName.length() == 0) {
+					FuncManager.errorBox("Please fill in all the empty areas!", "Empty Area Remaining!");
+				} else if (teacherNamesForLessonComboBox.getSelectedIndex() < 0) {
+					FuncManager.errorBox("Nothing selected as a teacher!", "Error!");
+				} else if (lessonMap.containsKey(lessonName)) {
+					FuncManager.errorBox("There is an another lesson named \"" + lessonName
+							+ "\", please enter an another lesson name!", "Name Exists!");
+				} else if (FuncManager.doesLessonFileHasTheCode(lessonCode)) {
+					FuncManager.errorBox("This code is the code of \"" + FuncManager.getLessonByCode(lessonCode).getName()
+							+ "\". Please enter a different code.", "Code Exists!");
+				} else {
+					int lessonCredit = Integer.parseInt(lessonCreditField.getText());
+					String teacherName = teacherNamesForLessonComboBox.getSelectedItem().toString();
+					lessonTeacher = FuncManager.getTeacherByName(teacherName);
+					FuncManager.addNewLessonToFile(lessonCode, lessonName, lessonCredit, lessonTeacher);
+					updateLessonComboBox(lessonNamesComboBox);
+
+					FuncManager.infoBox("New lesson\"" + lessonName + "\" added!", "Successfull!");
+
+					lessonCodeField.setText("");
+					lessonNameField.setText("");
+					lessonCreditField.setText("");
+				}
+				//if(!studentsNameList.isSelectionEmpty()){
+				//	String studentName = studentsNameList.getSelectedValue().toString();
+				//	updateStudentLessonList(FuncManager.getStudentByName(studentName));
+				//}
+			}
+		});
+		addLessonButton.setText("Add!");
+		addLessonButton.setSizeSpeed(18.0f);
+		addLessonButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		addLessonButton.setColor2(new Color(223, 188, 233));
+		addLessonButton.setColor1(new Color(135, 181, 241));
+		addLessonButton.setBounds(184, 501, 160, 50);
+		lessonMenuPanel.add(addLessonButton);
+		
+		ButtonGradient removeLessonButton = new ButtonGradient();
+		removeLessonButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// When clicked Remove Lesson Confirm Button:
+				if (lessonNamesComboBox.getSelectedIndex() < 0) {
+					FuncManager.errorBox("Nothing selected!", "Error!");
+				} else {
+					String lessonName = lessonNamesComboBox.getSelectedItem().toString();
+
+					FuncManager.deleteLessonFromFile(lessonName);
+
+					FuncManager.infoBox("Deleted from file!", "Successful!");
+					updateLessonComboBox(lessonNamesComboBox);
+					
+					//if(!studentsNameList.isSelectionEmpty()){
+					//	String studentName = studentsNameList.getSelectedValue().toString();
+					//	updateStudentLessonList(FuncManager.getStudentByName(studentName));
+					//}
+				}
+			}
+		});
+		removeLessonButton.setText("Remove!");
+		removeLessonButton.setSizeSpeed(18.0f);
+		removeLessonButton.setFont(new Font("Geist Medium", Font.BOLD, 23));
+		removeLessonButton.setColor2(new Color(223, 188, 233));
+		removeLessonButton.setColor1(new Color(135, 181, 241));
+		removeLessonButton.setBounds(659, 400, 160, 50);
+		lessonMenuPanel.add(removeLessonButton);
+		
+		JLabel lblAddA_1 = new JLabel("= Add A New Lesson =                    = Remove A Lesson =");
+		lblAddA_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddA_1.setForeground(new Color(120, 120, 120));
+		lblAddA_1.setFont(new Font("Geist Medium", Font.BOLD, 30));
+		lblAddA_1.setBounds(10, 120, 972, 75);
+		lessonMenuPanel.add(lblAddA_1);
+		
+		JLabel selectTeacherLabel = new JLabel("Select a Teacher  :");
+		selectTeacherLabel.setForeground(new Color(150, 150, 150));
+		selectTeacherLabel.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		selectTeacherLabel.setBounds(60, 406, 220, 58);
+		lessonMenuPanel.add(selectTeacherLabel);
+		
+		JLabel lblSelectALesson = new JLabel("Select a Lesson:");
+		lblSelectALesson.setForeground(new Color(150, 150, 150));
+		lblSelectALesson.setFont(new Font("Geist Medium", Font.PLAIN, 20));
+		lblSelectALesson.setBounds(533, 268, 220, 58);
+		lessonMenuPanel.add(lblSelectALesson);
 		
 		JLabel adminUILeftMenuPanelBg_3 = new JLabel("New label");
 		adminUILeftMenuPanelBg_3.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
@@ -213,40 +497,21 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.add(enrollMenuPanel);
 		enrollMenuPanel.setLayout(null);
 		enrollMenuPanel.setVisible(false);
-
 		
-		JLabel lblNewLabel_1_2 = new JLabel("Enroll");
-		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1_2.setBounds(0, 0, 157, 44);
-		enrollMenuPanel.add(lblNewLabel_1_2);
-		
-		JLabel adminUILeftMenuPanelBg_4 = new JLabel("New label");
-		adminUILeftMenuPanelBg_4.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
-		adminUILeftMenuPanelBg_4.setBackground(new Color(249, 249, 249));
-		adminUILeftMenuPanelBg_4.setBounds(0, 0, 1004, 681);
-		enrollMenuPanel.add(adminUILeftMenuPanelBg_4);
-		
-		JPanel mainMenuPanel = new JPanel();
-		mainMenuPanel.setBackground(new Color(250, 244, 255));
-		mainMenuPanel.setBounds(0, 0, 1004, 681);
-		uiPanel.add(mainMenuPanel);
-		mainMenuPanel.setLayout(null);
-		
-		JLabel welcomeLabel = new JLabel("Welcome To The Admin Menu");
-		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		welcomeLabel.setForeground(new Color(95, 90, 103));
-		welcomeLabel.setFont(new Font("Geist Medium", Font.BOLD, 32));
-		welcomeLabel.setBounds(10, 51, 972, 51);
-		mainMenuPanel.add(welcomeLabel);
-		
-		JLabel adminUILeftMenuPanelBg = new JLabel("New label");
-		adminUILeftMenuPanelBg.setBackground(new Color(249, 249, 249));
-		adminUILeftMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
-		adminUILeftMenuPanelBg.setBounds(0, 0, 1004, 681);
-		mainMenuPanel.add(adminUILeftMenuPanelBg);
+				
+				JLabel lblNewLabel_1_2 = new JLabel("Enroll");
+				lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+				lblNewLabel_1_2.setBounds(0, 0, 157, 44);
+				enrollMenuPanel.add(lblNewLabel_1_2);
+				
+				JLabel adminUILeftMenuPanelBg_4 = new JLabel("New label");
+				adminUILeftMenuPanelBg_4.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
+				adminUILeftMenuPanelBg_4.setBackground(new Color(249, 249, 249));
+				adminUILeftMenuPanelBg_4.setBounds(0, 0, 1004, 681);
+				enrollMenuPanel.add(adminUILeftMenuPanelBg_4);
 		
 		JPanel navBarPanel = new JPanel();
-		navBarPanel.setBackground(new Color(250, 255, 255));
+		navBarPanel.setBackground(new Color(250, 244, 255));
 		navBarPanel.setBounds(0, 0, 260, 681);
 		contentPane.add(navBarPanel);
 		navBarPanel.setLayout(null);
@@ -453,4 +718,34 @@ public class NewAdminMenuUI extends JFrame {
 		adminUIMenuPanelBg.setBounds(0, 0, 260, 681);
 		navBarPanel.add(adminUIMenuPanelBg);
 	}
+	
+	// Updates Student combo box inside adminMenuUI > Add&Remove Students > Remove Student
+		private void updateStudentComboBox(JComboBox studentNamesComboBox) {
+			HashMap<String, User> userMap = FuncManager.readUserFile();
+			studentNamesComboBox.removeAllItems();
+			for (String usrName : userMap.keySet()) {
+				if (userMap.get(usrName).getTag().equals("Student")) {
+					studentNamesComboBox.addItem(usrName);
+				}
+			}
+		}
+		
+		private void updateTeacherComboBox(JComboBox studentNamesComboBox) {
+			HashMap<String, User> userMap = FuncManager.readUserFile();
+			studentNamesComboBox.removeAllItems();
+			for (String usrName : userMap.keySet()) {
+				if (userMap.get(usrName).getTag().equals("Teacher")) {
+					studentNamesComboBox.addItem(usrName);
+				}
+			}
+		}
+		
+		// Updates Lesson combo box inside adminMenuUI > Add&Remove Lessons > Remove Lesson
+		private void updateLessonComboBox(JComboBox lessonNamesComboBox) {
+			HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
+			lessonNamesComboBox.removeAllItems();
+			for (String lessonName : lessonMap.keySet()) {
+				lessonNamesComboBox.addItem(lessonName);
+			}
+		}
 }

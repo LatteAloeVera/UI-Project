@@ -268,6 +268,8 @@ public class FuncManager {
 
 		// rename temp file
 		newFile.renameTo(oldFile);
+		
+		deleteAllLessonDataFromEnrolledCourses(lessonName);
 	}
 
 	// Adds a new enrolled student with the lesson to "enrolledLessons.txt"
@@ -404,6 +406,24 @@ public class FuncManager {
 		newFile.renameTo(oldFile);
 	}
 
+	// Deletes all of the lessons that teacher gives from file "lessons.txt"
+	protected static void deleteAllLessonsFromTeacher(String teacherName) {
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		String deletedLessonNames = "";
+		
+		for(Lesson lesson : lessonMap.values()) {
+			if(lesson.getTeacher().getName().equals(teacherName)) {
+				deletedLessonNames += lesson.getName() + ", ";
+				deleteLessonFromFile(lesson.getName());
+			}
+		}
+		
+		if(deletedLessonNames.length() > 0) {
+			deletedLessonNames = deletedLessonNames.substring(0,deletedLessonNames.length() - 2);
+			
+			infoBox("This teacher was also giving out lessons. Removed " + deletedLessonNames + " lessons as well!","Important!");
+		}
+	}
 	
 	
 	//						--------------------------------------------------------------
@@ -582,4 +602,5 @@ public class FuncManager {
 		
 		return ID;
 	}
+
 }
