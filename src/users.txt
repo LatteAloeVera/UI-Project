@@ -3,5 +3,5 @@ Fatma,123,Student,S6db4d5f0
 Selen,123,Student,S4cae2651
 Ayberk,123,Teacher,T38a3beba
 Osman,123,Student,S35b448db
-mehmet,123,Student,S3b978d68
+Mehmet,123,Student,S3b978d68
 Faruk,321321,Teacher,T8aaa86b9

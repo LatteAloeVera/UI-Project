@@ -69,6 +69,7 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
+		setResizable(false);
 		setFont(new Font("Dialog", Font.BOLD, 20));
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Ayberk Sevgi\\git\\UI-Project\\content\\adminPanelIco.png"));
 		setForeground(SystemColor.inactiveCaption);
@@ -76,7 +77,6 @@ public class LoginUI extends JFrame {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 175, 1280, 720);
-		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

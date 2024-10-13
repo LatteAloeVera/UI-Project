@@ -8,12 +8,15 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
@@ -22,6 +25,15 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.AbstractListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.JMenuBar;
+import java.awt.List;
+import java.awt.Scrollbar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
+import java.awt.Component;
 
 public class NewAdminMenuUI extends JFrame {
 
@@ -68,6 +80,8 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.setBounds(260, 0, 1004, 681);
 		contentPane.add(uiPanel);
 		uiPanel.setLayout(null);
+		String[] studentArray = FuncManager.getStudentNames();
+		Arrays.sort(studentArray);
 		
 		JPanel mainMenuPanel = new JPanel();
 		mainMenuPanel.setBackground(new Color(250, 244, 255));
@@ -75,13 +89,7 @@ public class NewAdminMenuUI extends JFrame {
 		uiPanel.add(mainMenuPanel);
 		mainMenuPanel.setLayout(null);
 		
-		JList x = new JList<>();
-		x.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		x.setBackground(new Color(233, 240, 243));
-		x.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		x.setBounds(40, 122, 196, 300);
-		mainMenuPanel.add(x);
-		
+			
 		JLabel welcomeLabel = new JLabel("Welcome To The Admin Menu");
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		welcomeLabel.setForeground(new Color(95, 90, 103));
@@ -509,6 +517,64 @@ public class NewAdminMenuUI extends JFrame {
 				adminUILeftMenuPanelBg_4.setBackground(new Color(249, 249, 249));
 				adminUILeftMenuPanelBg_4.setBounds(0, 0, 1004, 681);
 				enrollMenuPanel.add(adminUILeftMenuPanelBg_4);
+				
+				JPanel studentListMenuPanel = new JPanel();
+				studentListMenuPanel.setBackground(new Color(250, 244, 255));
+				studentListMenuPanel.setBounds(0, 0, 1004, 681);
+				uiPanel.add(studentListMenuPanel);
+				studentListMenuPanel.setLayout(null);
+				
+				JScrollPane studentScrollPane = new JScrollPane();
+				studentScrollPane.setBackground(new Color(133, 126, 143));
+				studentScrollPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				studentScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				studentScrollPane.setBounds(60, 170, 220, 380);
+				studentListMenuPanel.add(studentScrollPane);
+				
+				//Making a background invisible JList:
+				JList studentList = new JList<>();
+				studentList.setSelectionBackground(new Color(240, 240, 240));
+				studentList.setDragEnabled(true);
+				studentList.setForeground(new Color(100, 100, 100));
+				studentScrollPane.setViewportView(studentList);
+				studentList.setVisibleRowCount(2);
+				studentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				studentList.setModel(new AbstractListModel() {
+					String[] values = studentArray;
+					public int getSize() {
+						return values.length;
+					}
+					public Object getElementAt(int index) {
+						return values[index];
+					}
+				});
+				
+				studentList.setToolTipText("");
+				studentList.setBackground(new Color(249, 249, 249));
+				studentList.setFont(new Font("Geist Medium", Font.PLAIN, 19));
+				studentList.setBorder(null);
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(176, 172, 183));
+				studentScrollPane.setRowHeaderView(panel);
+				
+				JPanel panel_1 = new JPanel();
+				panel_1.setBackground(new Color(133, 126, 143));
+				studentScrollPane.setColumnHeaderView(panel_1);
+				
+				JLabel lblNewLabel_1 = new JLabel("= Students =");
+				lblNewLabel_1.setForeground(new Color(248, 244, 251));
+				lblNewLabel_1.setFont(new Font("Geist Medium", Font.BOLD, 24));
+				panel_1.add(lblNewLabel_1);
+				//Resizing to the max size so every member of the list to be shown
+				int studentListSize = studentList.getModel().getSize();
+				
+					
+					JLabel adminUILeftMenuPanelBg_4_1 = new JLabel("New label");
+					adminUILeftMenuPanelBg_4_1.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIPanelBg2.png"));
+					adminUILeftMenuPanelBg_4_1.setBackground(new Color(249, 249, 249));
+					adminUILeftMenuPanelBg_4_1.setBounds(0, 0, 1004, 681);
+					studentListMenuPanel.add(adminUILeftMenuPanelBg_4_1);
 		
 		JPanel navBarPanel = new JPanel();
 		navBarPanel.setBackground(new Color(250, 244, 255));
@@ -533,6 +599,8 @@ public class NewAdminMenuUI extends JFrame {
 				teacherMenuPanel.setVisible(false);
 				lessonMenuPanel.setVisible(false);
 				enrollMenuPanel.setVisible(false);
+				studentListMenuPanel.setVisible(false);
+				
 				
 			}
 		});
@@ -545,7 +613,7 @@ public class NewAdminMenuUI extends JFrame {
 		mainMenuButton.setBounds(75, 160, 150, 50);
 		navBarPanel.add(mainMenuButton);
 		
-		JLabel mainMenuIconLabel = new JLabel("New label");
+		JLabel mainMenuIconLabel = new JLabel("");
 		mainMenuIconLabel.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\homeIcon.png"));
 		mainMenuIconLabel.setBounds(45, 172, 25, 25);
 		navBarPanel.add(mainMenuIconLabel);
@@ -559,6 +627,7 @@ public class NewAdminMenuUI extends JFrame {
 				teacherMenuPanel.setVisible(false);
 				lessonMenuPanel.setVisible(false);
 				enrollMenuPanel.setVisible(false);
+				studentListMenuPanel.setVisible(false);
 			}
 		});
 		studentManagementMenuButton.setAlphaPressedDefault(0.1f);
@@ -578,7 +647,7 @@ public class NewAdminMenuUI extends JFrame {
 		studentManagementMenuButton.setBounds(75, 220, 150, 50);
 		navBarPanel.add(studentManagementMenuButton);
 		
-		JLabel studentMenuIcon = new JLabel("New label");
+		JLabel studentMenuIcon = new JLabel("");
 		studentMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\studentIcon.png"));
 		studentMenuIcon.setBounds(45, 232, 25, 25);
 		navBarPanel.add(studentMenuIcon);
@@ -592,6 +661,7 @@ public class NewAdminMenuUI extends JFrame {
 				teacherMenuPanel.setVisible(true);
 				lessonMenuPanel.setVisible(false);
 				enrollMenuPanel.setVisible(false);
+				studentListMenuPanel.setVisible(false);
 			}
 		});
 		teacherManagementMenuButton.setAlphaPressedDefault(0.1f);
@@ -610,7 +680,7 @@ public class NewAdminMenuUI extends JFrame {
 		teacherManagementMenuButton.setBounds(75, 280, 150, 50);
 		navBarPanel.add(teacherManagementMenuButton);
 		
-		JLabel teacherMenuIcon = new JLabel("New label");
+		JLabel teacherMenuIcon = new JLabel("");
 		teacherMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\teacherIcon.png"));
 		teacherMenuIcon.setBounds(45, 292, 25, 25);
 		navBarPanel.add(teacherMenuIcon);
@@ -624,6 +694,7 @@ public class NewAdminMenuUI extends JFrame {
 				teacherMenuPanel.setVisible(false);
 				lessonMenuPanel.setVisible(true);
 				enrollMenuPanel.setVisible(false);
+				studentListMenuPanel.setVisible(false);
 			}
 		});
 		lessonManagementMenuButton.setAlphaPressedDefault(0.1f);
@@ -642,7 +713,7 @@ public class NewAdminMenuUI extends JFrame {
 		lessonManagementMenuButton.setBounds(75, 340, 150, 50);
 		navBarPanel.add(lessonManagementMenuButton);
 		
-		JLabel lessonMenuIcon = new JLabel("New label");
+		JLabel lessonMenuIcon = new JLabel("");
 		lessonMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\lessonIcon.png"));
 		lessonMenuIcon.setBounds(45, 352, 25, 25);
 		navBarPanel.add(lessonMenuIcon);
@@ -656,6 +727,7 @@ public class NewAdminMenuUI extends JFrame {
 				teacherMenuPanel.setVisible(false);
 				lessonMenuPanel.setVisible(false);
 				enrollMenuPanel.setVisible(true);
+				studentListMenuPanel.setVisible(false);
 			}
 		});
 		enrollMenuButton.setAlphaPressedDefault(0.1f);
@@ -674,10 +746,43 @@ public class NewAdminMenuUI extends JFrame {
 		enrollMenuButton.setBounds(75, 400, 150, 50);
 		navBarPanel.add(enrollMenuButton);
 		
-		JLabel enrollMenuIcon = new JLabel("New label");
+		JLabel enrollMenuIcon = new JLabel("");
 		enrollMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\enrollmentIcon.png"));
 		enrollMenuIcon.setBounds(45, 412, 25, 25);
 		navBarPanel.add(enrollMenuIcon);
+		
+		ButtonGradient allStudentsMenuButton = new ButtonGradient();
+		allStudentsMenuButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Clicked All Students Menu Button
+				mainMenuPanel.setVisible(false);
+				studentMenuPanel.setVisible(false);
+				teacherMenuPanel.setVisible(false);
+				lessonMenuPanel.setVisible(false);
+				enrollMenuPanel.setVisible(false);
+				studentListMenuPanel.setVisible(true);
+			}
+		});
+		allStudentsMenuButton.setText("All Students");
+		allStudentsMenuButton.setStyleGradientColor2(new Color(180, 180, 180));
+		allStudentsMenuButton.setStyleGradientColor1(new Color(180, 180, 180));
+		allStudentsMenuButton.setStyle2Active(true);
+		allStudentsMenuButton.setPressedShineColor(Color.LIGHT_GRAY);
+		allStudentsMenuButton.setHorizontalAlignment(SwingConstants.LEFT);
+		allStudentsMenuButton.setForeground(new Color(120, 120, 120));
+		allStudentsMenuButton.setFont(new Font("Geist", Font.BOLD, 15));
+		allStudentsMenuButton.setColor2(new Color(252, 249, 255));
+		allStudentsMenuButton.setColor1(new Color(252, 249, 255));
+		allStudentsMenuButton.setAlphaPressedDefault(0.1f);
+		allStudentsMenuButton.setAlphaForHoveringLowest(0.0f);
+		allStudentsMenuButton.setAlphaForHoveringChangeSpeed(0.3f);
+		allStudentsMenuButton.setBounds(75, 460, 150, 50);
+		navBarPanel.add(allStudentsMenuButton);
+		
+		JLabel allStudentsMenuIcon = new JLabel("");
+		allStudentsMenuIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\allStudentsIcon.png"));
+		allStudentsMenuIcon.setBounds(45, 472, 25, 25);
+		navBarPanel.add(allStudentsMenuIcon);
 		
 		ButtonGradient logoutMenuButton = new ButtonGradient();
 		logoutMenuButton.addActionListener(new ActionListener() {
@@ -701,10 +806,10 @@ public class NewAdminMenuUI extends JFrame {
 		logoutMenuButton.setBounds(75, 570, 150, 50);
 		navBarPanel.add(logoutMenuButton);
 		
-		JLabel enrollMenuIcon_1 = new JLabel("New label");
-		enrollMenuIcon_1.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\logoutIcon.png"));
-		enrollMenuIcon_1.setBounds(45, 582, 25, 25);
-		navBarPanel.add(enrollMenuIcon_1);
+		JLabel logoutIcon = new JLabel("");
+		logoutIcon.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\logoutIcon.png"));
+		logoutIcon.setBounds(45, 582, 25, 25);
+		navBarPanel.add(logoutIcon);
 		
 		JLabel schoolIcon = new JLabel("");
 		schoolIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -712,7 +817,7 @@ public class NewAdminMenuUI extends JFrame {
 		schoolIcon.setBounds(0, 0, 260, 149);
 		navBarPanel.add(schoolIcon);
 		
-		JLabel adminUIMenuPanelBg = new JLabel("New label");
+		JLabel adminUIMenuPanelBg = new JLabel("");
 		adminUIMenuPanelBg.setBackground(new Color(250, 255, 255));
 		adminUIMenuPanelBg.setIcon(new ImageIcon("C:\\Users\\ayberk\\eclipse-workspace\\SMS\\content\\AdminUIMenuPanelBg2.png"));
 		adminUIMenuPanelBg.setBounds(0, 0, 260, 681);
