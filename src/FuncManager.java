@@ -566,6 +566,37 @@ public class FuncManager {
 		return null;
 	}
 	
+	// Returns the amount of students in "users.txt"
+	protected static int getStudentCount() {
+		HashMap<String, User> userMap = readUserFile();
+		int counter = 0;
+		for (User user : userMap.values()) {
+			if (user.getTag().equals("Student")) {
+				counter++;
+			}
+		}
+		
+		return counter;
+	}
+	
+	// Returns the amount of teachers in "users.txt"
+	protected static int getTeacherCount() {
+		HashMap<String, User> userMap = readUserFile();
+		int counter = 0;
+		for (User user : userMap.values()) {
+			if (user.getTag().equals("Teacher")) {
+				counter++;
+			}
+		}
+			
+		return counter;
+	}
+		
+	// Returns the amount of lessons in "lessons.txt"
+	protected static int getLessonCount() {
+		HashMap<String, Lesson> lessonMap = readLessonFile();
+		return lessonMap.size();
+	}
 	
 	
 	//						--------------------------------------------------------------
@@ -574,7 +605,7 @@ public class FuncManager {
 
 	
 	// Makes a pop-up infoBox with wanted message & title
-	public static void infoBox(String infoMessage, String titleBar) {
+ 	public static void infoBox(String infoMessage, String titleBar) {
 		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
 	}
 
