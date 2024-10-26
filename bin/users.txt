@@ -15,10 +15,11 @@ Melek,1233,Student,Sd38deba1
 Tuğba,1233,Student,S3aa5342b
 Ali,321,Student,Sdb5df7c0
 Ayşenur,52123,Student,Sd4c77cdb
-Aliş,123,Student,S23dee424
 Atakan,1233,Student,S553d51f3
 Burak,1512A,Student,Scb933796
 Deniz,asd23,Student,S80b5b783
 Toprak,521,Student,S95d3c96f
 Eren,123123,Student,S43c43168
 Fatmanur,123123,Teacher,T29e3eeff
+Aynur,321321,Teacher,T44401df9
+Aliş,1233,Student,S69af0420

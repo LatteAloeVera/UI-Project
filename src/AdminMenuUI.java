@@ -348,7 +348,7 @@ public class AdminMenuUI extends JFrame {
 					
 					if(!studentsNameList.isSelectionEmpty()){
 						String studentName = studentsNameList.getSelectedValue().toString();
-						updateStudentLessonList(FuncManager.getStudentByName(studentName));
+						updateStudentLessonLists(FuncManager.getStudentByName(studentName));
 					}
 					
 					
@@ -402,7 +402,7 @@ public class AdminMenuUI extends JFrame {
 				}
 				if(!studentsNameList.isSelectionEmpty()){
 					String studentName = studentsNameList.getSelectedValue().toString();
-					updateStudentLessonList(FuncManager.getStudentByName(studentName));
+					updateStudentLessonLists(FuncManager.getStudentByName(studentName));
 				}
 				
 			}
@@ -443,7 +443,7 @@ public class AdminMenuUI extends JFrame {
 		enrolledLessons.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		enrolledLessons.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		enrolledLessons.setBackground(new Color(233, 240, 243));
-		enrolledLessons.setBounds(358, 40, 196, 300);
+		enrolledLessons.setBounds(368, 40, 196, 300);
 		studentsLessonControlPanel.add(enrolledLessons);
 
 		studentsNameList = new JList<>(studentsNameListModel);
@@ -460,7 +460,7 @@ public class AdminMenuUI extends JFrame {
 					String lessonName = notEnrolledLessons.getSelectedValue().toString();
 					Lesson lesson = FuncManager.getLessonByName(lessonName);
 					student.takeNewLesson(lesson);
-					updateStudentLessonList(student);
+					updateStudentLessonLists(student);
 				}
 			}
 		});
@@ -480,7 +480,7 @@ public class AdminMenuUI extends JFrame {
 					String lessonName = enrolledLessons.getSelectedValue().toString();
 					Lesson lesson = FuncManager.getLessonByName(lessonName);
 					student.dropLesson(lesson);
-					updateStudentLessonList(student);
+					updateStudentLessonLists(student);
 				}
 			}
 		});
@@ -517,7 +517,7 @@ public class AdminMenuUI extends JFrame {
 						// JOptionPane.showMessageDialog(null, item.toString()); <-------- use this to
 						// debug
 
-						updateStudentLessonList(FuncManager.getStudentByName(item.toString()));
+						updateStudentLessonLists(FuncManager.getStudentByName(item.toString()));
 						dropLessonBtn.setEnabled(true);
 						enrollLessonBtn.setEnabled(true);
 
@@ -648,7 +648,7 @@ public class AdminMenuUI extends JFrame {
 	
 
 	// Updates the Enrolled/notEnrolled JList of lessons inside adminMenuUI > Enroll Students
-	private void updateStudentLessonList(Student student) {
+	private void updateStudentLessonLists(Student student) {
 		// TODO: Auto-generated method stub
 		HashMap<String, Lesson> lessonMap = FuncManager.readLessonFile();
 		ArrayList<String> enrolledLessons = student.getTakenCourses();

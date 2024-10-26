@@ -4,3 +4,5 @@ Osman,Coding
 mehmet,Math
 mehmet,Coding
 mehmet,Literature
+Atakan,Coding
+Atakan,Math
